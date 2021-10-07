@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       title: 'Smart TVM',
       theme: ThemeData(
         primarySwatch: Colors.indigo,
-        fontFamily: fontReg,
+        
       ),
       home: const LandingScreen(),
     );
