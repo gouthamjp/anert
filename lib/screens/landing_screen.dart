@@ -1,4 +1,5 @@
 import 'package:anert/constants.dart';
+import 'package:anert/screens/option_selection.dart';
 import 'package:flutter/material.dart';
 import 'package:anert/utils/authentication_textfield.dart';
 import 'package:anert/utils/button.dart';
@@ -66,6 +67,7 @@ class _LandingScreenState extends State<LandingScreen> {
             Button(
             onpress: (){
                 print('Hello2');
+                 Navigator.push(context, MaterialPageRoute(builder: (context)=>OptionSelection()));
             }, 
             text: 'LOGIN'),
             const Text(
