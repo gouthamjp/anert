@@ -1,11 +1,9 @@
 import 'package:anert/constants.dart';
-import 'package:anert/utils/stepper_counter.dart';
 import 'package:flutter/material.dart';
-
-// custom imports
-
 import 'package:anert/utils/authentication_textfield.dart';
-import 'package:anert/utils/stepper_counter.dart';
+import 'package:anert/utils/button.dart';
+
+
 
 class LandingScreen extends StatefulWidget {
   const LandingScreen({ Key? key }) : super(key: key);
@@ -68,22 +66,11 @@ class _LandingScreenState extends State<LandingScreen> {
                           textInputAction: TextInputAction.done,
                         ),
             ),
-            
-            StepperCounter(maxCount: 3, currentElement: 2,),
-            Container(
-                margin: const EdgeInsets.only(top: 20, bottom: 30),
-                width: mquery.width * 0.9,
-                height: mquery.height * 0.07,
-                child: ElevatedButton(
-                  onPressed: () {
-                    print("hello2");
-                  },
-                  child: const Text(
-                    "Login",
-                    style: GreenTvmTheme.buttonTextStyle,
-                  ),
-                  style: ElevatedButton.styleFrom(primary: GreenTvmTheme.primaryBlue),
-                )),
+            Button(
+            onpress: (){
+                print('Hello2');
+            }, 
+            text: 'LOGIN'),
             const Text(
               "By selecting one or the other, you are agreeing to the\nTerms of Services & Privacy Policy",
               textAlign: TextAlign.center,
