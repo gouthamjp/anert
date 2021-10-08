@@ -20,7 +20,7 @@ class _OptionSelectionState extends State<OptionSelection> {
   Widget build(BuildContext context) {
     final mquery = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: GreenTvmTheme.themeAppbar(title: 'SMART TVM',  context: context, showBackButton: true),
+      appBar: GreenTvmTheme.themeAppbar(title: 'GREEN TVM',  context: context, showBackButton: true),
       backgroundColor: Colors.white,
       body: SizedBox(
         height: mquery.height,
