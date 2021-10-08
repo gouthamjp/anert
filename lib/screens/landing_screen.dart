@@ -1,9 +1,12 @@
 import 'package:anert/constants.dart';
+import 'package:anert/utils/stepper_counter.dart';
 import 'package:flutter/material.dart';
 
 // custom imports
 
 import 'package:anert/utils/authentication_textfield.dart';
+import 'package:anert/utils/stepper_counter.dart';
+
 class LandingScreen extends StatefulWidget {
   const LandingScreen({ Key? key }) : super(key: key);
 
@@ -54,9 +57,9 @@ class _LandingScreenState extends State<LandingScreen> {
                             didEndTextEdit: () {}),
             ),
                       
-                      Container(
-                        margin: const EdgeInsets.all(15),
-                        child: AuthenticationTextField(
+            Container(
+               margin: const EdgeInsets.all(15),
+               child: AuthenticationTextField(
                           hintText: 'Password',
                           isObscure: true,
                           keyboardType: KeyboardType.Password,
@@ -64,7 +67,9 @@ class _LandingScreenState extends State<LandingScreen> {
                           didEndTextEdit: () {},
                           textInputAction: TextInputAction.done,
                         ),
-                      ),
+            ),
+            
+            StepperCounter(maxCount: 3, currentElement: 2,),
             Container(
                 margin: const EdgeInsets.only(top: 20, bottom: 30),
                 width: mquery.width * 0.9,
