@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.indigo,
         
       ),
-      home: const OptionSelection(),
+      home: const LandingScreen(),
     );
   }
 }

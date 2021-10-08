@@ -27,19 +27,16 @@ class _LandingScreenState extends State<LandingScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              child: const Text(
-                'LOGO',
-                style: TextStyle(color: Colors.indigo, fontSize: 40),
-              ),
+              child: Image.asset('assets/images/ANERT.png')
             ),
             Container(
-              margin: const EdgeInsets.all(18),
+              margin: const EdgeInsets.all(6),
               child: const Text(
-                'SMART TVM',
+                'GREEN TVM',
                 style: GreenTvmTheme.frontTitle),
             ),
             Container(
-              margin: const EdgeInsets.all(10),
+              margin: const EdgeInsets.all(6),
               child: const Text(
                 'A Government initiated project for \nthe development of city',
                 textAlign: TextAlign.center,style: GreenTvmTheme.descriptionTextStyle
