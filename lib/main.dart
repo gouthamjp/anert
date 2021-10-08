@@ -1,4 +1,5 @@
 import 'package:anert/screens/option_selection.dart';
+import 'package:anert/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 
 //Custom Imports
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.indigo,
         
       ),
-      home: const LandingScreen(),
+      home: const Splash(),
     );
   }
 }
