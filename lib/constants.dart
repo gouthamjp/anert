@@ -55,6 +55,13 @@ class GreenTvmTheme{
   fontSize: 16,
   fontFamily: fontReg,
   );
+
+    static const TextStyle pagedHeading = TextStyle(
+  color: textColor,
+  fontSize: 24,
+  fontFamily: fontReg,
+  fontWeight: FontWeight.w700,
+  );
   
  static const TextStyle hintTextStyle = TextStyle(
   color: descriptionTextColor,

@@ -12,21 +12,52 @@ class FormPage extends StatefulWidget {
 }
 
 class _FormPageState extends State<FormPage> {
+   final _buildignamecontroller  = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final mquery = MediaQuery.of(context).size;
     return Scaffold(
       appBar: GreenTvmTheme.themeAppbar(title: 'GREEN TVM',  context: context, showBackButton: true),
       backgroundColor: Colors.white,
-      body:Column(
-        children: [
-          StepperCounter(maxCount: 3,currentElement: 2,),
-          Text(
-            'Site Inspection Details',
-            textAlign: TextAlign.center,style: GreenTvmTheme.fieldHeading
-          ),
-
-
-      ],)
+      body:SingleChildScrollView(
+        child: Container(
+          margin: EdgeInsets.all(0.05* mquery.width),
+          child: Column(
+            children: [
+              StepperCounter(maxCount: 3,currentElement: 2,),
+              SizedBox(
+              height: 0.05*mquery.height,
+              width: 0.05* mquery.width,
+              ),
+              Text(
+                'Site Inspection Details',
+                textAlign: TextAlign.center,style: GreenTvmTheme.pagedHeading
+              ),
+              SizedBox(
+              height: 0.02*mquery.height,
+              ),
+              Row(
+                children: [
+                  Text(
+                    'Name of building',
+                    textAlign: TextAlign.left,style: GreenTvmTheme.fieldHeading
+                  ),
+                ],
+              ),
+              SizedBox(
+              height: 0.01*mquery.height,
+              ),
+              FormFieldBox(
+                hintText: 'Name of Building',
+                keyboardType: KeyboardType.Text_,
+                controller: _buildignamecontroller,
+                didEndTextEdit:(){},
+              )
+      
+      
+          ],),
+        ),
+      )
       
     );
   }
