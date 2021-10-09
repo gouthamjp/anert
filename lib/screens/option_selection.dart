@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:anert/constants.dart';
 import 'package:anert/screens/form.dart';
 import 'package:anert/utils/stepper_counter.dart';
