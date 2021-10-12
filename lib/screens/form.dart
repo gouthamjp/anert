@@ -13,6 +13,7 @@ class FormPage extends StatefulWidget {
 
 class _FormPageState extends State<FormPage> {
    final _buildignamecontroller  = TextEditingController();
+   final _2ndcontroller  = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final mquery = MediaQuery.of(context).size;
@@ -74,7 +75,7 @@ class _FormPageState extends State<FormPage> {
               FormFieldBox(
                 hintText: 'Name of Building',
                 keyboardType: KeyboardType.Text_,
-                controller: _buildignamecontroller,
+                controller: _2ndcontroller,
                 didEndTextEdit:(){},
               ),
               SizedBox(
