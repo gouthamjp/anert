@@ -102,6 +102,12 @@ class _FormFieldBoxState extends State<FormFieldBox> {
               },
               onFieldSubmitted: (v) {
                 FocusScope.of(context).nextFocus();
+                setState(()
+                {
+                  bordcolor=GreenTvmTheme.white;
+
+                });
+
               },
               validator: (String ? value) {
                 

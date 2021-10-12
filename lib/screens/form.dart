@@ -71,6 +71,15 @@ class _FormPageState extends State<FormPage> {
               SizedBox(
               height: 0.01*mquery.height,
               ), 
+              FormFieldBox(
+                hintText: 'Name of Building',
+                keyboardType: KeyboardType.Text_,
+                controller: _buildignamecontroller,
+                didEndTextEdit:(){},
+              ),
+              SizedBox(
+              height: 0.02*mquery.height,
+              ), 
       
           ],),
         ),
