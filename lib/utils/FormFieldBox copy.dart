@@ -97,8 +97,12 @@ class _FormFieldBoxState extends State<FormFieldBox> {
                   borderSide: BorderSide(
                 color: GreenTvmTheme.primaryBlue,
                 width: 2.0,
-              )),
-              border: OutlineInputBorder(borderSide: BorderSide()),
+              ),
+              borderRadius: BorderRadius.circular(6),
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(6),
+                borderSide: BorderSide()),
               filled: true,
               contentPadding: const EdgeInsets.all(12.0),
               isDense: false,
