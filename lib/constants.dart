@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 class GreenTvmTheme{
   GreenTvmTheme._();
-
+  
   //Fonts
   static const fontReg = 'Inter';
   static const fontBld = 'Inter Bold';
