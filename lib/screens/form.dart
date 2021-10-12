@@ -52,8 +52,25 @@ class _FormPageState extends State<FormPage> {
                 keyboardType: KeyboardType.Text_,
                 controller: _buildignamecontroller,
                 didEndTextEdit:(){},
-              )
-      
+              ),
+              SizedBox(
+              height: 0.02*mquery.height,
+              ), 
+              Row(
+                children: [
+                  Text(
+                    'Category',
+                    textAlign: TextAlign.left,style: GreenTvmTheme.fieldHeading
+                  ),
+                  Text(
+                    '*',
+                    textAlign: TextAlign.left,style: GreenTvmTheme.mandatorystar
+                  ),
+                ],
+              ),
+              SizedBox(
+              height: 0.01*mquery.height,
+              ), 
       
           ],),
         ),

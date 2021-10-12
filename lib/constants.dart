@@ -16,6 +16,7 @@ class GreenTvmTheme{
   static const Color descriptionTextColor = Color(0xFF64748B);
   static const Color secondaryGray = Color(0xFFE0E2E7);
   static const Color appBarColor =  Color(0xFFF8FAFC);
+  static const Color white= Colors.white;//same as primaryblue
   
   
   static const TextStyle appBarTextStyle = TextStyle(
@@ -56,9 +57,16 @@ class GreenTvmTheme{
   fontFamily: fontReg,
   );
 
-    static const TextStyle pagedHeading = TextStyle(
+  static const TextStyle pagedHeading = TextStyle(
   color: textColor,
   fontSize: 24,
+  fontFamily: fontReg,
+  fontWeight: FontWeight.w700,
+  );
+
+  static const TextStyle mandatorystar = TextStyle(
+  color: Colors.red,
+  fontSize: 12,
   fontFamily: fontReg,
   fontWeight: FontWeight.w700,
   );
