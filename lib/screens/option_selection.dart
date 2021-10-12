@@ -1,4 +1,7 @@
+import 'dart:html';
+
 import 'package:anert/constants.dart';
+import 'package:anert/screens/form.dart';
 import 'package:anert/utils/stepper_counter.dart';
 import 'package:flutter/material.dart';
 import 'package:anert/utils/button.dart';
@@ -59,14 +62,14 @@ class _OptionSelectionState extends State<OptionSelection> {
               )
             ),
             Button(onpress: (){
-              print('hello3');
+             Navigator.push(context, MaterialPageRoute(builder: (context)=>FormPage()));
             },
              text: 'NEXT')
           ],
         ),
       ),
     );
-  }
+  } 
 }
 
 class ReusableCard extends StatelessWidget {
