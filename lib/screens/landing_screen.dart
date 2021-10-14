@@ -1,9 +1,9 @@
 import 'package:anert/constants.dart';
 import 'package:anert/services/auth.dart';
+import 'package:anert/screens/option_selection.dart';
 import 'package:flutter/material.dart';
-
-// custom imports
-
+import 'package:anert/utils/authentication_textfield.dart';
+import 'package:anert/utils/button.dart';
 import 'package:anert/utils/authentication_textfield.dart';
 
 class LandingScreen extends StatefulWidget {
@@ -30,17 +30,16 @@ class _LandingScreenState extends State<LandingScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
+              child: Image.asset('assets/images/ANERT.png')
+            ),
+            Container(
+              margin: const EdgeInsets.all(6),
               child: const Text(
-                'LOGO',
-                style: TextStyle(color: Colors.indigo, fontSize: 40),
-              ),
+                'GREEN TVM',
+                style: GreenTvmTheme.frontTitle),
             ),
             Container(
-              margin: const EdgeInsets.all(18),
-              child: const Text('SMART TVM', style: GreenTvmTheme.frontTitle),
-            ),
-            Container(
-              margin: const EdgeInsets.all(10),
+              margin: const EdgeInsets.all(6),
               child: const Text(
                   'A Government initiated project for \nthe development of city',
                   textAlign: TextAlign.center,
@@ -82,6 +81,7 @@ class _LandingScreenState extends State<LandingScreen> {
                   style: ElevatedButton.styleFrom(
                       primary: GreenTvmTheme.primaryBlue),
                 )),
+
             const Text(
                 "By selecting one or the other, you are agreeing to the\nTerms of Services & Privacy Policy",
                 textAlign: TextAlign.center,
