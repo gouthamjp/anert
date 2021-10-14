@@ -22,6 +22,8 @@ class FormFieldBox extends StatefulWidget {
   final Function didEndTextEdit;
   final double height;
   final TextInputAction textInputAction;
+  final bool requiredornot;
+  final Function(String?) onSavedField;
   //final FocusNode focusNode;
 
   FormFieldBox(
@@ -30,6 +32,8 @@ class FormFieldBox extends StatefulWidget {
       required this.keyboardType,
       required this.controller,
       required this.didEndTextEdit,
+      required this.requiredornot,
+      required this.onSavedField,
       // required this.focusNode,
       this.height = 80,
       this.textInputAction = TextInputAction.next});
@@ -52,6 +56,10 @@ class _FormFieldBoxState extends State<FormFieldBox> {
             children: [
               Text(widget.labelText,
                   textAlign: TextAlign.left, style: GreenTvmTheme.fieldHeading),
+              Text(
+                widget.requiredornot ? '*' : '',
+                style: TextStyle(color: Colors.red),
+              )
             ],
           ),
           SizedBox(
@@ -69,10 +77,11 @@ class _FormFieldBoxState extends State<FormFieldBox> {
             enableSuggestions: false,
             maxLines: 1,
             expands: false,
-            onSaved: (String? Value) {},
+            onSaved: ((String? Value) {}),
             onFieldSubmitted: (v) {
-            //  FocusScope.of(context).nextFocus();
+              //  FocusScope.of(context).nextFocus();
             },
+
             validator: (value) {
               String phone = r'(^[0-9]{10}$)';
               RegExp phoneregExp = new RegExp(phone);
@@ -94,15 +103,15 @@ class _FormFieldBoxState extends State<FormFieldBox> {
             decoration: InputDecoration(
               fillColor: Colors.white,
               focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                color: GreenTvmTheme.primaryBlue,
-                width: 2.0,
-              ),
-              borderRadius: BorderRadius.circular(6),
+                borderSide: BorderSide(
+                  color: GreenTvmTheme.primaryBlue,
+                  width: 2.0,
+                ),
+                borderRadius: BorderRadius.circular(6),
               ),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(6),
-                borderSide: BorderSide()),
+                  borderRadius: BorderRadius.circular(6),
+                  borderSide: BorderSide()),
               filled: true,
               contentPadding: const EdgeInsets.all(12.0),
               isDense: false,
@@ -120,3 +129,4 @@ class _FormFieldBoxState extends State<FormFieldBox> {
     );
   }
 }
+
