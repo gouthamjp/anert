@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "345163562037",
+    "project_id": "anert-1433f",
+    "storage_bucket": "anert-1433f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:345163562037:android:e5a0c150dd029aaeb3857c",
+        "android_client_info": {
+          "package_name": "com.example.anert"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "345163562037-551bc1cj70tfrp9i26u2i6outqjqs9d3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxlV1oQ8DhAw0pNN7D0_HFe9RzXQc6r1I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "345163562037-551bc1cj70tfrp9i26u2i6outqjqs9d3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
