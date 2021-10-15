@@ -1,3 +1,4 @@
+import 'package:anert/screens/form_screens/interested_screen.dart';
 import 'package:flutter/material.dart';
 import '/constants.dart';
 import 'package:anert/constants.dart';
@@ -15,14 +16,14 @@ enum RoofShape { flat, tilted, others }
 enum RoofCover { concrete, tiles, asbetos, others }
 enum Accessibility { crane, scaffolding, stairs, notaccessible }
 
-class FormPage extends StatefulWidget {
-  const FormPage({Key? key}) : super(key: key);
+class InspectionPage extends StatefulWidget {
+  const InspectionPage({Key? key}) : super(key: key);
 
   @override
-  _FormPageState createState() => _FormPageState();
+  _InspectionPageState createState() => _InspectionPageState();
 }
 
-class _FormPageState extends State<FormPage> {
+class _InspectionPageState extends State<InspectionPage> {
   final _formKey = GlobalKey<FormState>();
   final _buildignamecontroller = TextEditingController();
   final _notcpcontroller = TextEditingController();
@@ -489,7 +490,7 @@ class _FormPageState extends State<FormPage> {
                       onSavedField: (value) {},
                       labelText: 'Remarks',
                       hintText: 'Enter Remarks Here',
-                      requiredornot: true,
+                      requiredornot: false,
                       keyboardType: KeyboardType.Text_,
                       controller: _emailcontroller,
                       // focusNode: _notcpnode,
@@ -497,12 +498,7 @@ class _FormPageState extends State<FormPage> {
                     ),
                     Button(
                         onpress: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => FormPage(),
-                            ),
-                          );
+                          Navigator.push(context,MaterialPageRoute(builder: (context) => InterestedScreen(),),);
                         },
                         text: 'NEXT')
                   ]),
