@@ -31,9 +31,6 @@ class _EvPageState extends State<EvPage> {
   String data0 = '';
   String data1 = '';
   void test() {
-    if (!_formKey.currentState!.validate()) {
-      return;
-    }
     _formKey.currentState!.save();
     data0 = _buildignamecontroller.text;
     data1 = _notcpcontroller.text;
@@ -203,7 +200,8 @@ class _EvPageState extends State<EvPage> {
                       didEndTextEdit: () {},
                     ),
                     RadioFieldBox(
-                      labelText: 'Whether there is a provision for changing \ntwo vehicles at a time or not?',
+                      labelText:
+                          'Whether there is a provision for changing \ntwo vehicles at a time or not?',
                       requiredornot: true,
                       radioChild: Column(
                         children: <Widget>[
@@ -234,7 +232,6 @@ class _EvPageState extends State<EvPage> {
                         ],
                       ),
                     ),
-
                     FormFieldBox(
                       onSavedField: (value) {},
                       labelText: 'Remarks',
@@ -247,7 +244,15 @@ class _EvPageState extends State<EvPage> {
                     ),
                     Button(
                         onpress: () {
-                          Navigator.push(context,MaterialPageRoute(builder: (context) => InterestedScreen(),),);
+                          if (!_formKey.currentState!.validate()) {
+                            return;
+                          }
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => InterestedScreen(),
+                            ),
+                          );
                         },
                         text: 'NEXT')
                   ]),

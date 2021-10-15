@@ -43,9 +43,6 @@ class _InspectionPageState extends State<InspectionPage> {
   String data0 = '';
   String data1 = '';
   void test() {
-    if (!_formKey.currentState!.validate()) {
-      return;
-    }
     _formKey.currentState!.save();
     data0 = _buildignamecontroller.text;
     data1 = _notcpcontroller.text;
@@ -498,8 +495,15 @@ class _InspectionPageState extends State<InspectionPage> {
                     ),
                     Button(
                         onpress: () {
-                          test();
-                          Navigator.push(context,MaterialPageRoute(builder: (context) => InterestedScreen(),),);
+                          if (!_formKey.currentState!.validate()) {
+                            return;
+                          }
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => InterestedScreen(),
+                            ),
+                          );
                         },
                         text: 'NEXT')
                   ]),

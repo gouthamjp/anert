@@ -21,6 +21,14 @@ class _NameOfInstitutionState extends State<NameOfInstitution> {
   final _formKey = GlobalKey<FormState>();
   final _buildignamecontroller = TextEditingController();
   Yesorno? _yesorno = Yesorno.yes;
+
+  void test() {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+    _formKey.currentState!.save();
+  }
+
   @override
   Widget build(BuildContext context) {
     final mquery = MediaQuery.of(context).size;
@@ -38,16 +46,19 @@ class _NameOfInstitutionState extends State<NameOfInstitution> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                height: mquery.height * 0.15,
-                child: FormFieldBox(
-                  onSavedField: (value) {},
-                  labelText: 'Name of Building',
-                  hintText: 'Enter name of building',
-                  keyboardType: KeyboardType.Text_,
-                  controller: _buildignamecontroller,
-                  requiredornot: true,
-                  //focusNode: _buildignamenode,
-                  didEndTextEdit: () {},
+                //height: mquery.height * 0.15,
+                child: Form(
+                  key: _formKey,
+                  child: FormFieldBox(
+                    onSavedField: (value) {},
+                    labelText: 'Name of Building',
+                    hintText: 'Enter name of building',
+                    keyboardType: KeyboardType.Text_,
+                    controller: _buildignamecontroller,
+                    requiredornot: true,
+                    //focusNode: _buildignamenode,
+                    didEndTextEdit: () {},
+                  ),
                 ),
               ),
               RadioFieldBox(
@@ -83,7 +94,13 @@ class _NameOfInstitutionState extends State<NameOfInstitution> {
                   )),
               Button(
                   onpress: () {
-                     Navigator.push(context, MaterialPageRoute(builder: (context)=>OptionSelection()));
+                    if (!_formKey.currentState!.validate()) {
+                      return;
+                    }
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => OptionSelection()));
                   },
                   text: 'NEXT')
             ],
