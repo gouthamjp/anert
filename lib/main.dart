@@ -1,4 +1,7 @@
 import 'package:anert/models/user_model.dart';
+import 'package:anert/screens/form_screens/ev_site.dart';
+import 'package:anert/screens/form_screens/interested_screen.dart';
+import 'package:anert/screens/form_screens/name_of_institution_screen.dart';
 import 'package:anert/screens/landing_screen.dart';
 import 'package:anert/services/auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -11,7 +14,7 @@ import 'package:anert/screens/wrapper.dart';
 //Custom Imports
 import './screens/landing_screen.dart';
 import './constants.dart';
-import 'package:anert/screens/form.dart';
+import 'package:anert/screens/form_screens/inspection_site.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -31,7 +34,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.indigo,
         ),
-        home: const FormPage(),
+        home: const Splash(),
       ),
     );
   }
