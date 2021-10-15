@@ -1,9 +1,11 @@
 import 'package:anert/constants.dart';
+import 'package:anert/screens/form_screens/interested_screen.dart';
+import 'package:anert/screens/form_screens/name_of_institution_screen.dart';
 import 'package:anert/services/auth.dart';
+import 'package:anert/screens/option_selection.dart';
 import 'package:flutter/material.dart';
-
-// custom imports
-
+import 'package:anert/utils/authentication_textfield.dart';
+import 'package:anert/utils/button.dart';
 import 'package:anert/utils/authentication_textfield.dart';
 
 class LandingScreen extends StatefulWidget {
@@ -22,6 +24,7 @@ class _LandingScreenState extends State<LandingScreen> {
   Widget build(BuildContext context) {
     final mquery = MediaQuery.of(context).size;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       body: SizedBox(
         height: mquery.height,
@@ -30,23 +33,27 @@ class _LandingScreenState extends State<LandingScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
+              height: mquery.height*0.25,
+              child: Image.asset('assets/images/ANERT.png')
+            ),
+            Container(
+              height: mquery.height*0.07,
+              margin: const EdgeInsets.all(6),
               child: const Text(
-                'LOGO',
-                style: TextStyle(color: Colors.indigo, fontSize: 40),
-              ),
+                'GREEN TVM',
+                style: GreenTvmTheme.frontTitle),
             ),
             Container(
-              margin: const EdgeInsets.all(18),
-              child: const Text('SMART TVM', style: GreenTvmTheme.frontTitle),
-            ),
-            Container(
-              margin: const EdgeInsets.all(10),
+              height: mquery.height*0.07,
+              margin: const EdgeInsets.all(6),
               child: const Text(
                   'A Government initiated project for \nthe development of city',
                   textAlign: TextAlign.center,
                   style: GreenTvmTheme.descriptionTextStyle),
             ),
             Container(
+              width: mquery.width * 0.9,
+                height: mquery.height * 0.07,
               margin: const EdgeInsets.all(15),
               child: AuthenticationTextField(
                   hintText: 'ID',
@@ -56,6 +63,8 @@ class _LandingScreenState extends State<LandingScreen> {
                   didEndTextEdit: () {}),
             ),
             Container(
+              width: mquery.width * 0.9,
+              height: mquery.height * 0.07,
               margin: const EdgeInsets.all(15),
               child: AuthenticationTextField(
                 hintText: 'Password',
@@ -74,6 +83,7 @@ class _LandingScreenState extends State<LandingScreen> {
                   onPressed: () async {
                     await _auth.signInEmailAndPass(
                         _emailController.text, _passwordController.text);
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>NameOfInstitution()));
                   },
                   child: const Text(
                     "Login",
@@ -82,10 +92,15 @@ class _LandingScreenState extends State<LandingScreen> {
                   style: ElevatedButton.styleFrom(
                       primary: GreenTvmTheme.primaryBlue),
                 )),
-            const Text(
-                "By selecting one or the other, you are agreeing to the\nTerms of Services & Privacy Policy",
-                textAlign: TextAlign.center,
-                style: GreenTvmTheme.descriptionTextStyle)
+
+            Container(
+              width: mquery.width * 0.9,
+              height: mquery.height * 0.07,
+              child: Text(
+                  "By selecting one or the other, you are agreeing to the\nTerms of Services & Privacy Policy",
+                  textAlign: TextAlign.center,
+                  style: GreenTvmTheme.descriptionTextStyle),
+            )
           ],
         ),
       ),
