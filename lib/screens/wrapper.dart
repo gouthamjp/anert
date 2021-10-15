@@ -1,9 +1,9 @@
 import 'package:anert/models/user_model.dart';
+import 'package:anert/screens/form_screens/name_of_institution_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import './landing_screen.dart';
-import 'screen1.dart';
 
 class Wrapper extends StatelessWidget {
   const Wrapper({Key? key}) : super(key: key);
@@ -14,7 +14,7 @@ class Wrapper extends StatelessWidget {
     if (user == null) {
       return LandingScreen();
     } else {
-      return ScreenOne();
+      return NameOfInstitution();
     }
   }
 }
