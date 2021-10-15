@@ -498,6 +498,7 @@ class _InspectionPageState extends State<InspectionPage> {
                     ),
                     Button(
                         onpress: () {
+                          test();
                           Navigator.push(context,MaterialPageRoute(builder: (context) => InterestedScreen(),),);
                         },
                         text: 'NEXT')
