@@ -7,6 +7,8 @@ import 'package:anert/utils/button.dart';
 import 'package:anert/utils/FormFieldBox.dart';
 import 'package:anert/utils/radiobox.dart';
 import 'package:anert/utils/button.dart';
+import 'package:provider/provider.dart';
+import 'package:anert/models/user_model.dart';
 
 enum Yesorno { yes, no }
 
@@ -19,6 +21,7 @@ class InterestedScreen extends StatefulWidget {
 
 class _InterestedScreenState extends State<InterestedScreen> {
   final _formKey = GlobalKey<FormState>();
+
   final _buildignamecontroller = TextEditingController();
   Yesorno? _yesorno = Yesorno.yes;
   @override
@@ -37,16 +40,17 @@ class _InterestedScreenState extends State<InterestedScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-               StepperCounter(
-                  maxCount: 3,
-                  currentElement: 3,
-                ),
-                SizedBox(
-                  height: 0.05 * mquery.height,
-                  width: 0.05 * mquery.width,
-                ),
+              StepperCounter(
+                maxCount: 3,
+                currentElement: 3,
+              ),
+              SizedBox(
+                height: 0.05 * mquery.height,
+                width: 0.05 * mquery.width,
+              ),
               RadioFieldBox(
-                  labelText: 'Whether you are interested\n for installing Solar PV?',
+                  labelText:
+                      'Whether you are interested\n for installing Solar PV?',
                   requiredornot: true,
                   radioChild: Column(
                     children: <Widget>[
@@ -78,7 +82,10 @@ class _InterestedScreenState extends State<InterestedScreen> {
                   )),
               Button(
                   onpress: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>OptionSelection()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => OptionSelection()));
                   },
                   text: 'SUBMIT')
             ],

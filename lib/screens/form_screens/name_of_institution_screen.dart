@@ -9,6 +9,7 @@ import 'package:anert/utils/FormFieldBox.dart';
 import 'package:anert/utils/radiobox.dart';
 import 'package:anert/utils/button.dart';
 import 'package:provider/provider.dart';
+import 'package:anert/models/user_model.dart';
 
 enum Yesorno { yes, no }
 
@@ -33,6 +34,7 @@ class _NameOfInstitutionState extends State<NameOfInstitution> {
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<CustomUser?>(context);
     final detData = Provider.of<FormProvider>(context);
     final mquery = MediaQuery.of(context).size;
     return Scaffold(
@@ -97,11 +99,12 @@ class _NameOfInstitutionState extends State<NameOfInstitution> {
                   )),
               Button(
                   onpress: () {
-                    if (_yesorno == Yesorno.yes) {
-                      detData.setOne(_buildignamecontroller.text, "Yes");
-                    } else {
-                      detData.setOne(_buildignamecontroller.text, "No");
-                    }
+                    detData.setOne(
+                      user?.id,
+                      _buildignamecontroller.text,
+                      _yesorno.toString().split('.').last,
+                    );
+
                     if (!_formKey.currentState!.validate()) {
                       return;
                     }
