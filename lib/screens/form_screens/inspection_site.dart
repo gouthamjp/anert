@@ -6,6 +6,9 @@ import 'package:anert/utils/stepper_counter.dart';
 import 'package:anert/utils/FormFieldBox.dart';
 import 'package:anert/utils/radiobox.dart';
 import 'package:anert/utils/button.dart';
+import 'package:provider/provider.dart';
+import 'package:anert/models/user_model.dart';
+import 'package:anert/providers/form_provider.dart';
 
 enum Category { residential, commercial, government }
 enum Mounting { roof, ground }
@@ -50,6 +53,8 @@ class _InspectionPageState extends State<InspectionPage> {
 
   @override
   Widget build(BuildContext context) {
+    final detData = Provider.of<FormProvider>(context);
+    final user = Provider.of<CustomUser?>(context);
     final mquery = MediaQuery.of(context).size;
     return Scaffold(
         appBar: GreenTvmTheme.themeAppbar(
@@ -494,6 +499,7 @@ class _InspectionPageState extends State<InspectionPage> {
                       didEndTextEdit: () {},
                     ),
                     Button(
+                        //iugi
                         onpress: () {
                           if (!_formKey.currentState!.validate()) {
                             return;

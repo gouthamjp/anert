@@ -1,4 +1,5 @@
 import 'package:anert/models/user_model.dart';
+import 'package:anert/providers/form_provider.dart';
 import 'package:anert/screens/form_screens/ev_site.dart';
 import 'package:anert/screens/form_screens/interested_screen.dart';
 import 'package:anert/screens/form_screens/name_of_institution_screen.dart';
@@ -15,6 +16,7 @@ import 'package:anert/screens/wrapper.dart';
 import './screens/landing_screen.dart';
 import './constants.dart';
 import 'package:anert/screens/form_screens/inspection_site.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -29,12 +31,19 @@ class MyApp extends StatelessWidget {
     return StreamProvider<CustomUser?>.value(
       initialData: null,
       value: AuthService().userDet,
-      child: MaterialApp(
-        title: 'Smart TVM',
-        theme: ThemeData(
-          primarySwatch: Colors.indigo,
+      child: MultiProvider(
+        providers: [
+          ChangeNotifierProvider.value(
+            value: FormProvider(),
+          )
+        ],
+        child: MaterialApp(
+          title: 'Smart TVM',
+          theme: ThemeData(
+            primarySwatch: Colors.indigo,
+          ),
+          home: const Splash(),
         ),
-        home: const Splash(),
       ),
     );
   }
