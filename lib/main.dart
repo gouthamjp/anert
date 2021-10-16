@@ -11,10 +11,7 @@ import 'package:anert/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:anert/screens/wrapper.dart';
-
-//Custom Imports
 import './screens/landing_screen.dart';
-import './constants.dart';
 import 'package:anert/screens/form_screens/inspection_site.dart';
 
 void main() async {
@@ -42,7 +39,17 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.indigo,
           ),
-          home: const Splash(),
+          home: Splash(),
+          routes: {
+            Wrapper.id: (context) => Wrapper(),
+            Splash.id: (context) => Splash(),
+            LandingScreen.id: (context) => LandingScreen(),
+            OptionSelection.id: (context) => OptionSelection(),
+            NameOfInstitution.id: (context) => NameOfInstitution(),
+            InspectionPage.id: (context) => InspectionPage(),
+            EvPage.id: (context) => EvPage(),
+            InterestedScreen.id: (context) => InterestedScreen(),
+            },
         ),
       ),
     );

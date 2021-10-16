@@ -9,7 +9,7 @@ import 'package:anert/utils/button.dart';
 import 'package:anert/utils/authentication_textfield.dart';
 
 class LandingScreen extends StatefulWidget {
-  const LandingScreen({Key? key}) : super(key: key);
+  static String id = 'landing_screen';
 
   @override
   _LandingScreenState createState() => _LandingScreenState();
