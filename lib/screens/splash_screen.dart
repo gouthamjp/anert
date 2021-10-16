@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'landing_screen.dart';
 
 class Splash extends StatefulWidget {
-  const Splash({Key? key}) : super(key: key);
+  static String id = 'sp_screen';
 
   @override
   _SplashState createState() => _SplashState();
@@ -18,9 +18,8 @@ class _SplashState extends State<Splash> {
 
   _navigatetohome() async {
     await Future.delayed(Duration(milliseconds: 1500), () {});
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => Wrapper()));
-  }
+    Navigator.pushReplacementNamed(context, Wrapper.id);
+ }
 
   Widget build(BuildContext context) {
     return Scaffold(

@@ -6,12 +6,13 @@ import 'package:anert/utils/FormFieldBox.dart';
 import 'package:anert/utils/radiobox.dart';
 import 'package:anert/utils/button.dart';
 import 'package:anert/screens/form_screens/interested_screen.dart';
+import 'package:anert/utils/yesopentextfield.dart';
 
 enum Category { residential, commercial, government }
 enum Yesorno { yes, no }
 
 class EvPage extends StatefulWidget {
-  const EvPage({Key? key}) : super(key: key);
+  static String id = 'ev_screen';
 
   @override
   _EvPageState createState() => _EvPageState();
@@ -21,11 +22,22 @@ class _EvPageState extends State<EvPage> {
   final _formKey = GlobalKey<FormState>();
   final _buildignamecontroller = TextEditingController();
   final _notcpcontroller = TextEditingController();
+  final _notcp1controller = TextEditingController();
+  final _phone1controller = TextEditingController();
   final _phonecontroller = TextEditingController();
   final _designationcontroller = TextEditingController();
   final _emailcontroller = TextEditingController();
+  final _email1controller = TextEditingController();
+  final _addresscontroller = TextEditingController();
+  final _remarkscontroller = TextEditingController();
+    final _rentednamecontroller = TextEditingController();
+  final _rentedphonecontroller = TextEditingController();
+  final _rentedemailcontroller = TextEditingController();
+  final _othersspecifycontroller = TextEditingController();
+  
   Category? _category = Category.residential;
   Yesorno? _yesorno = Yesorno.yes;
+  Yesorno? _rented = Yesorno.no;
   //final _buildignamenode = FocusNode();
   // final _notcpnode = FocusNode();
   String data0 = '';
@@ -159,13 +171,72 @@ class _EvPageState extends State<EvPage> {
                       // focusNode: _notcpnode,
                       didEndTextEdit: () {},
                     ),
+                    RadioFieldBox(
+                      labelText: 'Whether Rented or not?',
+                      requiredornot: true,
+                      radioChild: Column(
+                        children: <Widget>[
+                          ListTile(
+                            title: const Text('YES'),
+                            leading: Radio<Yesorno>(
+                              value: Yesorno.yes,
+                              groupValue: _rented,
+                              onChanged: (Yesorno? value) {
+                                setState(() {
+                                  _rented = value;
+                                });
+                              },
+                            ),
+                          ),
+                          ListTile(
+                            title: const Text('NO'),
+                            leading: Radio<Yesorno>(
+                              value: Yesorno.no,
+                              groupValue: _rented,
+                              onChanged: (Yesorno? value) {
+                                setState(() {
+                                  _rented = value;
+                                });
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    YesOpenFormFieldBox(
+                        hintText: 'Enter name',
+                        labelText: 'Name of Owner',
+                        keyboardType: KeyboardType1.Text_,
+                        controller: _rentednamecontroller,
+                        didEndTextEdit: () {},
+                        requiredornot: true,
+                        onSavedField: (value) {},
+                        yesorno: _rented == Yesorno.yes ? true : false),
+                    YesOpenFormFieldBox(
+                        hintText: 'Enter Phone number ',
+                        labelText: 'Phone number of Owner',
+                        keyboardType: KeyboardType1.Number_,
+                        controller: _rentedphonecontroller,
+                        didEndTextEdit: () {},
+                        requiredornot: true,
+                        onSavedField: (value) {},
+                        yesorno: _rented == Yesorno.yes ? true : false),
+                    YesOpenFormFieldBox(
+                        hintText: 'Enter email',
+                        labelText: 'Email of Owner',
+                        keyboardType: KeyboardType1.Text_,
+                        controller: _rentedemailcontroller,
+                        didEndTextEdit: () {},
+                        requiredornot: true,
+                        onSavedField: (value) {},
+                        yesorno: _rented == Yesorno.yes ? true : false),
                     FormFieldBox(
                       onSavedField: (value) {},
                       labelText: 'Name of the Contact Person',
                       hintText: 'Enter Name',
                       requiredornot: true,
                       keyboardType: KeyboardType.Text_,
-                      controller: _notcpcontroller,
+                      controller: _notcp1controller,
                       // focusNode: _notcpnode,
                       didEndTextEdit: () {},
                     ),
@@ -175,7 +246,7 @@ class _EvPageState extends State<EvPage> {
                       hintText: 'Enter Number Here',
                       requiredornot: true,
                       keyboardType: KeyboardType.Number_,
-                      controller: _phonecontroller,
+                      controller: _phone1controller,
                       // focusNode: _notcpnode,
                       didEndTextEdit: () {},
                     ),
@@ -185,7 +256,7 @@ class _EvPageState extends State<EvPage> {
                       hintText: 'Enter Email Here',
                       requiredornot: true,
                       keyboardType: KeyboardType.Text_,
-                      controller: _emailcontroller,
+                      controller: _email1controller,
                       // focusNode: _notcpnode,
                       didEndTextEdit: () {},
                     ),
@@ -195,7 +266,7 @@ class _EvPageState extends State<EvPage> {
                       hintText: 'Enter Address Here',
                       requiredornot: true,
                       keyboardType: KeyboardType.Text_,
-                      controller: _notcpcontroller,
+                      controller: _addresscontroller,
                       // focusNode: _notcpnode,
                       didEndTextEdit: () {},
                     ),
@@ -238,7 +309,7 @@ class _EvPageState extends State<EvPage> {
                       hintText: 'Enter Remarks Here',
                       requiredornot: false,
                       keyboardType: KeyboardType.Text_,
-                      controller: _emailcontroller,
+                      controller: _remarkscontroller,
                       // focusNode: _notcpnode,
                       didEndTextEdit: () {},
                     ),
@@ -246,13 +317,9 @@ class _EvPageState extends State<EvPage> {
                         onpress: () {
                           if (!_formKey.currentState!.validate()) {
                             return;
-                          }
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => InterestedScreen(),
-                            ),
-                          );
+                          }else{
+                          Navigator.pushNamed(context, InterestedScreen.id);
+                        }
                         },
                         text: 'NEXT')
                   ]),

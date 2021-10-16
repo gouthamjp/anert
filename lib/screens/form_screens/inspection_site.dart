@@ -9,6 +9,7 @@ import 'package:anert/utils/button.dart';
 import 'package:provider/provider.dart';
 import 'package:anert/models/user_model.dart';
 import 'package:anert/providers/form_provider.dart';
+import 'package:anert/utils/yesopentextfield.dart';
 
 enum Category { residential, commercial, government }
 enum Mounting { roof, ground }
@@ -20,8 +21,7 @@ enum RoofCover { concrete, tiles, asbetos, others }
 enum Accessibility { crane, scaffolding, stairs, notaccessible }
 
 class InspectionPage extends StatefulWidget {
-  const InspectionPage({Key? key}) : super(key: key);
-
+  static String id = 'inspection_screen';
   @override
   _InspectionPageState createState() => _InspectionPageState();
 }
@@ -33,9 +33,21 @@ class _InspectionPageState extends State<InspectionPage> {
   final _phonecontroller = TextEditingController();
   final _designationcontroller = TextEditingController();
   final _emailcontroller = TextEditingController();
+  final _heightcontroller = TextEditingController();
+  final _loadcontroller = TextEditingController();
+  final _avgconsumption = TextEditingController();
+  final _econncontroller = TextEditingController();
+  final _billingcontroller = TextEditingController();
+  final _shadecontroller = TextEditingController();
+  final _remarkcontroller = TextEditingController();
+  final _rentednamecontroller = TextEditingController();
+  final _rentedphonecontroller = TextEditingController();
+  final _rentedemailcontroller = TextEditingController();
+  final _othersspecifycontroller = TextEditingController();
+  
   Category? _category = Category.residential;
   Mounting? _mounting = Mounting.roof;
-  Yesorno? _yesorno = Yesorno.yes;
+  Yesorno? _rented = Yesorno.no;
   TypeofCustomer? _typeofCustomer = TypeofCustomer.lt;
   ElectricalConnection? _electricalConnection = ElectricalConnection.onephase;
   RoofShape? _roofShape = RoofShape.flat;
@@ -177,6 +189,65 @@ class _InspectionPageState extends State<InspectionPage> {
                       didEndTextEdit: () {},
                     ),
                     RadioFieldBox(
+                      labelText: 'Whether Rented or not?',
+                      requiredornot: true,
+                      radioChild: Column(
+                        children: <Widget>[
+                          ListTile(
+                            title: const Text('YES'),
+                            leading: Radio<Yesorno>(
+                              value: Yesorno.yes,
+                              groupValue: _rented,
+                              onChanged: (Yesorno? value) {
+                                setState(() {
+                                  _rented = value;
+                                });
+                              },
+                            ),
+                          ),
+                          ListTile(
+                            title: const Text('NO'),
+                            leading: Radio<Yesorno>(
+                              value: Yesorno.no,
+                              groupValue: _rented,
+                              onChanged: (Yesorno? value) {
+                                setState(() {
+                                  _rented = value;
+                                });
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    YesOpenFormFieldBox(
+                        hintText: 'Enter name',
+                        labelText: 'Name of Owner',
+                        keyboardType: KeyboardType1.Text_,
+                        controller: _rentednamecontroller,
+                        didEndTextEdit: () {},
+                        requiredornot: true,
+                        onSavedField: (value) {},
+                        yesorno: _rented == Yesorno.yes ? true : false),
+                    YesOpenFormFieldBox(
+                        hintText: 'Enter Phone number ',
+                        labelText: 'Phone number of Owner',
+                        keyboardType: KeyboardType1.Number_,
+                        controller: _rentedphonecontroller,
+                        didEndTextEdit: () {},
+                        requiredornot: true,
+                        onSavedField: (value) {},
+                        yesorno: _rented == Yesorno.yes ? true : false),
+                    YesOpenFormFieldBox(
+                        hintText: 'Enter email',
+                        labelText: 'Email of Owner',
+                        keyboardType: KeyboardType1.Text_,
+                        controller: _rentedemailcontroller,
+                        didEndTextEdit: () {},
+                        requiredornot: true,
+                        onSavedField: (value) {},
+                        yesorno: _rented == Yesorno.yes ? true : false),
+                    RadioFieldBox(
                       labelText: 'Mounting',
                       requiredornot: true,
                       radioChild: Column(
@@ -214,7 +285,7 @@ class _InspectionPageState extends State<InspectionPage> {
                       hintText: 'Enter Height Here',
                       requiredornot: true,
                       keyboardType: KeyboardType.Number_,
-                      controller: _emailcontroller,
+                      controller: _heightcontroller,
                       // focusNode: _notcpnode,
                       didEndTextEdit: () {},
                     ),
@@ -224,7 +295,7 @@ class _InspectionPageState extends State<InspectionPage> {
                       hintText: 'Enter in Kwh',
                       requiredornot: true,
                       keyboardType: KeyboardType.Number_,
-                      controller: _emailcontroller,
+                      controller: _loadcontroller,
                       // focusNode: _notcpnode,
                       didEndTextEdit: () {},
                     ),
@@ -234,7 +305,7 @@ class _InspectionPageState extends State<InspectionPage> {
                       hintText: 'Enter in KWh',
                       requiredornot: true,
                       keyboardType: KeyboardType.Number_,
-                      controller: _emailcontroller,
+                      controller: _avgconsumption,
                       // focusNode: _notcpnode,
                       didEndTextEdit: () {},
                     ),
@@ -244,7 +315,7 @@ class _InspectionPageState extends State<InspectionPage> {
                       hintText: 'Enter Name',
                       requiredornot: true,
                       keyboardType: KeyboardType.Text_,
-                      controller: _emailcontroller,
+                      controller: _econncontroller,
                       // focusNode: _notcpnode,
                       didEndTextEdit: () {},
                     ),
@@ -254,7 +325,7 @@ class _InspectionPageState extends State<InspectionPage> {
                       hintText: 'Enter duration',
                       requiredornot: true,
                       keyboardType: KeyboardType.Text_,
-                      controller: _emailcontroller,
+                      controller: _billingcontroller,
                       // focusNode: _notcpnode,
                       didEndTextEdit: () {},
                     ),
@@ -328,7 +399,7 @@ class _InspectionPageState extends State<InspectionPage> {
                       hintText: 'Enter in KWh',
                       requiredornot: true,
                       keyboardType: KeyboardType.Number_,
-                      controller: _emailcontroller,
+                      controller: _shadecontroller,
                       // focusNode: _notcpnode,
                       didEndTextEdit: () {},
                     ),
@@ -432,6 +503,15 @@ class _InspectionPageState extends State<InspectionPage> {
                         ],
                       ),
                     ),
+                     YesOpenFormFieldBox(
+                        hintText: 'Enter here ',
+                        labelText: 'Enter the type of roofing material',
+                        keyboardType: KeyboardType1.Number_,
+                        controller: _othersspecifycontroller,
+                        didEndTextEdit: () {},
+                        requiredornot: false,
+                        onSavedField: (value) {},
+                        yesorno: _roofCover == RoofCover.others ? true : false),
                     RadioFieldBox(
                       labelText: 'Accessibilty of Roof',
                       requiredornot: true,
@@ -494,7 +574,7 @@ class _InspectionPageState extends State<InspectionPage> {
                       hintText: 'Enter Remarks Here',
                       requiredornot: false,
                       keyboardType: KeyboardType.Text_,
-                      controller: _emailcontroller,
+                      controller: _remarkcontroller,
                       // focusNode: _notcpnode,
                       didEndTextEdit: () {},
                     ),
@@ -503,13 +583,9 @@ class _InspectionPageState extends State<InspectionPage> {
                         onpress: () {
                           if (!_formKey.currentState!.validate()) {
                             return;
+                          } else {
+                            Navigator.pushNamed(context, InterestedScreen.id);
                           }
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => InterestedScreen(),
-                            ),
-                          );
                         },
                         text: 'NEXT')
                   ]),
