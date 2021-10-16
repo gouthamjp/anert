@@ -10,7 +10,7 @@ enum Option {
   ev,
 }
 class OptionSelection extends StatefulWidget {
-  const OptionSelection({ Key? key }) : super(key: key);
+  static String id = 'option_screen';
 
   @override
   _OptionSelectionState createState() => _OptionSelectionState();

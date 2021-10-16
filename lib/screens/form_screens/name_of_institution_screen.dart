@@ -14,7 +14,7 @@ import 'package:anert/models/user_model.dart';
 enum Yesorno { yes, no }
 
 class NameOfInstitution extends StatefulWidget {
-  const NameOfInstitution({Key? key}) : super(key: key);
+  static String id = 'nameofinstitution_screen';
 
   @override
   _NameOfInstitutionState createState() => _NameOfInstitutionState();
@@ -40,7 +40,7 @@ class _NameOfInstitutionState extends State<NameOfInstitution> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: GreenTvmTheme.themeAppbar(
-          title: 'GREEN TVM', context: context, showBackButton: true),
+          title: 'GREEN TVM', context: context, showBackButton: false),
       backgroundColor: Colors.white,
       body: SizedBox(
         height: mquery.height,
@@ -108,10 +108,12 @@ class _NameOfInstitutionState extends State<NameOfInstitution> {
                     if (!_formKey.currentState!.validate()) {
                       return;
                     }
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => OptionSelection()));
+                    else if(_yesorno==Yesorno.yes){
+                      Navigator.pushNamed(context, OptionSelection.id);
+                      }
+                      else{
+                        _buildignamecontroller.clear();
+                      }
                   },
                   text: 'NEXT')
             ],

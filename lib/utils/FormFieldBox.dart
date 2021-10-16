@@ -88,6 +88,7 @@ class _FormFieldBoxState extends State<FormFieldBox> {
               String emailValid =
                   r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
               RegExp emailregExp = new RegExp(emailValid);
+              if(widget.requiredornot){
               if (value == null || value.isEmpty) {
                 return 'This field is mandatory';
               } else if (!phoneregExp.hasMatch(value) &&
@@ -96,7 +97,7 @@ class _FormFieldBoxState extends State<FormFieldBox> {
               } else if (!emailregExp.hasMatch(value) &&
                   (widget.labelText == "Email address")) {
                 return 'Please enter a valid email id';
-              }
+              }}
 
               return null;
             },
