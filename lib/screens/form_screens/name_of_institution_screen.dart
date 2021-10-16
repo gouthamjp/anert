@@ -1,4 +1,5 @@
 import 'package:anert/constants.dart';
+import 'package:anert/providers/form_provider.dart';
 import 'package:anert/screens/form_screens/inspection_site.dart';
 import 'package:anert/screens/option_selection.dart';
 import 'package:anert/utils/stepper_counter.dart';
@@ -7,11 +8,13 @@ import 'package:anert/utils/button.dart';
 import 'package:anert/utils/FormFieldBox.dart';
 import 'package:anert/utils/radiobox.dart';
 import 'package:anert/utils/button.dart';
+import 'package:provider/provider.dart';
+import 'package:anert/models/user_model.dart';
 
 enum Yesorno { yes, no }
 
 class NameOfInstitution extends StatefulWidget {
-  const NameOfInstitution({Key? key}) : super(key: key);
+  static String id = 'nameofinstitution_screen';
 
   @override
   _NameOfInstitutionState createState() => _NameOfInstitutionState();
@@ -31,11 +34,13 @@ class _NameOfInstitutionState extends State<NameOfInstitution> {
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<CustomUser?>(context);
+    final detData = Provider.of<FormProvider>(context);
     final mquery = MediaQuery.of(context).size;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: GreenTvmTheme.themeAppbar(
-          title: 'GREEN TVM', context: context, showBackButton: true),
+          title: 'GREEN TVM', context: context, showBackButton: false),
       backgroundColor: Colors.white,
       body: SizedBox(
         height: mquery.height,
@@ -94,13 +99,21 @@ class _NameOfInstitutionState extends State<NameOfInstitution> {
                   )),
               Button(
                   onpress: () {
+                    detData.setOne(
+                      user?.id,
+                      _buildignamecontroller.text,
+                      _yesorno.toString().split('.').last,
+                    );
+
                     if (!_formKey.currentState!.validate()) {
                       return;
                     }
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => OptionSelection()));
+                    else if(_yesorno==Yesorno.yes){
+                      Navigator.pushNamed(context, OptionSelection.id);
+                      }
+                      else{
+                        _buildignamecontroller.clear();
+                      }
                   },
                   text: 'NEXT')
             ],

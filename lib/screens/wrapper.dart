@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import './landing_screen.dart';
 
 class Wrapper extends StatelessWidget {
-  const Wrapper({Key? key}) : super(key: key);
+  static String id = 'wrapper';
 
   @override
   Widget build(BuildContext context) {
