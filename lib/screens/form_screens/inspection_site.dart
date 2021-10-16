@@ -44,7 +44,7 @@ class _InspectionPageState extends State<InspectionPage> {
   final _rentedphonecontroller = TextEditingController();
   final _rentedemailcontroller = TextEditingController();
   final _othersspecifycontroller = TextEditingController();
-  
+
   Category? _category = Category.residential;
   Mounting? _mounting = Mounting.roof;
   Yesorno? _rented = Yesorno.no;
@@ -503,7 +503,7 @@ class _InspectionPageState extends State<InspectionPage> {
                         ],
                       ),
                     ),
-                     YesOpenFormFieldBox(
+                    YesOpenFormFieldBox(
                         hintText: 'Enter here ',
                         labelText: 'Enter the type of roofing material',
                         keyboardType: KeyboardType1.Number_,
@@ -586,6 +586,73 @@ class _InspectionPageState extends State<InspectionPage> {
                           } else {
                             Navigator.pushNamed(context, InterestedScreen.id);
                           }
+
+                          // entering data to the provider
+
+                          if (_rented == Yesorno.no) {
+                            detData.setTwo(
+                                user!.id,
+                                _buildignamecontroller.text,
+                                _category.toString().split('.').last,
+                                _notcpcontroller.text,
+                                _designationcontroller.text,
+                                _phonecontroller.text,
+                                _emailcontroller.text,
+                                _rented.toString().split('.').last,
+                                _mounting.toString().split('.').last,
+                                _heightcontroller.text,
+                                _loadcontroller.text,
+                                _avgconsumption.text,
+                                _econncontroller.text,
+                                _billingcontroller.text,
+                                _typeofCustomer.toString().split('.').last,
+                                _electricalConnection
+                                    .toString()
+                                    .split('.')
+                                    .last,
+                                _shadecontroller.text,
+                                _roofShape.toString().split('.').last,
+                                (_roofCover == RoofCover.others)
+                                    ? _othersspecifycontroller.text
+                                    : _roofCover.toString().split('.').last,
+                                _accessibility.toString().split('.').last,
+                                _remarkcontroller.text);
+                          } else {
+                            detData.setTwoRented(
+                                user!.id,
+                                _buildignamecontroller.text,
+                                _category.toString().split('.').last,
+                                _notcpcontroller.text,
+                                _designationcontroller.text,
+                                _phonecontroller.text,
+                                _emailcontroller.text,
+                                _rented.toString().split('.').last,
+                                _rentednamecontroller.text,
+                                _rentedphonecontroller.text,
+                                _rentedemailcontroller.text,
+                                _mounting.toString().split('.').last,
+                                _heightcontroller.text,
+                                _loadcontroller.text,
+                                _avgconsumption.text,
+                                _econncontroller.text,
+                                _billingcontroller.text,
+                                _typeofCustomer.toString().split('.').last,
+                                _electricalConnection
+                                    .toString()
+                                    .split('.')
+                                    .last,
+                                _shadecontroller.text,
+                                _roofShape.toString().split('.').last,
+                                (_roofCover == RoofCover.others)
+                                    ? _othersspecifycontroller.text
+                                    : _roofCover.toString().split('.').last,
+                                _accessibility.toString().split('.').last,
+                                _remarkcontroller.text);
+                          }
+
+                          print(detData.siteInspection.ownerName);
+
+                          //
                         },
                         text: 'NEXT')
                   ]),

@@ -6,6 +6,10 @@ class SiteInspectionForm {
   String? designatoin;
   String? phoneNum;
   String? email;
+  String? rented;
+  String? ownerName = '';
+  String? ownerphn = '';
+  String? ownerEmail = '';
   String? mounting;
   String? height;
   String? load;

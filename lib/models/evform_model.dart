@@ -6,6 +6,10 @@ class EvFrom {
   String? designatoin;
   String? phoneNum;
   String? email;
+  String? rented;
+  String? ownerName;
+  String? ownerPhn;
+  String? ownerEmail;
   String? address;
   String? twoCharging;
   String? remakrs;

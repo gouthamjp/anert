@@ -7,6 +7,9 @@ import 'package:anert/utils/radiobox.dart';
 import 'package:anert/utils/button.dart';
 import 'package:anert/screens/form_screens/interested_screen.dart';
 import 'package:anert/utils/yesopentextfield.dart';
+import 'package:provider/provider.dart';
+import 'package:anert/models/user_model.dart';
+import 'package:anert/providers/form_provider.dart';
 
 enum Category { residential, commercial, government }
 enum Yesorno { yes, no }
@@ -30,11 +33,11 @@ class _EvPageState extends State<EvPage> {
   final _email1controller = TextEditingController();
   final _addresscontroller = TextEditingController();
   final _remarkscontroller = TextEditingController();
-    final _rentednamecontroller = TextEditingController();
+  final _rentednamecontroller = TextEditingController();
   final _rentedphonecontroller = TextEditingController();
   final _rentedemailcontroller = TextEditingController();
   final _othersspecifycontroller = TextEditingController();
-  
+
   Category? _category = Category.residential;
   Yesorno? _yesorno = Yesorno.yes;
   Yesorno? _rented = Yesorno.no;
@@ -50,6 +53,8 @@ class _EvPageState extends State<EvPage> {
 
   @override
   Widget build(BuildContext context) {
+    final detData = Provider.of<FormProvider>(context);
+    final user = Provider.of<CustomUser?>(context);
     final mquery = MediaQuery.of(context).size;
     return Scaffold(
         appBar: GreenTvmTheme.themeAppbar(
@@ -317,9 +322,39 @@ class _EvPageState extends State<EvPage> {
                         onpress: () {
                           if (!_formKey.currentState!.validate()) {
                             return;
-                          }else{
-                          Navigator.pushNamed(context, InterestedScreen.id);
-                        }
+                          } else {
+                            Navigator.pushNamed(context, InterestedScreen.id);
+                          }
+                          if (_rented == Yesorno.no) {
+                            detData.setThree(
+                                user!.uid,
+                                _buildignamecontroller.text,
+                                _category.toString().split('.').last,
+                                _notcpcontroller.text,
+                                _designationcontroller.text,
+                                _phonecontroller.text,
+                                _emailcontroller.text,
+                                _rented.toString().split('.').last,
+                                _addresscontroller.text,
+                                _yesorno.toString().split('.').last,
+                                _remarkscontroller.text);
+                          } else {
+                            detData.setThreeRented(
+                                user!.uid,
+                                _buildignamecontroller.text,
+                                _category.toString().split('.').last,
+                                _notcpcontroller.text,
+                                _designationcontroller.text,
+                                _phonecontroller.text,
+                                _emailcontroller.text,
+                                _rented.toString().split('.').last,
+                                _rentednamecontroller.text,
+                                _rentedphonecontroller.text,
+                                _rentedemailcontroller.text,
+                                _addresscontroller.text,
+                                _yesorno.toString().split('.').last,
+                                _remarkscontroller.text);
+                          }
                         },
                         text: 'NEXT')
                   ]),
