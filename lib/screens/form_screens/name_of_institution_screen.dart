@@ -104,7 +104,7 @@ class _NameOfInstitutionState extends State<NameOfInstitution> {
                     ],
                   )),
               Button(
-                  onpress: () {
+                  onpress: () async{
                     detData.setOne(
                       user?.id,
                       _buildignamecontroller.text,
@@ -112,6 +112,8 @@ class _NameOfInstitutionState extends State<NameOfInstitution> {
                     );
 
                     if (!_formKey.currentState!.validate()) {
+                      
+                      
                       return;
                     } else if (_yesorno == Yesorno.yes) {
                       Navigator.pushNamed(context, OptionSelection.id);

@@ -10,6 +10,8 @@ import 'package:anert/utils/yesopentextfield.dart';
 import 'package:provider/provider.dart';
 import 'package:anert/models/user_model.dart';
 import 'package:anert/providers/form_provider.dart';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 
 enum Category { residential, commercial, government }
 enum Yesorno { yes, no }
@@ -45,6 +47,10 @@ class _EvPageState extends State<EvPage> {
   // final _notcpnode = FocusNode();
   String data0 = '';
   String data1 = '';
+    File? _image1;
+    File? _image2;
+    File? _image3;
+    final String imageurl = 'assets/images/download.png';
   void test() {
     _formKey.currentState!.save();
     data0 = _buildignamecontroller.text;
@@ -317,6 +323,66 @@ class _EvPageState extends State<EvPage> {
                       controller: _remarkscontroller,
                       // focusNode: _notcpnode,
                       didEndTextEdit: () {},
+                    ),
+                     Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () async {
+                              final image1 = await ImagePicker()
+                                  .getImage(source: ImageSource.camera);
+
+                              setState(() {
+                                _image1 =
+                                    image1 == null ? null : File(image1.path);
+                              });
+                            },
+                            child: Container(margin: EdgeInsets.all(2),
+                              child: _image1 == null
+                                  ? Image.asset('$imageurl')
+                                  : Image.file(_image1!),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () async{
+                              print(_image2);
+                              final image2 = await ImagePicker()
+                                  .getImage(source: ImageSource.camera);
+
+                              setState(() {
+                                _image2 =
+                                    image2 == null ? null : File(image2.path);
+                                    
+                                    print(_image2);
+                              });
+                            
+                            },
+                            child: Container(margin: EdgeInsets.all(2),
+                              child: _image2 == null? Image.asset('$imageurl'): Image.file(_image2!),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () async{
+                              final image3 = await ImagePicker()
+                                  .getImage(source: ImageSource.camera);
+
+                              setState(() {
+                                _image3 =
+                                    image3 == null ? null : File(image3.path);
+                              });
+                            },
+                            child: Container(margin: EdgeInsets.all(2),
+                              child: _image3 == null
+                                  ? Image.asset('$imageurl')
+                                  : Image.file(_image3!),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                     Button(
                         onpress: () {
