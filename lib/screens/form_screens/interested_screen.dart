@@ -32,6 +32,8 @@ class _InterestedScreenState extends State<InterestedScreen> {
     final mquery = MediaQuery.of(context).size;
     //backend handling variables
     final institution = database.child('Institution/');
+    final inspection = database.child('Inspection/');
+    final evSite = database.child('EvSite/');
     //
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -91,10 +93,61 @@ class _InterestedScreenState extends State<InterestedScreen> {
                     detData.setSolarPV(_yesorno.toString().split('.').last);
 
                     institution.push().set({
-                      'user': detData.baseForm.userID,
-                      'name': detData.baseForm.houseName,
-                      'deployment': detData.baseForm.deployment,
+                      'UserID': detData.baseForm.userID,
+                      'Name': detData.baseForm.houseName,
+                      'Deployment': detData.baseForm.deployment,
                     });
+
+                    if (detData.formType == 0) {
+                      inspection.push().set({
+                        'UserID': detData.siteInspection.userID,
+                        'Building Name': detData.siteInspection.buildingName,
+                        'Category': detData.siteInspection.category,
+                        'Contact Person': detData.siteInspection.contactPerson,
+                        'Designation': detData.siteInspection.designatoin,
+                        'Phone Number': detData.siteInspection.phoneNum,
+                        'Email': detData.siteInspection.email,
+                        'Rented': detData.siteInspection.rented,
+                        'Owner Name': detData.siteInspection.ownerName,
+                        'Owner Phone': detData.siteInspection.ownerphn,
+                        'Owner Email': detData.siteInspection.ownerEmail,
+                        'Mounting': detData.siteInspection.mounting,
+                        'Height': detData.siteInspection.height,
+                        'Load': detData.siteInspection.load,
+                        'Avg Consumption':
+                            detData.siteInspection.avgConsumption,
+                        'Connection Name':
+                            detData.siteInspection.eConnectionName,
+                        'Billing Period': detData.siteInspection.billingPeriod,
+                        'Customer Type': detData.siteInspection.connectionType,
+                        'Shade Area': detData.siteInspection.sfreeArea,
+                        'Roof Shape': detData.siteInspection.roofShape,
+                        'Roof Cover': detData.siteInspection.roofCover,
+                        'Roof Access': detData.siteInspection.roofAccess,
+                        'Remark': detData.siteInspection.remark,
+                      });
+                    } else {
+                      evSite.push().set({
+                        'UserID': detData.evInspection.userID,
+                        'Building Name': detData.evInspection.buildingName,
+                        'Category': detData.evInspection.category,
+                        'Contact Person': detData.evInspection.contactPerson,
+                        'Designation': detData.evInspection.designatoin,
+                        'Phone Number': detData.evInspection.phoneNum,
+                        'Email': detData.evInspection.email,
+                        'Rented': detData.evInspection.rented,
+                        'Owner Name': detData.evInspection.ownerName,
+                        'Owner Phone': detData.evInspection.ownerPhn,
+                        'Owner Email': detData.evInspection.ownerEmail,
+                        'Alt Contact Name': detData.evInspection.contactPerson2,
+                        'Alt PhnNo': detData.evInspection.phoneNum2,
+                        'Alt Email': detData.evInspection.email2,
+                        'Address': detData.evInspection.address,
+                        'Two Charging': detData.evInspection.twoCharging,
+                        'Remarks': detData.evInspection.remakrs
+                      });
+                    }
+
                     Navigator.pushNamedAndRemoveUntil(
                         context, NameOfInstitution.id, (route) => false);
                   },
