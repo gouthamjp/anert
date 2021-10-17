@@ -8,6 +8,7 @@ class FormProvider with ChangeNotifier {
   var siteInspection = SiteInspectionForm();
   var evInspection = EvFrom();
   String? wantSolarPanel;
+  int formType = 0; // 0 : site inspection , 1 : EV site
 
   void setOne(String userID, String housename, String deployment) {
     baseForm.userID = userID;
@@ -120,6 +121,9 @@ class FormProvider with ChangeNotifier {
     String phoneNum,
     String email,
     String rented,
+    String contactPerson2,
+    String phoneNum2,
+    String email2,
     String address,
     String twoCharging,
     String remakrs,
@@ -132,9 +136,13 @@ class FormProvider with ChangeNotifier {
     evInspection.phoneNum = phoneNum;
     evInspection.email = email;
     evInspection.rented = rented;
+    evInspection.contactPerson2 = contactPerson2;
+    evInspection.phoneNum2 = phoneNum2;
+    evInspection.email2 = email2;
     evInspection.address = address;
     evInspection.twoCharging = twoCharging;
     evInspection.remakrs = remakrs;
+    formType = 1;
   }
 
   void setThreeRented(
@@ -149,6 +157,9 @@ class FormProvider with ChangeNotifier {
     String ownerName,
     String ownerPhn,
     String ownerEmail,
+    String contactPerson2,
+    String phoneNum2,
+    String email2,
     String address,
     String twoCharging,
     String remakrs,
@@ -164,8 +175,20 @@ class FormProvider with ChangeNotifier {
     evInspection.ownerName = ownerName;
     evInspection.ownerPhn = ownerPhn;
     evInspection.ownerEmail = ownerEmail;
+    evInspection.contactPerson2 = contactPerson2;
+    evInspection.phoneNum2 = phoneNum2;
+    evInspection.email2 = email2;
     evInspection.address = address;
     evInspection.twoCharging = twoCharging;
     evInspection.remakrs = remakrs;
+    formType = 1;
+  }
+
+  void setSolarPV(String solarPV) {
+    if (formType == 0) {
+      siteInspection.solarPV = solarPV;
+    } else {
+      evInspection.solarPV = solarPV;
+    }
   }
 }

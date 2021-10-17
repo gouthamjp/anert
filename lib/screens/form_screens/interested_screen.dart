@@ -7,6 +7,7 @@ import 'package:anert/utils/button.dart';
 import 'package:provider/provider.dart';
 import 'package:anert/models/user_model.dart';
 import 'name_of_institution_screen.dart';
+import 'package:anert/providers/form_provider.dart';
 
 enum Yesorno { yes, no }
 
@@ -24,6 +25,7 @@ class _InterestedScreenState extends State<InterestedScreen> {
   Yesorno? _yesorno = Yesorno.yes;
   @override
   Widget build(BuildContext context) {
+    final detData = Provider.of<FormProvider>(context);
     final mquery = MediaQuery.of(context).size;
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -80,7 +82,9 @@ class _InterestedScreenState extends State<InterestedScreen> {
                   )),
               Button(
                   onpress: () {
-                   Navigator.pushNamedAndRemoveUntil(context, NameOfInstitution.id, (route) => false);
+                    detData.setSolarPV(_yesorno.toString().split('.').last);
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, NameOfInstitution.id, (route) => false);
                   },
                   text: 'SUBMIT')
             ],

@@ -335,6 +335,9 @@ class _EvPageState extends State<EvPage> {
                                 _phonecontroller.text,
                                 _emailcontroller.text,
                                 _rented.toString().split('.').last,
+                                _notcp1controller.text,
+                                _phone1controller.text,
+                                _email1controller.text,
                                 _addresscontroller.text,
                                 _yesorno.toString().split('.').last,
                                 _remarkscontroller.text);
@@ -351,6 +354,9 @@ class _EvPageState extends State<EvPage> {
                                 _rentednamecontroller.text,
                                 _rentedphonecontroller.text,
                                 _rentedemailcontroller.text,
+                                _notcp1controller.text,
+                                _phone1controller.text,
+                                _email1controller.text,
                                 _addresscontroller.text,
                                 _yesorno.toString().split('.').last,
                                 _remarkscontroller.text);
