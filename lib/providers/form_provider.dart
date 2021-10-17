@@ -4,6 +4,8 @@ import 'package:anert/models/firstform_modl.dart';
 import 'package:anert/models/site_model.dart';
 
 class FormProvider with ChangeNotifier {
+  //database variables
+
   var baseForm = BaseFormData();
   var siteInspection = SiteInspectionForm();
   var evInspection = EvFrom();

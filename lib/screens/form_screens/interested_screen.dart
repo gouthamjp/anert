@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:anert/models/user_model.dart';
 import 'name_of_institution_screen.dart';
 import 'package:anert/providers/form_provider.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 enum Yesorno { yes, no }
 
@@ -21,12 +22,17 @@ class InterestedScreen extends StatefulWidget {
 class _InterestedScreenState extends State<InterestedScreen> {
   final _formKey = GlobalKey<FormState>();
 
+  final database = FirebaseDatabase.instance.reference();
+
   final _buildignamecontroller = TextEditingController();
   Yesorno? _yesorno = Yesorno.yes;
   @override
   Widget build(BuildContext context) {
     final detData = Provider.of<FormProvider>(context);
     final mquery = MediaQuery.of(context).size;
+    //backend handling variables
+    final institution = database.child('Institution/');
+    //
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: GreenTvmTheme.themeAppbar(
@@ -81,8 +87,14 @@ class _InterestedScreenState extends State<InterestedScreen> {
                     ],
                   )),
               Button(
-                  onpress: () {
+                  onpress: () async {
                     detData.setSolarPV(_yesorno.toString().split('.').last);
+
+                    institution.push().set({
+                      'user': detData.baseForm.userID,
+                      'name': detData.baseForm.houseName,
+                      'deployment': detData.baseForm.deployment,
+                    });
                     Navigator.pushNamedAndRemoveUntil(
                         context, NameOfInstitution.id, (route) => false);
                   },
