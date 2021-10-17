@@ -6,6 +6,10 @@ class SiteInspectionForm {
   String? designatoin;
   String? phoneNum;
   String? email;
+  String? rented;
+  String? ownerName = '';
+  String? ownerphn = '';
+  String? ownerEmail = '';
   String? mounting;
   String? height;
   String? load;
@@ -19,5 +23,5 @@ class SiteInspectionForm {
   String? roofCover;
   String? roofAccess;
   String? remark;
-  // String? intrested
+  String? solarPV;
 }
