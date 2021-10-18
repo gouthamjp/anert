@@ -1,7 +1,6 @@
 import 'package:anert/screens/form_screens/interested_screen.dart';
 import 'package:flutter/material.dart';
 import '/constants.dart';
-import 'dart:io';
 import 'package:anert/constants.dart';
 import 'package:anert/utils/stepper_counter.dart';
 import 'package:anert/utils/FormFieldBox.dart';
@@ -11,7 +10,6 @@ import 'package:provider/provider.dart';
 import 'package:anert/models/user_model.dart';
 import 'package:anert/providers/form_provider.dart';
 import 'package:anert/utils/yesopentextfield.dart';
-import 'package:image_picker/image_picker.dart';
 
 enum Category { residential, commercial, government }
 enum Mounting { roof, ground }
@@ -46,7 +44,11 @@ class _InspectionPageState extends State<InspectionPage> {
   final _rentedphonecontroller = TextEditingController();
   final _rentedemailcontroller = TextEditingController();
   final _othersspecifycontroller = TextEditingController();
-
+  final _othersspecifyshapecontroller = TextEditingController();
+  final _wardnumbercontroller = TextEditingController();
+  final _wardnamecontroller = TextEditingController();
+  
+  
   Category? _category = Category.residential;
   Mounting? _mounting = Mounting.roof;
   Yesorno? _rented = Yesorno.no;
@@ -59,10 +61,7 @@ class _InspectionPageState extends State<InspectionPage> {
   // final _notcpnode = FocusNode();
   String data0 = '';
   String data1 = '';
-  File? _image1;
-    File? _image2;
-    File? _image3;
-    final String imageurl = 'assets/images/download.png';
+
   void test() {
     _formKey.currentState!.save();
     data0 = _buildignamecontroller.text;
@@ -92,7 +91,7 @@ class _InspectionPageState extends State<InspectionPage> {
                   height: 0.05 * mquery.height,
                   width: 0.05 * mquery.width,
                 ),
-                Text('Site Inspection Details',
+                Text('Solar Site Details',
                     textAlign: TextAlign.center,
                     style: GreenTvmTheme.pagedHeading),
                 SizedBox(
@@ -190,7 +189,7 @@ class _InspectionPageState extends State<InspectionPage> {
                       onSavedField: (value) {},
                       labelText: 'Email Address',
                       hintText: 'Enter Email Here',
-                      requiredornot: true,
+                      requiredornot: false,
                       keyboardType: KeyboardType.Text_,
                       controller: _emailcontroller,
                       // focusNode: _notcpnode,
@@ -243,7 +242,7 @@ class _InspectionPageState extends State<InspectionPage> {
                         keyboardType: KeyboardType1.Number_,
                         controller: _rentedphonecontroller,
                         didEndTextEdit: () {},
-                        requiredornot: true,
+                        requiredornot: false,
                         onSavedField: (value) {},
                         yesorno: _rented == Yesorno.yes ? true : false),
                     YesOpenFormFieldBox(
@@ -252,7 +251,7 @@ class _InspectionPageState extends State<InspectionPage> {
                         keyboardType: KeyboardType1.Text_,
                         controller: _rentedemailcontroller,
                         didEndTextEdit: () {},
-                        requiredornot: true,
+                        requiredornot: false,
                         onSavedField: (value) {},
                         yesorno: _rented == Yesorno.yes ? true : false),
                     RadioFieldBox(
@@ -287,19 +286,31 @@ class _InspectionPageState extends State<InspectionPage> {
                         ],
                       ),
                     ),
+                    //Wardname and number insert
                     FormFieldBox(
                       onSavedField: (value) {},
-                      labelText: 'Height',
-                      hintText: 'Enter Height Here',
+                      labelText: 'Ward Number',
+                      hintText: 'Enter Number Here',
                       requiredornot: true,
-                      keyboardType: KeyboardType.Number_,
-                      controller: _heightcontroller,
+                      keyboardType: KeyboardType.Text_,
+                      controller: _wardnumbercontroller,
                       // focusNode: _notcpnode,
                       didEndTextEdit: () {},
                     ),
                     FormFieldBox(
                       onSavedField: (value) {},
-                      labelText: 'Connecteed Load',
+                      labelText: 'Ward Name',
+                      hintText: 'Enter Ward Name Here',
+                      requiredornot: true,
+                      keyboardType: KeyboardType.Text_,
+                      controller: _wardnamecontroller,
+                      // focusNode: _notcpnode,
+                      didEndTextEdit: () {},
+                    ),
+                    //end insert
+                    FormFieldBox(
+                      onSavedField: (value) {},
+                      labelText: 'Connected Load',
                       hintText: 'Enter in Kwh',
                       requiredornot: true,
                       keyboardType: KeyboardType.Number_,
@@ -455,6 +466,15 @@ class _InspectionPageState extends State<InspectionPage> {
                         ],
                       ),
                     ),
+                    YesOpenFormFieldBox(
+                        hintText: 'Enter here ',
+                        labelText: 'Enter the type of roofing material',
+                        keyboardType: KeyboardType1.Number_,
+                        controller: _othersspecifyshapecontroller,
+                        didEndTextEdit: () {},
+                        requiredornot: false,
+                        onSavedField: (value) {},
+                        yesorno: _roofShape == RoofShape.others ? true : false),
                     RadioFieldBox(
                       labelText: 'Roof Covering Material',
                       requiredornot: true,
@@ -586,66 +606,7 @@ class _InspectionPageState extends State<InspectionPage> {
                       // focusNode: _notcpnode,
                       didEndTextEdit: () {},
                     ),
-                    Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: GestureDetector(
-                            onTap: () async {
-                              final image1 = await ImagePicker()
-                                  .getImage(source: ImageSource.camera);
-
-                              setState(() {
-                                _image1 =
-                                    image1 == null ? null : File(image1.path);
-                              });
-                            },
-                            child: Container(margin: EdgeInsets.all(2),
-                              child: _image1 == null
-                                  ? Image.asset('$imageurl')
-                                  : Image.file(_image1!),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: GestureDetector(
-                            onTap: () async{
-                              print(_image2);
-                              final image2 = await ImagePicker()
-                                  .getImage(source: ImageSource.camera);
-
-                              setState(() {
-                                _image2 =
-                                    image2 == null ? null : File(image2.path);
-                                    
-                                    print(_image2);
-                              });
-                            
-                            },
-                            child: Container(margin: EdgeInsets.all(2),
-                              child: _image2 == null? Image.asset('$imageurl'): Image.file(_image2!),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: GestureDetector(
-                            onTap: () async{
-                              final image3 = await ImagePicker()
-                                  .getImage(source: ImageSource.camera);
-
-                              setState(() {
-                                _image3 =
-                                    image3 == null ? null : File(image3.path);
-                              });
-                            },
-                            child: Container(margin: EdgeInsets.all(2),
-                              child: _image3 == null
-                                  ? Image.asset('$imageurl')
-                                  : Image.file(_image3!),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                    
                     Button(
                         //iugi
                         onpress: () {
