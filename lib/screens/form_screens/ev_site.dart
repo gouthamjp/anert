@@ -36,7 +36,8 @@ class _EvPageState extends State<EvPage> {
   final _rentednamecontroller = TextEditingController();
   final _rentedphonecontroller = TextEditingController();
   final _rentedemailcontroller = TextEditingController();
-  final _othersspecifycontroller = TextEditingController();
+  final _wardnumbercontroller = TextEditingController();
+  final _wardnamecontroller = TextEditingController();
 
   Category? _category = Category.residential;
   Yesorno? _yesorno = Yesorno.yes;
@@ -139,6 +140,26 @@ class _EvPageState extends State<EvPage> {
                     ),
                     FormFieldBox(
                       onSavedField: (value) {},
+                      labelText: 'Ward Number',
+                      hintText: 'Enter Number Here',
+                      requiredornot: true,
+                      keyboardType: KeyboardType.Text_,
+                      controller: _wardnumbercontroller,
+                      // focusNode: _notcpnode,
+                      didEndTextEdit: () {},
+                    ),
+                    FormFieldBox(
+                      onSavedField: (value) {},
+                      labelText: 'Ward Name',
+                      hintText: 'Enter Ward Name Here',
+                      requiredornot: true,
+                      keyboardType: KeyboardType.Text_,
+                      controller: _wardnamecontroller,
+                      // focusNode: _notcpnode,
+                      didEndTextEdit: () {},
+                    ),
+                    FormFieldBox(
+                      onSavedField: (value) {},
                       labelText: 'Name of the Contact Person',
                       hintText: 'Enter Name',
                       requiredornot: true,
@@ -171,7 +192,7 @@ class _EvPageState extends State<EvPage> {
                       onSavedField: (value) {},
                       labelText: 'Email Address',
                       hintText: 'Enter Email Here',
-                      requiredornot: true,
+                      requiredornot: false,
                       keyboardType: KeyboardType.Text_,
                       controller: _emailcontroller,
                       // focusNode: _notcpnode,
@@ -210,7 +231,7 @@ class _EvPageState extends State<EvPage> {
                       ),
                     ),
                     YesOpenFormFieldBox(
-                        hintText: 'Enter name',
+                        hintText: 'Enter Name',
                         labelText: 'Name of Owner',
                         keyboardType: KeyboardType1.Text_,
                         controller: _rentednamecontroller,
@@ -224,7 +245,7 @@ class _EvPageState extends State<EvPage> {
                         keyboardType: KeyboardType1.Number_,
                         controller: _rentedphonecontroller,
                         didEndTextEdit: () {},
-                        requiredornot: true,
+                        requiredornot: false,
                         onSavedField: (value) {},
                         yesorno: _rented == Yesorno.yes ? true : false),
                     YesOpenFormFieldBox(
@@ -233,9 +254,10 @@ class _EvPageState extends State<EvPage> {
                         keyboardType: KeyboardType1.Text_,
                         controller: _rentedemailcontroller,
                         didEndTextEdit: () {},
-                        requiredornot: true,
+                        requiredornot: false,
                         onSavedField: (value) {},
                         yesorno: _rented == Yesorno.yes ? true : false),
+                    
                     FormFieldBox(
                       onSavedField: (value) {},
                       labelText: 'Name of the Contact Person',
@@ -260,7 +282,7 @@ class _EvPageState extends State<EvPage> {
                       onSavedField: (value) {},
                       labelText: 'Email Address',
                       hintText: 'Enter Email Here',
-                      requiredornot: true,
+                      requiredornot: false,
                       keyboardType: KeyboardType.Text_,
                       controller: _email1controller,
                       // focusNode: _notcpnode,
