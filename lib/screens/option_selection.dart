@@ -5,6 +5,8 @@ import 'package:anert/screens/form_screens/name_of_institution_screen.dart';
 import 'package:anert/utils/stepper_counter.dart';
 import 'package:flutter/material.dart';
 import 'package:anert/utils/button.dart';
+import 'package:provider/provider.dart';
+import 'package:anert/providers/form_provider.dart';
 
 class OptionSelection extends StatefulWidget {
   static String id = 'option_screen';
@@ -17,6 +19,7 @@ class _OptionSelectionState extends State<OptionSelection> {
   Option optionSelect = Option.solar;
   @override
   Widget build(BuildContext context) {
+    final detData = Provider.of<FormProvider>(context);
     final mquery = MediaQuery.of(context).size;
     return Scaffold(
       appBar: GreenTvmTheme.themeAppbar(
@@ -76,6 +79,11 @@ class _OptionSelectionState extends State<OptionSelection> {
                 )),
             Button(
                 onpress: () {
+                  if (optionSelect == Option.solar) {
+                    detData.formType = 0;
+                  } else {
+                    detData.formType = 1;
+                  }
                   Navigator.push(
                       context,
                       MaterialPageRoute(

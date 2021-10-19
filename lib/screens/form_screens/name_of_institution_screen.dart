@@ -15,7 +15,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:anert/globals.dart' as g;
 
 enum Yesorno { yes, no }
-enum Option{solar,ev}
+enum Option { solar, ev }
 
 class NameOfInstitution extends StatefulWidget {
   static String id = 'nameofinstitution_screen';
@@ -43,6 +43,7 @@ class _NameOfInstitutionState extends State<NameOfInstitution> {
   Widget build(BuildContext context) {
     //backend handling variables
     final institution = database.child('Institution/');
+    final evSite = database.child('EvSite/');
     //
     final user = Provider.of<CustomUser?>(context);
     final detData = Provider.of<FormProvider>(context);
@@ -66,8 +67,8 @@ class _NameOfInstitutionState extends State<NameOfInstitution> {
                   key: _formKey,
                   child: FormFieldBox(
                     onSavedField: (value) {},
-onChanged: (value) {},
-onSubmitingField: (value) {},
+                    onChanged: (value) {},
+                    onSubmitingField: (value) {},
                     labelText: 'Name of Building',
                     hintText: 'Enter name of building',
                     keyboardType: KeyboardType.Text_,
@@ -110,28 +111,93 @@ onSubmitingField: (value) {},
                     ],
                   )),
               Button(
-                  onpress: () async{
-                    g.Buildingname= _buildignamecontroller.text;
-                    detData.setOne(
-                      user?.id,
-                      _buildignamecontroller.text,
-                      _yesorno.toString().split('.').last,
-                    );
-
+                  onpress: () async {
+                    detData.setName(user?.id, _buildignamecontroller.text,
+                        _yesorno.toString().split('.').last);
                     if (!_formKey.currentState!.validate()) {
-                      
-                      
                       return;
-                    } else if (_yesorno == Yesorno.yes) {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => widget.option==Option.ev?EvPage():InspectionPage()));
-                    } else {
-                      institution.push().set({
-                        'user': detData.baseForm.userID,
-                        'name': detData.baseForm.houseName,
-                        'deployment': detData.baseForm.deployment,
-                      });
-                      _buildignamecontroller.clear();
                     }
+
+                    if (detData.formType == 0) {
+                      institution.push().set({
+                        'uid': detData.siteInspection.userID,
+                        'building_name': detData.siteInspection.buildingName,
+                        'suitable': detData.siteInspection.deployment,
+                        'category': detData.siteInspection.category,
+                        'contact_name': detData.siteInspection.contactPerson,
+                        'desig': detData.siteInspection.designatoin,
+                        'phone': detData.siteInspection.phoneNum,
+                        'email': detData.siteInspection..email,
+                        'rented': detData.siteInspection.rented,
+                        'owner_name': detData.siteInspection.ownerName,
+                        'owner_phone': detData.siteInspection.ownerphn,
+                        'owner_email': detData.siteInspection.ownerEmail,
+                        'mounting': detData.siteInspection.mounting,
+                        'ambly_const': detData.siteInspection.assemblyConst,
+                        'parli_const': detData.siteInspection.parlimentConst,
+                        'dist': detData.siteInspection.district,
+                        'lb': detData.siteInspection.localBody,
+                        'ward_num': detData.siteInspection.wardNo,
+                        'ward_name': detData.siteInspection.wardName,
+                        'load': detData.siteInspection.load,
+                        'avg_cnsmptn': detData.siteInspection.avgConsumption,
+                        'conn_name': detData.siteInspection.eConnectionName,
+                        'period': detData.siteInspection.billingPeriod,
+                        'customer_type': detData.siteInspection.customerType,
+                        'conn_type': detData.siteInspection.connectionType,
+                        'length': detData.siteInspection.length,
+                        'breadth': detData.siteInspection.breadth,
+                        'area': detData.siteInspection.area,
+                        'prop_cap': detData.siteInspection.propCap,
+                        'rf_shape': detData.siteInspection.roofShape,
+                        'rf_mat': detData.siteInspection.roofCover,
+                        'mat_acc': detData.siteInspection.roofAccess,
+                        'sub_know': detData.siteInspection.subsidy,
+                        'reason': detData.siteInspection.disintrest,
+                        'remarks': detData.siteInspection.remark,
+                        'intrst': detData.siteInspection.solarPV,
+                        'gps': detData.siteInspection.gps,
+                        'img1': detData.siteInspection.img1,
+                        'img2': detData.siteInspection.img2,
+                        'img3': detData.siteInspection.img3,
+                      });
+                    } else {
+                      evSite.push().set({
+                        'uid': detData.evInspection.userID,
+                        'building_name': detData.evInspection.buildingName,
+                        'suitable': detData.evInspection.deployment,
+                        'category': detData.evInspection.category,
+                        'contact_name': detData.evInspection.contactPerson,
+                        'desig': detData.evInspection.designatoin,
+                        'phone': detData.evInspection.phoneNum,
+                        'email': detData.evInspection.email,
+                        'rented': detData.evInspection.rented,
+                        'owner_name': detData.evInspection.ownerName,
+                        'owner_phone': detData.evInspection.ownerPhn,
+                        'owner_email': detData.evInspection.ownerEmail,
+                        'owner_address': detData.evInspection.ownerAddress,
+                        'ward_num': detData.evInspection.wardNo,
+                        'ward_name': detData.evInspection.wardName,
+                        'provision': detData.evInspection.twoCharging,
+                        'Remarks': detData.evInspection.remakrs,
+                        'intrst': detData.evInspection.solarPV,
+                        'gps': detData.evInspection.gps,
+                        'img1': detData.evInspection.img1,
+                        'img2': detData.evInspection.img2,
+                        'img3': detData.evInspection.img3,
+                      });
+                    }
+
+                    if (_yesorno == Yesorno.yes) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => widget.option == Option.ev
+                                  ? EvPage()
+                                  : InspectionPage()));
+                    }
+
+                    _buildignamecontroller.clear();
                   },
                   text: 'NEXT')
             ],

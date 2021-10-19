@@ -10,7 +10,7 @@ class AuthService {
 
   //user object
   CustomUser? _userfromfb(User user) {
-    return user != null ? CustomUser(uid: user.uid) : null;
+    return user != null ? CustomUser(uid: user.email!) : null;
   }
 
   //signin
