@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
             InspectionPage.id: (context) => InspectionPage(),
             EvPage.id: (context) => EvPage(),
             InterestedScreen.id: (context) => InterestedScreen(),
-            },
+          },
         ),
       ),
     );

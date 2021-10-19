@@ -9,7 +9,7 @@ class EvFrom {
   String? rented;
   String? ownerName = 'NIL';
   String? ownerPhn = 'NIL';
-  String? ownerEmail = 'NIL';
+  String? ownerEmail = 'NIL ';
   String? contactPerson2;
   String? phoneNum2;
   String? email2;

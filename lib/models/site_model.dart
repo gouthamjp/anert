@@ -22,6 +22,6 @@ class SiteInspectionForm {
   String? roofShape;
   String? roofCover;
   String? roofAccess;
-  String? remark;
+  String? remark = 'NIL';
   String? solarPV;
 }
