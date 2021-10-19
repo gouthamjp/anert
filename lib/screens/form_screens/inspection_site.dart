@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:anert/screens/form_screens/interested_screen.dart';
 import 'package:flutter/material.dart';
 import '/constants.dart';
@@ -54,6 +56,7 @@ class _InspectionPageState extends State<InspectionPage> {
   final _parlaimentnamecontroller = TextEditingController();
   final _districtnamecontroller = TextEditingController();
   final _localbodynamecontroller = TextEditingController();
+  final _propossedcontroller = TextEditingController();
 
   Category? _category = Category.residential;
   Mounting? _mounting = Mounting.roof;
@@ -68,10 +71,25 @@ class _InspectionPageState extends State<InspectionPage> {
   String data0 = '';
   String data1 = '';
   int area = 0;
-  double length = 0.0;
-  double breadth = 0.0;
+  double length = 0;
+  double breadth = 0;
+  int capacity=0;
+  double connectedload=0.0;
 
-  void apply() {
+  double convert(String value) {
+    double number = 0;
+    number = double.parse(value);
+    return number;
+  }
+  
+  void proposedcapacity(){
+    capacity=min(area/2, connectedload) ~/1;
+    setState(() {
+      _propossedcontroller.text='$capacity';
+    });
+  }
+
+  void applyarea() {
     setState(() {
       area = length * breadth ~/ 1;
       _shadecontroller.text = '$area';
@@ -90,6 +108,7 @@ class _InspectionPageState extends State<InspectionPage> {
     _lengthcontroller.text = '$length';
     _breadthcontroller.text = '$breadth';
     _shadecontroller.text = '$area';
+    _propossedcontroller.text='$capacity';
   }
 
   @override
@@ -412,7 +431,10 @@ class _InspectionPageState extends State<InspectionPage> {
                     //end insert
                     FormFieldBox(
                       onSavedField: (value) {},
-                      onChanged: (value) {},
+                      onChanged: (value) {
+                        connectedload=convert(value!);
+                         proposedcapacity();
+                      },
                       onSubmitingField: (value) {},
                       labelText: 'Connected Load',
                       hintText: 'Enter in Kwh',
@@ -525,8 +547,9 @@ class _InspectionPageState extends State<InspectionPage> {
                     FormFieldBox(
                       onSavedField: (value) {},
                       onChanged: (value) {
-                        length = double.parse(_lengthcontroller.text);
-                        apply();
+                        length = convert(value!);
+                        applyarea();
+                        proposedcapacity();
                       },
                       onSubmitingField: (value) {},
                       labelText: 'Length (in m)',
@@ -540,8 +563,9 @@ class _InspectionPageState extends State<InspectionPage> {
                     FormFieldBox(
                       onSavedField: (value) {},
                       onChanged: (value) {
-                        breadth = double.parse(_breadthcontroller.text);
-                        apply();
+                        breadth = convert(value!);
+                        applyarea();
+                        proposedcapacity();
                       },
                       onSubmitingField: (value) {},
                       labelText: 'Breadth (in m)',
@@ -554,7 +578,9 @@ class _InspectionPageState extends State<InspectionPage> {
                     ),
                     FormFieldBox(
                       onSavedField: (value) {},
-                      onChanged: (value) {},
+                      onChanged: (value) {
+                       
+                      },
                       onSubmitingField: (value) {},
                       labelText: 'Shade free area (in m²)',
                       hintText: 'Enter in M²',
@@ -562,6 +588,19 @@ class _InspectionPageState extends State<InspectionPage> {
                       readonly: true,
                       keyboardType: KeyboardType.Number_,
                       controller: _shadecontroller,
+                      // focusNode: _notcpnode,
+                      didEndTextEdit: () {},
+                    ),
+                    FormFieldBox(
+                      onSavedField: (value) {},
+                      onChanged: (value) {},
+                      onSubmitingField: (value) {},
+                      labelText: 'Proposed Capacity',
+                      hintText: '',
+                      requiredornot: true,
+                      readonly: true,
+                      keyboardType: KeyboardType.Number_,
+                      controller: _propossedcontroller,
                       // focusNode: _notcpnode,
                       didEndTextEdit: () {},
                     ),
