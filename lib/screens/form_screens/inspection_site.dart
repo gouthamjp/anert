@@ -48,8 +48,11 @@ class _InspectionPageState extends State<InspectionPage> {
   final _othersspecifyshapecontroller = TextEditingController();
   final _wardnumbercontroller = TextEditingController();
   final _wardnamecontroller = TextEditingController();
-  
-  
+  final _assemblynamecontroller = TextEditingController();
+  final _parlaimentnamecontroller = TextEditingController();
+  final _districtnamecontroller = TextEditingController();
+  final _localbodynamecontroller = TextEditingController();
+
   Category? _category = Category.residential;
   Mounting? _mounting = Mounting.roof;
   Yesorno? _rented = Yesorno.no;
@@ -68,12 +71,12 @@ class _InspectionPageState extends State<InspectionPage> {
     data0 = _buildignamecontroller.text;
     data1 = _notcpcontroller.text;
   }
-  
-  void intialfunc(){
-    _buildignamecontroller.text=g.Buildingname;
+
+  void intialfunc() {
+    _buildignamecontroller.text = g.Buildingname;
   }
 
-    @override
+  @override
   void initState() {
     super.initState();
     intialfunc();
@@ -84,8 +87,7 @@ class _InspectionPageState extends State<InspectionPage> {
     final detData = Provider.of<FormProvider>(context);
     final user = Provider.of<CustomUser?>(context);
     final mquery = MediaQuery.of(context).size;
-    
-    
+
     return Scaffold(
         appBar: GreenTvmTheme.themeAppbar(
             title: 'GREEN TVM', context: context, showBackButton: true),
@@ -299,6 +301,50 @@ class _InspectionPageState extends State<InspectionPage> {
                       ),
                     ),
                     //Wardname and number insert
+                    FormFieldBox(
+                      onSavedField: (value) {},
+                      labelText: 'Assembly Constituency',
+                      hintText: 'Name of Assembly Constituency',
+                      keyboardType: KeyboardType.Text_,
+                      controller: _assemblynamecontroller,
+                      //readonly: true,
+                      requiredornot: true,
+                      //focusNode: _buildignamenode,
+                      didEndTextEdit: () {},
+                    ),
+                    FormFieldBox(
+                      onSavedField: (value) {},
+                      labelText: 'Parliament Constituency',
+                      hintText: 'Name of parliament constituency',
+                      keyboardType: KeyboardType.Text_,
+                      controller: _parlaimentnamecontroller,
+                     // readonly: true,
+                      requiredornot: true,
+                      //focusNode: _buildignamenode,
+                      didEndTextEdit: () {},
+                    ),
+                    FormFieldBox(
+                      onSavedField: (value) {},
+                      labelText: 'District',
+                      hintText: 'Name of District',
+                      keyboardType: KeyboardType.Text_,
+                      controller: _districtnamecontroller,
+                     // readonly: true,
+                      requiredornot: true,
+                      //focusNode: _buildignamenode,
+                      didEndTextEdit: () {},
+                    ),
+                    FormFieldBox(
+                      onSavedField: (value) {},
+                      labelText: 'Local body',
+                      hintText: 'Name of Local body',
+                      keyboardType: KeyboardType.Text_,
+                      controller: _localbodynamecontroller,
+                     // readonly: true,
+                      requiredornot: true,
+                      //focusNode: _buildignamenode,
+                      didEndTextEdit: () {},
+                    ),
                     FormFieldBox(
                       onSavedField: (value) {},
                       labelText: 'Ward Number',
@@ -618,7 +664,7 @@ class _InspectionPageState extends State<InspectionPage> {
                       // focusNode: _notcpnode,
                       didEndTextEdit: () {},
                     ),
-                    
+
                     Button(
                         //iugi
                         onpress: () {
