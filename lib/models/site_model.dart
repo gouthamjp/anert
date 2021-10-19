@@ -1,6 +1,7 @@
 class SiteInspectionForm {
   String? userID;
   String? buildingName;
+  String? deployment;
   String? category;
   String? contactPerson;
   String? designatoin;
@@ -22,6 +23,10 @@ class SiteInspectionForm {
   String? roofShape;
   String? roofCover;
   String? roofAccess;
+<<<<<<< HEAD
   String? remark = 'NIL';
+=======
+  String? remark;
+>>>>>>> main
   String? solarPV;
 }

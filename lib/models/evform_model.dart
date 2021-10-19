@@ -1,6 +1,7 @@
 class EvFrom {
   String? userID;
   String? buildingName;
+  String? deployment;
   String? category;
   String? contactPerson;
   String? designatoin;
@@ -9,7 +10,11 @@ class EvFrom {
   String? rented;
   String? ownerName = 'NIL';
   String? ownerPhn = 'NIL';
+<<<<<<< HEAD
   String? ownerEmail = 'NIL ';
+=======
+  String? ownerEmail = 'NIL';
+>>>>>>> main
   String? contactPerson2;
   String? phoneNum2;
   String? email2;
