@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:anert/models/user_model.dart';
 import 'package:anert/providers/form_provider.dart';
 import 'package:anert/utils/yesopentextfield.dart';
+import 'package:anert/globals.dart' as g;
 
 enum Category { residential, commercial, government }
 enum Mounting { roof, ground }
@@ -66,6 +67,16 @@ class _InspectionPageState extends State<InspectionPage> {
     _formKey.currentState!.save();
     data0 = _buildignamecontroller.text;
     data1 = _notcpcontroller.text;
+  }
+  
+  void intialfunc(){
+    _buildignamecontroller.text=g.Buildingname;
+  }
+
+    @override
+  void initState() {
+    super.initState();
+    intialfunc();
   }
 
   @override
