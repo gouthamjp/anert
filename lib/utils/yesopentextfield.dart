@@ -24,6 +24,9 @@ class YesOpenFormFieldBox extends StatefulWidget {
   final TextInputAction textInputAction;
   final bool requiredornot;
   final Function(String?) onSavedField;
+  final Function(String?) onSubmitingField;
+  final Function(String?) onChanged;
+  
   final bool yesorno;
   //final FocusNode focusNode;
 
@@ -36,6 +39,9 @@ class YesOpenFormFieldBox extends StatefulWidget {
       required this.requiredornot,
       required this.onSavedField,
       required this.yesorno,
+      required this.onSubmitingField,
+      required this.onChanged,
+      
       // required this.focusNode,
       this.height = 80,
       this.textInputAction = TextInputAction.next});
@@ -88,6 +94,7 @@ class _YesOpenFormFieldBoxState extends State<YesOpenFormFieldBox> {
               onFieldSubmitted: (v) {
                 //  FocusScope.of(context).nextFocus();
               },
+              onChanged: widget.onChanged ,
 
               validator: (value) {
                 String phone = r'(^[0-9]{10}$)';

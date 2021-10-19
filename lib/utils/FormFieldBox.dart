@@ -24,6 +24,8 @@ class FormFieldBox extends StatefulWidget {
   final TextInputAction textInputAction;
   final bool requiredornot;
   final Function(String?) onSavedField;
+  final Function(String?) onSubmitingField;
+  final Function(String?) onChanged;
   final bool readonly;
   //final FocusNode focusNode;
 
@@ -35,7 +37,9 @@ class FormFieldBox extends StatefulWidget {
       required this.didEndTextEdit,
       required this.requiredornot,
       required this.onSavedField,
+      required this.onChanged,
       // required this.focusNode,
+      required this.onSubmitingField,
       this.height = 80,
       this.readonly = false,
       this.textInputAction = TextInputAction.next});
@@ -45,6 +49,7 @@ class FormFieldBox extends StatefulWidget {
 
   void setState(Null Function() param0) {}
 }
+
 
 class _FormFieldBoxState extends State<FormFieldBox> {
   @override
@@ -83,10 +88,10 @@ class _FormFieldBoxState extends State<FormFieldBox> {
             enableSuggestions: false,
             maxLines: 1,
             expands: false,
-            onSaved: ((String? Value) {}),
-            onFieldSubmitted: (v) {
+            onSaved: widget.onSavedField,
+            onFieldSubmitted: widget.onSubmitingField,
+            onChanged: widget.onChanged ,
               //  FocusScope.of(context).nextFocus();
-            },
 
             validator: (value) {
               String phone = r'(^[0-9]{10}$)';

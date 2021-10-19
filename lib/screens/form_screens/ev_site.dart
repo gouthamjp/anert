@@ -53,11 +53,12 @@ class _EvPageState extends State<EvPage> {
     data0 = _buildignamecontroller.text;
     data1 = _notcpcontroller.text;
   }
-  void intialfunc(){
-    _buildignamecontroller.text=g.Buildingname;
+
+  void intialfunc() {
+    _buildignamecontroller.text = g.Buildingname;
   }
 
-    @override
+  @override
   void initState() {
     super.initState();
     intialfunc();
@@ -96,6 +97,8 @@ class _EvPageState extends State<EvPage> {
                   child: Column(children: [
                     FormFieldBox(
                       onSavedField: (value) {},
+onChanged: (value) {},
+                      onSubmitingField: (value) {},
                       labelText: 'Name of Building',
                       hintText: 'Name of Building',
                       keyboardType: KeyboardType.Text_,
@@ -150,6 +153,8 @@ class _EvPageState extends State<EvPage> {
                     ),
                     FormFieldBox(
                       onSavedField: (value) {},
+onChanged: (value) {},
+                      onSubmitingField: (value) {},
                       labelText: 'Ward Number',
                       hintText: 'Enter Number Here',
                       requiredornot: true,
@@ -160,6 +165,8 @@ class _EvPageState extends State<EvPage> {
                     ),
                     FormFieldBox(
                       onSavedField: (value) {},
+onChanged: (value) {},
+                      onSubmitingField: (value) {},
                       labelText: 'Ward Name',
                       hintText: 'Enter Ward Name Here',
                       requiredornot: true,
@@ -170,6 +177,8 @@ class _EvPageState extends State<EvPage> {
                     ),
                     FormFieldBox(
                       onSavedField: (value) {},
+onChanged: (value) {},
+                      onSubmitingField: (value) {},
                       labelText: 'Name of the Contact Person',
                       hintText: 'Enter Name',
                       requiredornot: true,
@@ -180,6 +189,8 @@ class _EvPageState extends State<EvPage> {
                     ),
                     FormFieldBox(
                       onSavedField: (value) {},
+onChanged: (value) {},
+                      onSubmitingField: (value) {},
                       labelText: 'Designation',
                       hintText: 'Enter Text Here',
                       requiredornot: true,
@@ -190,6 +201,8 @@ class _EvPageState extends State<EvPage> {
                     ),
                     FormFieldBox(
                       onSavedField: (value) {},
+onChanged: (value) {},
+                      onSubmitingField: (value) {},
                       labelText: 'Phone Number',
                       hintText: 'Enter Number Here',
                       requiredornot: true,
@@ -200,6 +213,8 @@ class _EvPageState extends State<EvPage> {
                     ),
                     FormFieldBox(
                       onSavedField: (value) {},
+onChanged: (value) {},
+                      onSubmitingField: (value) {},
                       labelText: 'Email Address',
                       hintText: 'Enter Email Here',
                       requiredornot: false,
@@ -248,6 +263,8 @@ class _EvPageState extends State<EvPage> {
                         didEndTextEdit: () {},
                         requiredornot: true,
                         onSavedField: (value) {},
+onChanged: (value) {},
+                        onSubmitingField: (value) {},
                         yesorno: _rented == Yesorno.yes ? true : false),
                     YesOpenFormFieldBox(
                         hintText: 'Enter Phone number ',
@@ -257,6 +274,8 @@ class _EvPageState extends State<EvPage> {
                         didEndTextEdit: () {},
                         requiredornot: false,
                         onSavedField: (value) {},
+onChanged: (value) {},
+                        onSubmitingField: (value) {},
                         yesorno: _rented == Yesorno.yes ? true : false),
                     YesOpenFormFieldBox(
                         hintText: 'Enter email',
@@ -266,10 +285,13 @@ class _EvPageState extends State<EvPage> {
                         didEndTextEdit: () {},
                         requiredornot: false,
                         onSavedField: (value) {},
+onChanged: (value) {},
+                        onSubmitingField: (value) {},
                         yesorno: _rented == Yesorno.yes ? true : false),
-                    
                     FormFieldBox(
                       onSavedField: (value) {},
+onChanged: (value) {},
+                      onSubmitingField: (value) {},
                       labelText: 'Name of the Contact Person',
                       hintText: 'Enter Name',
                       requiredornot: true,
@@ -280,6 +302,8 @@ class _EvPageState extends State<EvPage> {
                     ),
                     FormFieldBox(
                       onSavedField: (value) {},
+onChanged: (value) {},
+                      onSubmitingField: (value) {},
                       labelText: 'Phone Number',
                       hintText: 'Enter Number Here',
                       requiredornot: true,
@@ -290,6 +314,8 @@ class _EvPageState extends State<EvPage> {
                     ),
                     FormFieldBox(
                       onSavedField: (value) {},
+onChanged: (value) {},
+                      onSubmitingField: (value) {},
                       labelText: 'Email Address',
                       hintText: 'Enter Email Here',
                       requiredornot: false,
@@ -300,6 +326,8 @@ class _EvPageState extends State<EvPage> {
                     ),
                     FormFieldBox(
                       onSavedField: (value) {},
+onChanged: (value) {},
+                      onSubmitingField: (value) {},
                       labelText: 'Address',
                       hintText: 'Enter Address Here',
                       requiredornot: true,
@@ -343,6 +371,8 @@ class _EvPageState extends State<EvPage> {
                     ),
                     FormFieldBox(
                       onSavedField: (value) {},
+onChanged: (value) {},
+                      onSubmitingField: (value) {},
                       labelText: 'Remarks',
                       hintText: 'Enter Remarks Here',
                       requiredornot: false,
@@ -351,7 +381,6 @@ class _EvPageState extends State<EvPage> {
                       // focusNode: _notcpnode,
                       didEndTextEdit: () {},
                     ),
-                     
                     Button(
                         onpress: () {
                           if (!_formKey.currentState!.validate()) {

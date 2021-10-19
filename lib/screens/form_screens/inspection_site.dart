@@ -40,6 +40,8 @@ class _InspectionPageState extends State<InspectionPage> {
   final _econncontroller = TextEditingController();
   final _billingcontroller = TextEditingController();
   final _shadecontroller = TextEditingController();
+  final _lengthcontroller = TextEditingController();
+  final _breadthcontroller = TextEditingController();
   final _remarkcontroller = TextEditingController();
   final _rentednamecontroller = TextEditingController();
   final _rentedphonecontroller = TextEditingController();
@@ -65,6 +67,16 @@ class _InspectionPageState extends State<InspectionPage> {
   // final _notcpnode = FocusNode();
   String data0 = '';
   String data1 = '';
+  int area = 0;
+  double length = 0.0;
+  double breadth = 0.0;
+
+  void apply() {
+    setState(() {
+      area = length * breadth ~/ 1;
+      _shadecontroller.text = '$area';
+    });
+  }
 
   void test() {
     _formKey.currentState!.save();
@@ -74,6 +86,10 @@ class _InspectionPageState extends State<InspectionPage> {
 
   void intialfunc() {
     _buildignamecontroller.text = g.Buildingname;
+    area = length * breadth ~/ 1;
+    _lengthcontroller.text = '$length';
+    _breadthcontroller.text = '$breadth';
+    _shadecontroller.text = '$area';
   }
 
   @override
@@ -116,6 +132,8 @@ class _InspectionPageState extends State<InspectionPage> {
                   child: Column(children: [
                     FormFieldBox(
                       onSavedField: (value) {},
+                      onChanged: (value) {},
+                      onSubmitingField: (value) {},
                       labelText: 'Name of Building',
                       hintText: 'Name of Building',
                       keyboardType: KeyboardType.Text_,
@@ -171,6 +189,8 @@ class _InspectionPageState extends State<InspectionPage> {
                     ),
                     FormFieldBox(
                       onSavedField: (value) {},
+                      onChanged: (value) {},
+                      onSubmitingField: (value) {},
                       labelText: 'Name of the Contact Person',
                       hintText: 'Enter Name',
                       requiredornot: true,
@@ -181,6 +201,8 @@ class _InspectionPageState extends State<InspectionPage> {
                     ),
                     FormFieldBox(
                       onSavedField: (value) {},
+                      onChanged: (value) {},
+                      onSubmitingField: (value) {},
                       labelText: 'Designation',
                       hintText: 'Enter Text Here',
                       requiredornot: true,
@@ -191,6 +213,8 @@ class _InspectionPageState extends State<InspectionPage> {
                     ),
                     FormFieldBox(
                       onSavedField: (value) {},
+                      onChanged: (value) {},
+                      onSubmitingField: (value) {},
                       labelText: 'Phone Number',
                       hintText: 'Enter Number Here',
                       requiredornot: true,
@@ -201,6 +225,8 @@ class _InspectionPageState extends State<InspectionPage> {
                     ),
                     FormFieldBox(
                       onSavedField: (value) {},
+                      onChanged: (value) {},
+                      onSubmitingField: (value) {},
                       labelText: 'Email Address',
                       hintText: 'Enter Email Here',
                       requiredornot: false,
@@ -249,6 +275,8 @@ class _InspectionPageState extends State<InspectionPage> {
                         didEndTextEdit: () {},
                         requiredornot: true,
                         onSavedField: (value) {},
+                        onChanged: (value) {},
+                        onSubmitingField: (value) {},
                         yesorno: _rented == Yesorno.yes ? true : false),
                     YesOpenFormFieldBox(
                         hintText: 'Enter Phone number ',
@@ -258,6 +286,8 @@ class _InspectionPageState extends State<InspectionPage> {
                         didEndTextEdit: () {},
                         requiredornot: false,
                         onSavedField: (value) {},
+                        onChanged: (value) {},
+                        onSubmitingField: (value) {},
                         yesorno: _rented == Yesorno.yes ? true : false),
                     YesOpenFormFieldBox(
                         hintText: 'Enter email',
@@ -267,6 +297,8 @@ class _InspectionPageState extends State<InspectionPage> {
                         didEndTextEdit: () {},
                         requiredornot: false,
                         onSavedField: (value) {},
+                        onChanged: (value) {},
+                        onSubmitingField: (value) {},
                         yesorno: _rented == Yesorno.yes ? true : false),
                     RadioFieldBox(
                       labelText: 'Mounting',
@@ -303,6 +335,8 @@ class _InspectionPageState extends State<InspectionPage> {
                     //Wardname and number insert
                     FormFieldBox(
                       onSavedField: (value) {},
+                      onChanged: (value) {},
+                      onSubmitingField: (value) {},
                       labelText: 'Assembly Constituency',
                       hintText: 'Name of Assembly Constituency',
                       keyboardType: KeyboardType.Text_,
@@ -314,39 +348,47 @@ class _InspectionPageState extends State<InspectionPage> {
                     ),
                     FormFieldBox(
                       onSavedField: (value) {},
+                      onChanged: (value) {},
+                      onSubmitingField: (value) {},
                       labelText: 'Parliament Constituency',
                       hintText: 'Name of parliament constituency',
                       keyboardType: KeyboardType.Text_,
                       controller: _parlaimentnamecontroller,
-                     // readonly: true,
+                      // readonly: true,
                       requiredornot: true,
                       //focusNode: _buildignamenode,
                       didEndTextEdit: () {},
                     ),
                     FormFieldBox(
                       onSavedField: (value) {},
+                      onChanged: (value) {},
+                      onSubmitingField: (value) {},
                       labelText: 'District',
                       hintText: 'Name of District',
                       keyboardType: KeyboardType.Text_,
                       controller: _districtnamecontroller,
-                     // readonly: true,
+                      // readonly: true,
                       requiredornot: true,
                       //focusNode: _buildignamenode,
                       didEndTextEdit: () {},
                     ),
                     FormFieldBox(
                       onSavedField: (value) {},
+                      onChanged: (value) {},
+                      onSubmitingField: (value) {},
                       labelText: 'Local body',
                       hintText: 'Name of Local body',
                       keyboardType: KeyboardType.Text_,
                       controller: _localbodynamecontroller,
-                     // readonly: true,
+                      // readonly: true,
                       requiredornot: true,
                       //focusNode: _buildignamenode,
                       didEndTextEdit: () {},
                     ),
                     FormFieldBox(
                       onSavedField: (value) {},
+                      onChanged: (value) {},
+                      onSubmitingField: (value) {},
                       labelText: 'Ward Number',
                       hintText: 'Enter Number Here',
                       requiredornot: true,
@@ -357,6 +399,8 @@ class _InspectionPageState extends State<InspectionPage> {
                     ),
                     FormFieldBox(
                       onSavedField: (value) {},
+                      onChanged: (value) {},
+                      onSubmitingField: (value) {},
                       labelText: 'Ward Name',
                       hintText: 'Enter Ward Name Here',
                       requiredornot: true,
@@ -368,6 +412,8 @@ class _InspectionPageState extends State<InspectionPage> {
                     //end insert
                     FormFieldBox(
                       onSavedField: (value) {},
+                      onChanged: (value) {},
+                      onSubmitingField: (value) {},
                       labelText: 'Connected Load',
                       hintText: 'Enter in Kwh',
                       requiredornot: true,
@@ -378,6 +424,8 @@ class _InspectionPageState extends State<InspectionPage> {
                     ),
                     FormFieldBox(
                       onSavedField: (value) {},
+                      onChanged: (value) {},
+                      onSubmitingField: (value) {},
                       labelText: 'Monthly Average Consumption',
                       hintText: 'Enter in KWh',
                       requiredornot: true,
@@ -388,6 +436,8 @@ class _InspectionPageState extends State<InspectionPage> {
                     ),
                     FormFieldBox(
                       onSavedField: (value) {},
+                      onChanged: (value) {},
+                      onSubmitingField: (value) {},
                       labelText: 'Name of electrical connection',
                       hintText: 'Enter Name',
                       requiredornot: true,
@@ -398,6 +448,8 @@ class _InspectionPageState extends State<InspectionPage> {
                     ),
                     FormFieldBox(
                       onSavedField: (value) {},
+                      onChanged: (value) {},
+                      onSubmitingField: (value) {},
                       labelText: 'Billing Period',
                       hintText: 'Enter duration',
                       requiredornot: true,
@@ -472,9 +524,42 @@ class _InspectionPageState extends State<InspectionPage> {
                     ),
                     FormFieldBox(
                       onSavedField: (value) {},
-                      labelText: 'Shade free area (in m2)',
-                      hintText: 'Enter in KWh',
+                      onChanged: (value) {
+                        length = double.parse(_lengthcontroller.text);
+                        apply();
+                      },
+                      onSubmitingField: (value) {},
+                      labelText: 'Length (in m)',
+                      hintText: 'Enter in meter',
                       requiredornot: true,
+                      keyboardType: KeyboardType.Number_,
+                      controller: _lengthcontroller,
+                      // focusNode: _notcpnode,
+                      didEndTextEdit: () {},
+                    ),
+                    FormFieldBox(
+                      onSavedField: (value) {},
+                      onChanged: (value) {
+                        breadth = double.parse(_breadthcontroller.text);
+                        apply();
+                      },
+                      onSubmitingField: (value) {},
+                      labelText: 'Breadth (in m)',
+                      hintText: 'Enter in meter',
+                      requiredornot: true,
+                      keyboardType: KeyboardType.Number_,
+                      controller: _breadthcontroller,
+                      // focusNode: _notcpnode,
+                      didEndTextEdit: () {},
+                    ),
+                    FormFieldBox(
+                      onSavedField: (value) {},
+                      onChanged: (value) {},
+                      onSubmitingField: (value) {},
+                      labelText: 'Shade free area (in m²)',
+                      hintText: 'Enter in M²',
+                      requiredornot: true,
+                      readonly: true,
                       keyboardType: KeyboardType.Number_,
                       controller: _shadecontroller,
                       // focusNode: _notcpnode,
@@ -532,6 +617,8 @@ class _InspectionPageState extends State<InspectionPage> {
                         didEndTextEdit: () {},
                         requiredornot: false,
                         onSavedField: (value) {},
+                        onChanged: (value) {},
+                        onSubmitingField: (value) {},
                         yesorno: _roofShape == RoofShape.others ? true : false),
                     RadioFieldBox(
                       labelText: 'Roof Covering Material',
@@ -597,6 +684,8 @@ class _InspectionPageState extends State<InspectionPage> {
                         didEndTextEdit: () {},
                         requiredornot: false,
                         onSavedField: (value) {},
+                        onChanged: (value) {},
+                        onSubmitingField: (value) {},
                         yesorno: _roofCover == RoofCover.others ? true : false),
                     RadioFieldBox(
                       labelText: 'Accessibilty of Roof',
@@ -656,6 +745,8 @@ class _InspectionPageState extends State<InspectionPage> {
                     ),
                     FormFieldBox(
                       onSavedField: (value) {},
+                      onChanged: (value) {},
+                      onSubmitingField: (value) {},
                       labelText: 'Remarks',
                       hintText: 'Enter Remarks Here',
                       requiredornot: false,

@@ -66,6 +66,8 @@ class _NameOfInstitutionState extends State<NameOfInstitution> {
                   key: _formKey,
                   child: FormFieldBox(
                     onSavedField: (value) {},
+onChanged: (value) {},
+onSubmitingField: (value) {},
                     labelText: 'Name of Building',
                     hintText: 'Enter name of building',
                     keyboardType: KeyboardType.Text_,
