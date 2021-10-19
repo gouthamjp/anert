@@ -118,6 +118,7 @@ class _InspectionPageState extends State<InspectionPage> {
                       hintText: 'Name of Building',
                       keyboardType: KeyboardType.Text_,
                       controller: _buildignamecontroller,
+                      readonly: true,
                       requiredornot: true,
                       //focusNode: _buildignamenode,
                       didEndTextEdit: () {},

@@ -24,6 +24,7 @@ class FormFieldBox extends StatefulWidget {
   final TextInputAction textInputAction;
   final bool requiredornot;
   final Function(String?) onSavedField;
+  final bool readonly;
   //final FocusNode focusNode;
 
   FormFieldBox(
@@ -36,6 +37,7 @@ class FormFieldBox extends StatefulWidget {
       required this.onSavedField,
       // required this.focusNode,
       this.height = 80,
+      this.readonly = false,
       this.textInputAction = TextInputAction.next});
 
   @override
@@ -55,10 +57,10 @@ class _FormFieldBoxState extends State<FormFieldBox> {
           Row(
             children: [
               Text(widget.labelText,
-                  textAlign: TextAlign.left, style: GreenTvmTheme.fieldHeading),
+                  textAlign: TextAlign.left, style: widget.readonly? GreenTvmTheme.fieldHeadingdisabled: GreenTvmTheme.fieldHeading,),
               Text(
                 widget.requiredornot ? '*' : '',
-                style: TextStyle(color: Colors.red),
+                style: TextStyle(color: widget.readonly? GreenTvmTheme.grey: GreenTvmTheme.red,),
               )
             ],
           ),
@@ -66,7 +68,11 @@ class _FormFieldBoxState extends State<FormFieldBox> {
             height: 0.005 * mquery.height,
           ),
           TextFormField(
+            style: widget.readonly? GreenTvmTheme.fieldtextInputDisabled: GreenTvmTheme.fieldtextInput,
             autovalidateMode: AutovalidateMode.disabled,
+            readOnly: widget.readonly,
+            enableInteractiveSelection: !(widget.readonly),
+            enabled: !(widget.readonly),
             onTap: () {},
             cursorColor: GreenTvmTheme.primaryBlue,
             textAlign: TextAlign.left,
@@ -102,7 +108,7 @@ class _FormFieldBoxState extends State<FormFieldBox> {
               return null;
             },
             decoration: InputDecoration(
-              fillColor: Colors.white,
+              fillColor: widget.readonly? GreenTvmTheme.grey: GreenTvmTheme.white,
               focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(
                   color: GreenTvmTheme.primaryBlue,

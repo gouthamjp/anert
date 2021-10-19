@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class GreenTvmTheme {
   GreenTvmTheme._();
-  
+
   //Fonts
   static const fontReg = 'Inter';
   static const fontBld = 'Inter Bold';
@@ -15,9 +15,12 @@ class GreenTvmTheme {
   static const Color textColor = Color(0xFF0F172A);
   static const Color descriptionTextColor = Color(0xFF64748B);
   static const Color secondaryGray = Color(0xFFE0E2E7);
-  static const Color appBarColor =  Color(0xFFF8FAFC);
-  static const Color white= Colors.white;//same as primaryblue
-  
+  static const Color appBarColor = Color(0xFFF8FAFC);
+  static const Color white = Colors.white;// enabled fill
+  static const Color grey = Colors.grey;// disabled fill
+  static const Color bluegrey = Colors.blueGrey;//
+  static const Color red = Colors.red;// * color
+
   static const TextStyle appBarTextStyle = TextStyle(
     color: textColor,
     fontSize: 16,
@@ -32,11 +35,10 @@ class GreenTvmTheme {
   );
 
   static const TextStyle optionStyle = TextStyle(
-  color: textColor,
-  fontSize: 20,
-  fontFamily: fontMedium,
-  fontWeight: FontWeight.bold
-  );
+      color: textColor,
+      fontSize: 20,
+      fontFamily: fontMedium,
+      fontWeight: FontWeight.bold);
 
   static const TextStyle descriptionTextStyle = TextStyle(
     color: descriptionTextColor,
@@ -56,63 +58,77 @@ class GreenTvmTheme {
     fontFamily: fontReg,
   );
 
+  static const TextStyle fieldtextInput = TextStyle(
+    color: textColor,
+   // fontSize: 16,
+    fontFamily: fontReg,
+  );
+
+    static const TextStyle fieldtextInputDisabled = TextStyle(
+    color: bluegrey,
+    //fontSize: 16,
+    fontFamily: fontReg,
+  );
+
+  static const TextStyle fieldHeadingdisabled = TextStyle(
+    color: grey,
+    fontSize: 16,
+    fontFamily: fontReg,
+  );
+
   static const TextStyle pagedHeading = TextStyle(
-  color: textColor,
-  fontSize: 24,
-  fontFamily: fontReg,
-  fontWeight: FontWeight.w700,
+    color: textColor,
+    fontSize: 24,
+    fontFamily: fontReg,
+    fontWeight: FontWeight.w700,
   );
 
   static const TextStyle mandatorystar = TextStyle(
-  color: Colors.red,
-  fontSize: 12,
-  fontFamily: fontReg,
-  fontWeight: FontWeight.w700,
-  );
-  
- static const TextStyle hintTextStyle = TextStyle(
-  color: descriptionTextColor,
-  fontSize: 16,
-  fontFamily: fontReg,
+    color: Colors.red,
+    fontSize: 12,
+    fontFamily: fontReg,
+    fontWeight: FontWeight.w700,
   );
 
-  static PreferredSizeWidget themeAppbar({ 
-  required String title, 
-  required BuildContext context, 
-  bool showBackButton = true}) {
-  return AppBar(
-        elevation: 0,
-        backgroundColor: GreenTvmTheme.appBarColor,
-        centerTitle: true,
-        title: Text(
-          title,
-          textAlign: TextAlign.center,
-          style: const TextStyle(
-              color: GreenTvmTheme.textColor,
-              fontWeight: FontWeight.bold,
-              fontFamily: GreenTvmTheme.fontMedium,
-              fontSize: 18
-          ),
-        ),
-        leading: showBackButton ? IconButton(
-          onPressed: () {
-            FocusScopeNode currentFocus = FocusScope.of(context);
+  static const TextStyle hintTextStyle = TextStyle(
+    color: descriptionTextColor,
+    fontSize: 16,
+    fontFamily: fontReg,
+  );
+
+  static PreferredSizeWidget themeAppbar(
+      {required String title,
+      required BuildContext context,
+      bool showBackButton = true}) {
+    return AppBar(
+      elevation: 0,
+      backgroundColor: GreenTvmTheme.appBarColor,
+      centerTitle: true,
+      title: Text(
+        title,
+        textAlign: TextAlign.center,
+        style: const TextStyle(
+            color: GreenTvmTheme.textColor,
+            fontWeight: FontWeight.bold,
+            fontFamily: GreenTvmTheme.fontMedium,
+            fontSize: 18),
+      ),
+      leading: showBackButton
+          ? IconButton(
+              onPressed: () {
+                FocusScopeNode currentFocus = FocusScope.of(context);
                 if (!currentFocus.hasPrimaryFocus &&
                     currentFocus.focusedChild != null) {
                   currentFocus.focusedChild!.unfocus();
                   Navigator.of(context).pop();
-                }else {
+                } else {
                   Navigator.of(context).pop();
                 }
-            
-          },
-          icon: Icon(
-            Icons.arrow_back_ios,
-            color: GreenTvmTheme.textColor
-          ),
-        )
-        : null,
-        actions: [],
-      );
-}
+              },
+              icon: Icon(Icons.arrow_back_ios, color: GreenTvmTheme.textColor),
+            )
+          : null,
+      actions: [],
+    );
+  }
 }
