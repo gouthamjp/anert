@@ -20,6 +20,21 @@ enum ElectricalConnection { onephase, threephase }
 enum RoofShape { flat, tilted, others }
 enum RoofCover { concrete, tiles, asbetos, others }
 enum Accessibility { crane, scaffolding, stairs, notaccessible }
+enum Subsidy {
+  do_not_know,
+  not_interested,
+  info_obtained_not_useful,
+  info_not_obtained,
+  do_not_know_whom_to_approach
+}
+enum Disinterest {
+  no_ROI,
+  lack_of_info,
+  never_heard_of_solar,
+  no_apt_space,
+  bad_reviews,
+  not_interested
+}
 
 class InspectionPage extends StatefulWidget {
   static String id = 'inspection_screen';
@@ -63,6 +78,8 @@ class _InspectionPageState extends State<InspectionPage> {
   RoofShape? _roofShape = RoofShape.flat;
   RoofCover? _roofCover = RoofCover.concrete;
   Accessibility? _accessibility = Accessibility.crane;
+  Subsidy? _subsidy = Subsidy.do_not_know;
+  Disinterest? _disinterest = Disinterest.no_ROI;
   //final _buildignamenode = FocusNode();
   // final _notcpnode = FocusNode();
   String data0 = '';
@@ -736,6 +753,157 @@ class _InspectionPageState extends State<InspectionPage> {
                               onChanged: (Accessibility? value) {
                                 setState(() {
                                   _accessibility = value;
+                                });
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    RadioFieldBox(
+                      labelText:
+                          'Knowledge on subsidy available \non solar installation',
+                      requiredornot: false,
+                      radioChild: Column(
+                        children: <Widget>[
+                          ListTile(
+                            title: const Text('DO NOT KNOW'),
+                            leading: Radio<Subsidy>(
+                              value: Subsidy.do_not_know,
+                              groupValue: _subsidy,
+                              onChanged: (Subsidy? value) {
+                                setState(() {
+                                  _subsidy = value;
+                                });
+                              },
+                            ),
+                          ),
+                          ListTile(
+                            title: const Text('NOT INTERESTED'),
+                            leading: Radio<Subsidy>(
+                              value: Subsidy.not_interested,
+                              groupValue: _subsidy,
+                              onChanged: (Subsidy? value) {
+                                setState(() {
+                                  _subsidy = value;
+                                });
+                              },
+                            ),
+                          ),
+                          ListTile(
+                            title: const Text(
+                                'INFORMATION OBTAINED WAS NOT USEFUL'),
+                            leading: Radio<Subsidy>(
+                              value: Subsidy.info_obtained_not_useful,
+                              groupValue: _subsidy,
+                              onChanged: (Subsidy? value) {
+                                setState(() {
+                                  _subsidy = value;
+                                });
+                              },
+                            ),
+                          ),
+                          ListTile(
+                            title: const Text('INFORMATION  NOT OBTAINED'),
+                            leading: Radio<Subsidy>(
+                              value: Subsidy.info_not_obtained,
+                              groupValue: _subsidy,
+                              onChanged: (Subsidy? value) {
+                                setState(() {
+                                  _subsidy = value;
+                                });
+                              },
+                            ),
+                          ),
+                          ListTile(
+                            title: const Text('DO NOT KNOW WHOM TO APPROACH'),
+                            leading: Radio<Subsidy>(
+                              value: Subsidy.do_not_know_whom_to_approach,
+                              groupValue: _subsidy,
+                              onChanged: (Subsidy? value) {
+                                setState(() {
+                                  _subsidy = value;
+                                });
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    RadioFieldBox(
+                      labelText:
+                          'Reason for being disinterested\n in solar installation',
+                      requiredornot: false,
+                      radioChild: Column(
+                        children: <Widget>[
+                          ListTile(
+                            title: const Text('NO RETURN OF INVESTNMENT'),
+                            leading: Radio<Disinterest>(
+                              value: Disinterest.no_ROI,
+                              groupValue: _disinterest,
+                              onChanged: (Disinterest? value) {
+                                setState(() {
+                                  _disinterest = value;
+                                });
+                              },
+                            ),
+                          ),
+                          ListTile(
+                            title: const Text('LACK OF INFORMATION'),
+                            leading: Radio<Disinterest>(
+                              value: Disinterest.lack_of_info,
+                              groupValue: _disinterest,
+                              onChanged: (Disinterest? value) {
+                                setState(() {
+                                  _disinterest = value;
+                                });
+                              },
+                            ),
+                          ),
+                          ListTile(
+                            title: const Text('NEVER HEARD ABOUT SOLAR'),
+                            leading: Radio<Disinterest>(
+                              value: Disinterest.never_heard_of_solar,
+                              groupValue: _disinterest,
+                              onChanged: (Disinterest? value) {
+                                setState(() {
+                                  _disinterest = value;
+                                });
+                              },
+                            ),
+                          ),
+                          ListTile(
+                            title: const Text('NO APT SPACE'),
+                            leading: Radio<Disinterest>(
+                              value: Disinterest.no_apt_space,
+                              groupValue: _disinterest,
+                              onChanged: (Disinterest? value) {
+                                setState(() {
+                                  _disinterest = value;
+                                });
+                              },
+                            ),
+                          ),
+                          ListTile(
+                            title: const Text('BAD REVIEWS OR EXPERIENCE'),
+                            leading: Radio<Disinterest>(
+                              value: Disinterest.bad_reviews,
+                              groupValue: _disinterest,
+                              onChanged: (Disinterest? value) {
+                                setState(() {
+                                  _disinterest = value;
+                                });
+                              },
+                            ),
+                          ),
+                          ListTile(
+                            title: const Text('NOT INTERESTED'),
+                            leading: Radio<Disinterest>(
+                              value: Disinterest.not_interested,
+                              groupValue: _disinterest,
+                              onChanged: (Disinterest? value) {
+                                setState(() {
+                                  _disinterest = value;
                                 });
                               },
                             ),
