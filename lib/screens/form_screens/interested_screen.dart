@@ -11,6 +11,7 @@ import 'package:anert/providers/form_provider.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+
 enum Yesorno { yes, no }
 
 class InterestedScreen extends StatefulWidget {
@@ -27,10 +28,10 @@ class _InterestedScreenState extends State<InterestedScreen> {
 
   final _buildignamecontroller = TextEditingController();
   Yesorno? _yesorno = Yesorno.yes;
-    File? _image1;
-    File? _image2;
-    File? _image3;
-    final String imageurl = 'assets/images/download.png';
+  File? _image1;
+  File? _image2;
+  File? _image3;
+  final String imageurl = 'assets/images/download.png';
   @override
   Widget build(BuildContext context) {
     final detData = Provider.of<FormProvider>(context);
@@ -93,76 +94,69 @@ class _InterestedScreenState extends State<InterestedScreen> {
                       ),
                     ],
                   )),
-                  Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: GestureDetector(
-                            onTap: () async {
-                              final image1 = await ImagePicker()
-                                  .getImage(source: ImageSource.camera);
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () async {
+                        final image1 = await ImagePicker()
+                            .getImage(source: ImageSource.camera);
 
-                              setState(() {
-                                _image1 =
-                                    image1 == null ? null : File(image1.path);
-                              });
-                            },
-                            child: Container(margin: EdgeInsets.all(2),
-                              child: _image1 == null
-                                  ? Image.asset('$imageurl')
-                                  : Image.file(_image1!),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: GestureDetector(
-                            onTap: () async{
-                              print(_image2);
-                              final image2 = await ImagePicker()
-                                  .getImage(source: ImageSource.camera);
-
-                              setState(() {
-                                _image2 =
-                                    image2 == null ? null : File(image2.path);
-                                    
-                                    print(_image2);
-                              });
-                            
-                            },
-                            child: Container(margin: EdgeInsets.all(2),
-                              child: _image2 == null? Image.asset('$imageurl'): Image.file(_image2!),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: GestureDetector(
-                            onTap: () async{
-                              final image3 = await ImagePicker()
-                                  .getImage(source: ImageSource.camera);
-
-                              setState(() {
-                                _image3 =
-                                    image3 == null ? null : File(image3.path);
-                              });
-                            },
-                            child: Container(margin: EdgeInsets.all(2),
-                              child: _image3 == null
-                                  ? Image.asset('$imageurl')
-                                  : Image.file(_image3!),
-                            ),
-                          ),
-                        ),
-                      ],
+                        setState(() {
+                          _image1 = image1 == null ? null : File(image1.path);
+                        });
+                      },
+                      child: Container(
+                        margin: EdgeInsets.all(2),
+                        child: _image1 == null
+                            ? Image.asset('$imageurl')
+                            : Image.file(_image1!),
+                      ),
                     ),
+                  ),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () async {
+                        print(_image2);
+                        final image2 = await ImagePicker()
+                            .getImage(source: ImageSource.camera);
+
+                        setState(() {
+                          _image2 = image2 == null ? null : File(image2.path);
+
+                          print(_image2);
+                        });
+                      },
+                      child: Container(
+                        margin: EdgeInsets.all(2),
+                        child: _image2 == null
+                            ? Image.asset('$imageurl')
+                            : Image.file(_image2!),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () async {
+                        final image3 = await ImagePicker()
+                            .getImage(source: ImageSource.camera);
+
+                        setState(() {
+                          _image3 = image3 == null ? null : File(image3.path);
+                        });
+                      },
+                      child: Container(
+                        margin: EdgeInsets.all(2),
+                        child: _image3 == null
+                            ? Image.asset('$imageurl')
+                            : Image.file(_image3!),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
               Button(
                   onpress: () async {
-                    detData.setSolarPV(_yesorno.toString().split('.').last);
-
-                    institution.push().set({
-                      'UserID': detData.baseForm.userID,
-                      'Name': detData.baseForm.houseName,
-                      'Deployment': detData.baseForm.deployment,
-                    });
-
                     if (detData.formType == 0) {
                       inspection.push().set({
                         'UserID': detData.siteInspection.userID,
@@ -177,7 +171,7 @@ class _InterestedScreenState extends State<InterestedScreen> {
                         'Owner Phone': detData.siteInspection.ownerphn,
                         'Owner Email': detData.siteInspection.ownerEmail,
                         'Mounting': detData.siteInspection.mounting,
-                        'Height': detData.siteInspection.height,
+                        'Height': detData.siteInspection.height, //
                         'Load': detData.siteInspection.load,
                         'Avg Consumption':
                             detData.siteInspection.avgConsumption,
@@ -204,9 +198,6 @@ class _InterestedScreenState extends State<InterestedScreen> {
                         'Owner Name': detData.evInspection.ownerName,
                         'Owner Phone': detData.evInspection.ownerPhn,
                         'Owner Email': detData.evInspection.ownerEmail,
-                        'Alt Contact Name': detData.evInspection.contactPerson2,
-                        'Alt PhnNo': detData.evInspection.phoneNum2,
-                        'Alt Email': detData.evInspection.email2,
                         'Address': detData.evInspection.address,
                         'Two Charging': detData.evInspection.twoCharging,
                         'Remarks': detData.evInspection.remakrs

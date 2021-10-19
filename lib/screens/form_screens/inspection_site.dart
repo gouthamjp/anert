@@ -975,7 +975,7 @@ class _InspectionPageState extends State<InspectionPage> {
                           // entering data to the provider
 
                           if (_rented == Yesorno.no) {
-                            detData.setTwo(
+                            detData.setInspection(
                                 user!.id,
                                 _buildignamecontroller.text,
                                 _category.toString().split('.').last,
@@ -1003,7 +1003,7 @@ class _InspectionPageState extends State<InspectionPage> {
                                 _accessibility.toString().split('.').last,
                                 _remarkcontroller.text);
                           } else {
-                            detData.setTwoRented(
+                            detData.setInspectionRented(
                                 user!.id,
                                 _buildignamecontroller.text,
                                 _category.toString().split('.').last,

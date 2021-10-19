@@ -1,26 +1,16 @@
 import 'package:anert/models/evform_model.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:anert/models/firstform_modl.dart';
 import 'package:anert/models/site_model.dart';
 
 class FormProvider with ChangeNotifier {
   //database variables
 
-  var baseForm = BaseFormData();
   var siteInspection = SiteInspectionForm();
   var evInspection = EvFrom();
   String? wantSolarPanel;
   int formType = 0; // 0 : site inspection , 1 : EV site
 
-  void setOne(String userID, String housename, String deployment) {
-    baseForm.userID = userID;
-    baseForm.houseName = housename;
-    baseForm.deployment = deployment;
-  }
-
-  void setTwo(
-      String userID,
-      String buildingName,
+  void setInspection(
       String category,
       String contactPerson,
       String designatoin,
@@ -28,22 +18,29 @@ class FormProvider with ChangeNotifier {
       String email,
       String rented,
       String mounting,
-      String height,
+      String assemblyConst,
+      String parlimentConst,
+      String district,
+      String localBody,
+      String wardName,
       String load,
       String avgConsumption,
       String eConnectionName,
       String billingPeriod,
       String customerType,
       String connectionType,
-      String sfreeArea,
+      String length,
+      String breadth,
+      String area,
       String roofShape,
       String roofCover,
       String roofAccess,
+      String subsidy,
+      String disintrest,
       String remark) {
-    siteInspection.userID = userID;
     siteInspection.avgConsumption = avgConsumption;
     siteInspection.billingPeriod = billingPeriod;
-    siteInspection.buildingName = buildingName;
+
     siteInspection.category = category;
     siteInspection.connectionType = connectionType;
     siteInspection.contactPerson = contactPerson;
@@ -58,12 +55,11 @@ class FormProvider with ChangeNotifier {
     siteInspection.roofAccess = roofAccess;
     siteInspection.roofCover = roofCover;
     siteInspection.roofShape = roofShape;
-    siteInspection.sfreeArea = sfreeArea;
-    siteInspection.height = height;
+
     siteInspection.rented = rented;
   }
 
-  void setTwoRented(
+  void setInspectionRented(
       String userID,
       String buildingName,
       String category,
@@ -106,51 +102,43 @@ class FormProvider with ChangeNotifier {
     siteInspection.roofAccess = roofAccess;
     siteInspection.roofCover = roofCover;
     siteInspection.roofShape = roofShape;
-    siteInspection.sfreeArea = sfreeArea;
-    siteInspection.height = height;
+
     siteInspection.rented = rented;
     siteInspection.ownerName = ownerName;
     siteInspection.ownerphn = ownerphn;
     siteInspection.ownerEmail = ownerEmail;
   }
 
-  void setThree(
-    String userID,
-    String buildingName,
+  void setEv(
     String category,
+    String wardNo,
+    String wardName,
     String contactPerson,
     String designatoin,
     String phoneNum,
     String email,
     String rented,
-    String contactPerson2,
-    String phoneNum2,
-    String email2,
     String address,
     String twoCharging,
     String remakrs,
   ) {
-    evInspection.userID = userID;
-    evInspection.buildingName = buildingName;
     evInspection.category = category;
+    evInspection.wardName = wardName;
+    evInspection.wardNo = wardNo;
     evInspection.contactPerson = contactPerson;
     evInspection.designatoin = designatoin;
     evInspection.phoneNum = phoneNum;
     evInspection.email = email;
     evInspection.rented = rented;
-    evInspection.contactPerson2 = contactPerson2;
-    evInspection.phoneNum2 = phoneNum2;
-    evInspection.email2 = email2;
     evInspection.address = address;
     evInspection.twoCharging = twoCharging;
     evInspection.remakrs = remakrs;
-    formType = 1;
   }
 
-  void setThreeRented(
-    String userID,
-    String buildingName,
+  void setEvRented(
     String category,
+    String wardNo,
+    String wardName,
     String contactPerson,
     String designatoin,
     String phoneNum,
@@ -159,16 +147,14 @@ class FormProvider with ChangeNotifier {
     String ownerName,
     String ownerPhn,
     String ownerEmail,
-    String contactPerson2,
-    String phoneNum2,
-    String email2,
+    String ownerAddress,
     String address,
     String twoCharging,
     String remakrs,
   ) {
-    evInspection.userID = userID;
-    evInspection.buildingName = buildingName;
     evInspection.category = category;
+    evInspection.wardName = wardName;
+    evInspection.wardNo = wardNo;
     evInspection.contactPerson = contactPerson;
     evInspection.designatoin = designatoin;
     evInspection.phoneNum = phoneNum;
@@ -177,20 +163,21 @@ class FormProvider with ChangeNotifier {
     evInspection.ownerName = ownerName;
     evInspection.ownerPhn = ownerPhn;
     evInspection.ownerEmail = ownerEmail;
-    evInspection.contactPerson2 = contactPerson2;
-    evInspection.phoneNum2 = phoneNum2;
-    evInspection.email2 = email2;
+    evInspection.ownerAddress = ownerAddress;
     evInspection.address = address;
     evInspection.twoCharging = twoCharging;
     evInspection.remakrs = remakrs;
-    formType = 1;
   }
 
-  void setSolarPV(String solarPV) {
+  void setName(String user, String name, String deployment) {
     if (formType == 0) {
-      siteInspection.solarPV = solarPV;
+      siteInspection.userID = user;
+      siteInspection.buildingName = name;
+      siteInspection.deployment = deployment;
     } else {
-      evInspection.solarPV = solarPV;
+      evInspection.userID = user;
+      evInspection.buildingName = name;
+      evInspection.deployment = deployment;
     }
   }
 }

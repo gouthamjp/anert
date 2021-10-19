@@ -288,7 +288,6 @@ class _EvPageState extends State<EvPage> {
                         onChanged: (value) {},
                         onSubmitingField: (value) {},
                         yesorno: _rented == Yesorno.yes ? true : false),
-                   
                     RadioFieldBox(
                       labelText:
                           'Whether there is a provision for changing \ntwo vehicles at a time or not?',
@@ -342,7 +341,7 @@ class _EvPageState extends State<EvPage> {
                             Navigator.pushNamed(context, InterestedScreen.id);
                           }
                           if (_rented == Yesorno.no) {
-                            detData.setThree(
+                            detData.setEv(
                                 user!.uid,
                                 _buildignamecontroller.text,
                                 _category.toString().split('.').last,
@@ -351,14 +350,11 @@ class _EvPageState extends State<EvPage> {
                                 _phonecontroller.text,
                                 _emailcontroller.text,
                                 _rented.toString().split('.').last,
-                                _notcp1controller.text,
-                                _phone1controller.text,
-                                _email1controller.text,
                                 _addresscontroller.text,
                                 _yesorno.toString().split('.').last,
                                 _remarkscontroller.text);
                           } else {
-                            detData.setThreeRented(
+                            detData.setEvRented(
                                 user!.uid,
                                 _buildignamecontroller.text,
                                 _category.toString().split('.').last,
@@ -371,8 +367,6 @@ class _EvPageState extends State<EvPage> {
                                 _rentedphonecontroller.text,
                                 _rentedemailcontroller.text,
                                 _notcp1controller.text,
-                                _phone1controller.text,
-                                _email1controller.text,
                                 _addresscontroller.text,
                                 _yesorno.toString().split('.').last,
                                 _remarkscontroller.text);
