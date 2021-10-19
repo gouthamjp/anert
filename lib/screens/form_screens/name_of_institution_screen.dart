@@ -12,6 +12,7 @@ import 'package:anert/utils/button.dart';
 import 'package:provider/provider.dart';
 import 'package:anert/models/user_model.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:anert/globals.dart' as g;
 
 enum Yesorno { yes, no }
 enum Option{solar,ev}
@@ -65,6 +66,8 @@ class _NameOfInstitutionState extends State<NameOfInstitution> {
                   key: _formKey,
                   child: FormFieldBox(
                     onSavedField: (value) {},
+onChanged: (value) {},
+onSubmitingField: (value) {},
                     labelText: 'Name of Building',
                     hintText: 'Enter name of building',
                     keyboardType: KeyboardType.Text_,
@@ -108,6 +111,7 @@ class _NameOfInstitutionState extends State<NameOfInstitution> {
                   )),
               Button(
                   onpress: () async{
+                    g.Buildingname= _buildignamecontroller.text;
                     detData.setOne(
                       user?.id,
                       _buildignamecontroller.text,
