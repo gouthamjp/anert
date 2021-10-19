@@ -7,6 +7,10 @@ import 'package:anert/utils/radiobox.dart';
 import 'package:anert/utils/button.dart';
 import 'package:anert/screens/form_screens/interested_screen.dart';
 import 'package:anert/utils/yesopentextfield.dart';
+import 'package:provider/provider.dart';
+import 'package:anert/models/user_model.dart';
+import 'package:anert/providers/form_provider.dart';
+import 'package:anert/globals.dart' as g;
 
 enum Category { residential, commercial, government }
 enum Yesorno { yes, no }
@@ -30,11 +34,12 @@ class _EvPageState extends State<EvPage> {
   final _email1controller = TextEditingController();
   final _addresscontroller = TextEditingController();
   final _remarkscontroller = TextEditingController();
-    final _rentednamecontroller = TextEditingController();
+  final _rentednamecontroller = TextEditingController();
   final _rentedphonecontroller = TextEditingController();
   final _rentedemailcontroller = TextEditingController();
-  final _othersspecifycontroller = TextEditingController();
-  
+  final _wardnumbercontroller = TextEditingController();
+  final _wardnamecontroller = TextEditingController();
+
   Category? _category = Category.residential;
   Yesorno? _yesorno = Yesorno.yes;
   Yesorno? _rented = Yesorno.no;
@@ -42,14 +47,27 @@ class _EvPageState extends State<EvPage> {
   // final _notcpnode = FocusNode();
   String data0 = '';
   String data1 = '';
+  final String imageurl = 'assets/images/download.png';
   void test() {
     _formKey.currentState!.save();
     data0 = _buildignamecontroller.text;
     data1 = _notcpcontroller.text;
   }
 
+  void intialfunc() {
+    _buildignamecontroller.text = g.Buildingname;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    intialfunc();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final detData = Provider.of<FormProvider>(context);
+    final user = Provider.of<CustomUser?>(context);
     final mquery = MediaQuery.of(context).size;
     return Scaffold(
         appBar: GreenTvmTheme.themeAppbar(
@@ -79,9 +97,12 @@ class _EvPageState extends State<EvPage> {
                   child: Column(children: [
                     FormFieldBox(
                       onSavedField: (value) {},
+                      onChanged: (value) {},
+                      onSubmitingField: (value) {},
                       labelText: 'Name of Building',
                       hintText: 'Name of Building',
                       keyboardType: KeyboardType.Text_,
+                      readonly: true,
                       controller: _buildignamecontroller,
                       requiredornot: true,
                       //focusNode: _buildignamenode,
@@ -93,19 +114,7 @@ class _EvPageState extends State<EvPage> {
                       radioChild: Column(
                         children: <Widget>[
                           ListTile(
-                            title: const Text('RESIDENTIAL'),
-                            leading: Radio<Category>(
-                              value: Category.residential,
-                              groupValue: _category,
-                              onChanged: (Category? value) {
-                                setState(() {
-                                  _category = value;
-                                });
-                              },
-                            ),
-                          ),
-                          ListTile(
-                            title: const Text('COMMERCIAL/PRIVATE'),
+                            title: const Text('COMMERCIAL/PRIVATE BUILDING'),
                             leading: Radio<Category>(
                               value: Category.commercial,
                               groupValue: _category,
@@ -133,6 +142,32 @@ class _EvPageState extends State<EvPage> {
                     ),
                     FormFieldBox(
                       onSavedField: (value) {},
+                      onChanged: (value) {},
+                      onSubmitingField: (value) {},
+                      labelText: 'Ward Number',
+                      hintText: 'Enter Number Here',
+                      requiredornot: true,
+                      keyboardType: KeyboardType.Text_,
+                      controller: _wardnumbercontroller,
+                      // focusNode: _notcpnode,
+                      didEndTextEdit: () {},
+                    ),
+                    FormFieldBox(
+                      onSavedField: (value) {},
+                      onChanged: (value) {},
+                      onSubmitingField: (value) {},
+                      labelText: 'Ward Name',
+                      hintText: 'Enter Ward Name Here',
+                      requiredornot: true,
+                      keyboardType: KeyboardType.Text_,
+                      controller: _wardnamecontroller,
+                      // focusNode: _notcpnode,
+                      didEndTextEdit: () {},
+                    ),
+                    FormFieldBox(
+                      onSavedField: (value) {},
+                      onChanged: (value) {},
+                      onSubmitingField: (value) {},
                       labelText: 'Name of the Contact Person',
                       hintText: 'Enter Name',
                       requiredornot: true,
@@ -143,6 +178,8 @@ class _EvPageState extends State<EvPage> {
                     ),
                     FormFieldBox(
                       onSavedField: (value) {},
+                      onChanged: (value) {},
+                      onSubmitingField: (value) {},
                       labelText: 'Designation',
                       hintText: 'Enter Text Here',
                       requiredornot: true,
@@ -153,6 +190,8 @@ class _EvPageState extends State<EvPage> {
                     ),
                     FormFieldBox(
                       onSavedField: (value) {},
+                      onChanged: (value) {},
+                      onSubmitingField: (value) {},
                       labelText: 'Phone Number',
                       hintText: 'Enter Number Here',
                       requiredornot: true,
@@ -163,9 +202,11 @@ class _EvPageState extends State<EvPage> {
                     ),
                     FormFieldBox(
                       onSavedField: (value) {},
+                      onChanged: (value) {},
+                      onSubmitingField: (value) {},
                       labelText: 'Email Address',
                       hintText: 'Enter Email Here',
-                      requiredornot: true,
+                      requiredornot: false,
                       keyboardType: KeyboardType.Text_,
                       controller: _emailcontroller,
                       // focusNode: _notcpnode,
@@ -204,13 +245,15 @@ class _EvPageState extends State<EvPage> {
                       ),
                     ),
                     YesOpenFormFieldBox(
-                        hintText: 'Enter name',
+                        hintText: 'Enter Name',
                         labelText: 'Name of Owner',
                         keyboardType: KeyboardType1.Text_,
                         controller: _rentednamecontroller,
                         didEndTextEdit: () {},
                         requiredornot: true,
                         onSavedField: (value) {},
+                        onChanged: (value) {},
+                        onSubmitingField: (value) {},
                         yesorno: _rented == Yesorno.yes ? true : false),
                     YesOpenFormFieldBox(
                         hintText: 'Enter Phone number ',
@@ -220,6 +263,8 @@ class _EvPageState extends State<EvPage> {
                         didEndTextEdit: () {},
                         requiredornot: true,
                         onSavedField: (value) {},
+                        onChanged: (value) {},
+                        onSubmitingField: (value) {},
                         yesorno: _rented == Yesorno.yes ? true : false),
                     YesOpenFormFieldBox(
                         hintText: 'Enter email',
@@ -227,49 +272,23 @@ class _EvPageState extends State<EvPage> {
                         keyboardType: KeyboardType1.Text_,
                         controller: _rentedemailcontroller,
                         didEndTextEdit: () {},
-                        requiredornot: true,
+                        requiredornot: false,
                         onSavedField: (value) {},
+                        onChanged: (value) {},
+                        onSubmitingField: (value) {},
                         yesorno: _rented == Yesorno.yes ? true : false),
-                    FormFieldBox(
-                      onSavedField: (value) {},
-                      labelText: 'Name of the Contact Person',
-                      hintText: 'Enter Name',
-                      requiredornot: true,
-                      keyboardType: KeyboardType.Text_,
-                      controller: _notcp1controller,
-                      // focusNode: _notcpnode,
-                      didEndTextEdit: () {},
-                    ),
-                    FormFieldBox(
-                      onSavedField: (value) {},
-                      labelText: 'Phone Number',
-                      hintText: 'Enter Number Here',
-                      requiredornot: true,
-                      keyboardType: KeyboardType.Number_,
-                      controller: _phone1controller,
-                      // focusNode: _notcpnode,
-                      didEndTextEdit: () {},
-                    ),
-                    FormFieldBox(
-                      onSavedField: (value) {},
-                      labelText: 'Email Address',
-                      hintText: 'Enter Email Here',
-                      requiredornot: true,
-                      keyboardType: KeyboardType.Text_,
-                      controller: _email1controller,
-                      // focusNode: _notcpnode,
-                      didEndTextEdit: () {},
-                    ),
-                    FormFieldBox(
-                      onSavedField: (value) {},
-                      labelText: 'Address',
-                      hintText: 'Enter Address Here',
-                      requiredornot: true,
-                      keyboardType: KeyboardType.Text_,
-                      controller: _addresscontroller,
-                      // focusNode: _notcpnode,
-                      didEndTextEdit: () {},
-                    ),
+                    YesOpenFormFieldBox(
+                        hintText: 'Enter Address Here',
+                        labelText: 'Address',
+                        keyboardType: KeyboardType1.Text_,
+                        controller: _addresscontroller,
+                        didEndTextEdit: () {},
+                        requiredornot: false,
+                        onSavedField: (value) {},
+                        onChanged: (value) {},
+                        onSubmitingField: (value) {},
+                        yesorno: _rented == Yesorno.yes ? true : false),
+                   
                     RadioFieldBox(
                       labelText:
                           'Whether there is a provision for changing \ntwo vehicles at a time or not?',
@@ -305,6 +324,8 @@ class _EvPageState extends State<EvPage> {
                     ),
                     FormFieldBox(
                       onSavedField: (value) {},
+                      onChanged: (value) {},
+                      onSubmitingField: (value) {},
                       labelText: 'Remarks',
                       hintText: 'Enter Remarks Here',
                       requiredornot: false,
@@ -317,9 +338,45 @@ class _EvPageState extends State<EvPage> {
                         onpress: () {
                           if (!_formKey.currentState!.validate()) {
                             return;
-                          }else{
-                          Navigator.pushNamed(context, InterestedScreen.id);
-                        }
+                          } else {
+                            Navigator.pushNamed(context, InterestedScreen.id);
+                          }
+                          if (_rented == Yesorno.no) {
+                            detData.setThree(
+                                user!.uid,
+                                _buildignamecontroller.text,
+                                _category.toString().split('.').last,
+                                _notcpcontroller.text,
+                                _designationcontroller.text,
+                                _phonecontroller.text,
+                                _emailcontroller.text,
+                                _rented.toString().split('.').last,
+                                _notcp1controller.text,
+                                _phone1controller.text,
+                                _email1controller.text,
+                                _addresscontroller.text,
+                                _yesorno.toString().split('.').last,
+                                _remarkscontroller.text);
+                          } else {
+                            detData.setThreeRented(
+                                user!.uid,
+                                _buildignamecontroller.text,
+                                _category.toString().split('.').last,
+                                _notcpcontroller.text,
+                                _designationcontroller.text,
+                                _phonecontroller.text,
+                                _emailcontroller.text,
+                                _rented.toString().split('.').last,
+                                _rentednamecontroller.text,
+                                _rentedphonecontroller.text,
+                                _rentedemailcontroller.text,
+                                _notcp1controller.text,
+                                _phone1controller.text,
+                                _email1controller.text,
+                                _addresscontroller.text,
+                                _yesorno.toString().split('.').last,
+                                _remarkscontroller.text);
+                          }
                         },
                         text: 'NEXT')
                   ]),

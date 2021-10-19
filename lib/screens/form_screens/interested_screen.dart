@@ -7,7 +7,10 @@ import 'package:anert/utils/button.dart';
 import 'package:provider/provider.dart';
 import 'package:anert/models/user_model.dart';
 import 'name_of_institution_screen.dart';
-
+import 'package:anert/providers/form_provider.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 enum Yesorno { yes, no }
 
 class InterestedScreen extends StatefulWidget {
@@ -20,11 +23,23 @@ class InterestedScreen extends StatefulWidget {
 class _InterestedScreenState extends State<InterestedScreen> {
   final _formKey = GlobalKey<FormState>();
 
+  final database = FirebaseDatabase.instance.reference();
+
   final _buildignamecontroller = TextEditingController();
   Yesorno? _yesorno = Yesorno.yes;
+    File? _image1;
+    File? _image2;
+    File? _image3;
+    final String imageurl = 'assets/images/download.png';
   @override
   Widget build(BuildContext context) {
+    final detData = Provider.of<FormProvider>(context);
     final mquery = MediaQuery.of(context).size;
+    //backend handling variables
+    final institution = database.child('Institution/');
+    final inspection = database.child('Inspection/');
+    final evSite = database.child('EvSite/');
+    //
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: GreenTvmTheme.themeAppbar(
@@ -78,9 +93,128 @@ class _InterestedScreenState extends State<InterestedScreen> {
                       ),
                     ],
                   )),
+                  Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () async {
+                              final image1 = await ImagePicker()
+                                  .getImage(source: ImageSource.camera);
+
+                              setState(() {
+                                _image1 =
+                                    image1 == null ? null : File(image1.path);
+                              });
+                            },
+                            child: Container(margin: EdgeInsets.all(2),
+                              child: _image1 == null
+                                  ? Image.asset('$imageurl')
+                                  : Image.file(_image1!),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () async{
+                              print(_image2);
+                              final image2 = await ImagePicker()
+                                  .getImage(source: ImageSource.camera);
+
+                              setState(() {
+                                _image2 =
+                                    image2 == null ? null : File(image2.path);
+                                    
+                                    print(_image2);
+                              });
+                            
+                            },
+                            child: Container(margin: EdgeInsets.all(2),
+                              child: _image2 == null? Image.asset('$imageurl'): Image.file(_image2!),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () async{
+                              final image3 = await ImagePicker()
+                                  .getImage(source: ImageSource.camera);
+
+                              setState(() {
+                                _image3 =
+                                    image3 == null ? null : File(image3.path);
+                              });
+                            },
+                            child: Container(margin: EdgeInsets.all(2),
+                              child: _image3 == null
+                                  ? Image.asset('$imageurl')
+                                  : Image.file(_image3!),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
               Button(
-                  onpress: () {
-                   Navigator.pushNamedAndRemoveUntil(context, NameOfInstitution.id, (route) => false);
+                  onpress: () async {
+                    detData.setSolarPV(_yesorno.toString().split('.').last);
+
+                    institution.push().set({
+                      'UserID': detData.baseForm.userID,
+                      'Name': detData.baseForm.houseName,
+                      'Deployment': detData.baseForm.deployment,
+                    });
+
+                    if (detData.formType == 0) {
+                      inspection.push().set({
+                        'UserID': detData.siteInspection.userID,
+                        'Building Name': detData.siteInspection.buildingName,
+                        'Category': detData.siteInspection.category,
+                        'Contact Person': detData.siteInspection.contactPerson,
+                        'Designation': detData.siteInspection.designatoin,
+                        'Phone Number': detData.siteInspection.phoneNum,
+                        'Email': detData.siteInspection.email,
+                        'Rented': detData.siteInspection.rented,
+                        'Owner Name': detData.siteInspection.ownerName,
+                        'Owner Phone': detData.siteInspection.ownerphn,
+                        'Owner Email': detData.siteInspection.ownerEmail,
+                        'Mounting': detData.siteInspection.mounting,
+                        'Height': detData.siteInspection.height,
+                        'Load': detData.siteInspection.load,
+                        'Avg Consumption':
+                            detData.siteInspection.avgConsumption,
+                        'Connection Name':
+                            detData.siteInspection.eConnectionName,
+                        'Billing Period': detData.siteInspection.billingPeriod,
+                        'Customer Type': detData.siteInspection.connectionType,
+                        'Shade Area': detData.siteInspection.sfreeArea,
+                        'Roof Shape': detData.siteInspection.roofShape,
+                        'Roof Cover': detData.siteInspection.roofCover,
+                        'Roof Access': detData.siteInspection.roofAccess,
+                        'Remark': detData.siteInspection.remark,
+                      });
+                    } else {
+                      evSite.push().set({
+                        'UserID': detData.evInspection.userID,
+                        'Building Name': detData.evInspection.buildingName,
+                        'Category': detData.evInspection.category,
+                        'Contact Person': detData.evInspection.contactPerson,
+                        'Designation': detData.evInspection.designatoin,
+                        'Phone Number': detData.evInspection.phoneNum,
+                        'Email': detData.evInspection.email,
+                        'Rented': detData.evInspection.rented,
+                        'Owner Name': detData.evInspection.ownerName,
+                        'Owner Phone': detData.evInspection.ownerPhn,
+                        'Owner Email': detData.evInspection.ownerEmail,
+                        'Alt Contact Name': detData.evInspection.contactPerson2,
+                        'Alt PhnNo': detData.evInspection.phoneNum2,
+                        'Alt Email': detData.evInspection.email2,
+                        'Address': detData.evInspection.address,
+                        'Two Charging': detData.evInspection.twoCharging,
+                        'Remarks': detData.evInspection.remakrs
+                      });
+                    }
+
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, NameOfInstitution.id, (route) => false);
                   },
                   text: 'SUBMIT')
             ],

@@ -24,6 +24,9 @@ class FormFieldBox extends StatefulWidget {
   final TextInputAction textInputAction;
   final bool requiredornot;
   final Function(String?) onSavedField;
+  final Function(String?) onSubmitingField;
+  final Function(String?) onChanged;
+  final bool readonly;
   //final FocusNode focusNode;
 
   FormFieldBox(
@@ -34,8 +37,11 @@ class FormFieldBox extends StatefulWidget {
       required this.didEndTextEdit,
       required this.requiredornot,
       required this.onSavedField,
+      required this.onChanged,
       // required this.focusNode,
+      required this.onSubmitingField,
       this.height = 80,
+      this.readonly = false,
       this.textInputAction = TextInputAction.next});
 
   @override
@@ -43,6 +49,7 @@ class FormFieldBox extends StatefulWidget {
 
   void setState(Null Function() param0) {}
 }
+
 
 class _FormFieldBoxState extends State<FormFieldBox> {
   @override
@@ -55,10 +62,10 @@ class _FormFieldBoxState extends State<FormFieldBox> {
           Row(
             children: [
               Text(widget.labelText,
-                  textAlign: TextAlign.left, style: GreenTvmTheme.fieldHeading),
+                  textAlign: TextAlign.left, style: widget.readonly? GreenTvmTheme.fieldHeadingdisabled: GreenTvmTheme.fieldHeading,),
               Text(
                 widget.requiredornot ? '*' : '',
-                style: TextStyle(color: Colors.red),
+                style: TextStyle(color: widget.readonly? GreenTvmTheme.grey: GreenTvmTheme.red,),
               )
             ],
           ),
@@ -66,7 +73,11 @@ class _FormFieldBoxState extends State<FormFieldBox> {
             height: 0.005 * mquery.height,
           ),
           TextFormField(
+            style: widget.readonly? GreenTvmTheme.fieldtextInputDisabled: GreenTvmTheme.fieldtextInput,
             autovalidateMode: AutovalidateMode.disabled,
+            readOnly: widget.readonly,
+            enableInteractiveSelection: !(widget.readonly),
+            enabled: !(widget.readonly),
             onTap: () {},
             cursorColor: GreenTvmTheme.primaryBlue,
             textAlign: TextAlign.left,
@@ -77,10 +88,10 @@ class _FormFieldBoxState extends State<FormFieldBox> {
             enableSuggestions: false,
             maxLines: 1,
             expands: false,
-            onSaved: ((String? Value) {}),
-            onFieldSubmitted: (v) {
+            onSaved: widget.onSavedField,
+            onFieldSubmitted: widget.onSubmitingField,
+            onChanged: widget.onChanged ,
               //  FocusScope.of(context).nextFocus();
-            },
 
             validator: (value) {
               String phone = r'(^[0-9]{10}$)';
@@ -102,7 +113,7 @@ class _FormFieldBoxState extends State<FormFieldBox> {
               return null;
             },
             decoration: InputDecoration(
-              fillColor: Colors.white,
+              fillColor: widget.readonly? GreenTvmTheme.grey: GreenTvmTheme.white,
               focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(
                   color: GreenTvmTheme.primaryBlue,

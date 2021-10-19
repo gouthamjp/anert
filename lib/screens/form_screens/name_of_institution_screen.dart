@@ -1,5 +1,6 @@
 import 'package:anert/constants.dart';
 import 'package:anert/providers/form_provider.dart';
+import 'package:anert/screens/form_screens/ev_site.dart';
 import 'package:anert/screens/form_screens/inspection_site.dart';
 import 'package:anert/screens/option_selection.dart';
 import 'package:anert/utils/stepper_counter.dart';
@@ -10,12 +11,16 @@ import 'package:anert/utils/radiobox.dart';
 import 'package:anert/utils/button.dart';
 import 'package:provider/provider.dart';
 import 'package:anert/models/user_model.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:anert/globals.dart' as g;
 
 enum Yesorno { yes, no }
+enum Option{solar,ev}
 
 class NameOfInstitution extends StatefulWidget {
   static String id = 'nameofinstitution_screen';
-
+  final Option option;
+  NameOfInstitution({required this.option});
   @override
   _NameOfInstitutionState createState() => _NameOfInstitutionState();
 }
@@ -24,7 +29,9 @@ class _NameOfInstitutionState extends State<NameOfInstitution> {
   final _formKey = GlobalKey<FormState>();
   final _buildignamecontroller = TextEditingController();
   Yesorno? _yesorno = Yesorno.yes;
-
+  //backend handling variables
+  final database = FirebaseDatabase.instance.reference();
+  //
   void test() {
     if (!_formKey.currentState!.validate()) {
       return;
@@ -34,13 +41,16 @@ class _NameOfInstitutionState extends State<NameOfInstitution> {
 
   @override
   Widget build(BuildContext context) {
+    //backend handling variables
+    final institution = database.child('Institution/');
+    //
     final user = Provider.of<CustomUser?>(context);
     final detData = Provider.of<FormProvider>(context);
     final mquery = MediaQuery.of(context).size;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: GreenTvmTheme.themeAppbar(
-          title: 'GREEN TVM', context: context, showBackButton: false),
+          title: 'GREEN TVM', context: context, showBackButton: true),
       backgroundColor: Colors.white,
       body: SizedBox(
         height: mquery.height,
@@ -56,6 +66,8 @@ class _NameOfInstitutionState extends State<NameOfInstitution> {
                   key: _formKey,
                   child: FormFieldBox(
                     onSavedField: (value) {},
+onChanged: (value) {},
+onSubmitingField: (value) {},
                     labelText: 'Name of Building',
                     hintText: 'Enter name of building',
                     keyboardType: KeyboardType.Text_,
@@ -98,7 +110,8 @@ class _NameOfInstitutionState extends State<NameOfInstitution> {
                     ],
                   )),
               Button(
-                  onpress: () {
+                  onpress: () async{
+                    g.Buildingname= _buildignamecontroller.text;
                     detData.setOne(
                       user?.id,
                       _buildignamecontroller.text,
@@ -106,14 +119,19 @@ class _NameOfInstitutionState extends State<NameOfInstitution> {
                     );
 
                     if (!_formKey.currentState!.validate()) {
+                      
+                      
                       return;
+                    } else if (_yesorno == Yesorno.yes) {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => widget.option==Option.ev?EvPage():InspectionPage()));
+                    } else {
+                      institution.push().set({
+                        'user': detData.baseForm.userID,
+                        'name': detData.baseForm.houseName,
+                        'deployment': detData.baseForm.deployment,
+                      });
+                      _buildignamecontroller.clear();
                     }
-                    else if(_yesorno==Yesorno.yes){
-                      Navigator.pushNamed(context, OptionSelection.id);
-                      }
-                      else{
-                        _buildignamecontroller.clear();
-                      }
                   },
                   text: 'NEXT')
             ],

@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:anert/models/user_model.dart';
 import 'package:anert/providers/form_provider.dart';
 import 'package:anert/utils/yesopentextfield.dart';
+import 'package:anert/globals.dart' as g;
 
 enum Category { residential, commercial, government }
 enum Mounting { roof, ground }
@@ -19,6 +20,21 @@ enum ElectricalConnection { onephase, threephase }
 enum RoofShape { flat, tilted, others }
 enum RoofCover { concrete, tiles, asbetos, others }
 enum Accessibility { crane, scaffolding, stairs, notaccessible }
+enum Subsidy {
+  do_not_know,
+  not_interested,
+  info_obtained_not_useful,
+  info_not_obtained,
+  do_not_know_whom_to_approach
+}
+enum Disinterest {
+  no_ROI,
+  lack_of_info,
+  never_heard_of_solar,
+  no_apt_space,
+  bad_reviews,
+  not_interested
+}
 
 class InspectionPage extends StatefulWidget {
   static String id = 'inspection_screen';
@@ -39,12 +55,21 @@ class _InspectionPageState extends State<InspectionPage> {
   final _econncontroller = TextEditingController();
   final _billingcontroller = TextEditingController();
   final _shadecontroller = TextEditingController();
+  final _lengthcontroller = TextEditingController();
+  final _breadthcontroller = TextEditingController();
   final _remarkcontroller = TextEditingController();
   final _rentednamecontroller = TextEditingController();
   final _rentedphonecontroller = TextEditingController();
   final _rentedemailcontroller = TextEditingController();
   final _othersspecifycontroller = TextEditingController();
-  
+  final _othersspecifyshapecontroller = TextEditingController();
+  final _wardnumbercontroller = TextEditingController();
+  final _wardnamecontroller = TextEditingController();
+  final _assemblynamecontroller = TextEditingController();
+  final _parlaimentnamecontroller = TextEditingController();
+  final _districtnamecontroller = TextEditingController();
+  final _localbodynamecontroller = TextEditingController();
+
   Category? _category = Category.residential;
   Mounting? _mounting = Mounting.roof;
   Yesorno? _rented = Yesorno.no;
@@ -53,14 +78,41 @@ class _InspectionPageState extends State<InspectionPage> {
   RoofShape? _roofShape = RoofShape.flat;
   RoofCover? _roofCover = RoofCover.concrete;
   Accessibility? _accessibility = Accessibility.crane;
+  Subsidy? _subsidy = Subsidy.do_not_know;
+  Disinterest? _disinterest = Disinterest.no_ROI;
   //final _buildignamenode = FocusNode();
   // final _notcpnode = FocusNode();
   String data0 = '';
   String data1 = '';
+  int area = 0;
+  double length = 0.0;
+  double breadth = 0.0;
+
+  void apply() {
+    setState(() {
+      area = length * breadth ~/ 1;
+      _shadecontroller.text = '$area';
+    });
+  }
+
   void test() {
     _formKey.currentState!.save();
     data0 = _buildignamecontroller.text;
     data1 = _notcpcontroller.text;
+  }
+
+  void intialfunc() {
+    _buildignamecontroller.text = g.Buildingname;
+    area = length * breadth ~/ 1;
+    _lengthcontroller.text = '$length';
+    _breadthcontroller.text = '$breadth';
+    _shadecontroller.text = '$area';
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    intialfunc();
   }
 
   @override
@@ -68,6 +120,7 @@ class _InspectionPageState extends State<InspectionPage> {
     final detData = Provider.of<FormProvider>(context);
     final user = Provider.of<CustomUser?>(context);
     final mquery = MediaQuery.of(context).size;
+
     return Scaffold(
         appBar: GreenTvmTheme.themeAppbar(
             title: 'GREEN TVM', context: context, showBackButton: true),
@@ -84,7 +137,7 @@ class _InspectionPageState extends State<InspectionPage> {
                   height: 0.05 * mquery.height,
                   width: 0.05 * mquery.width,
                 ),
-                Text('Site Inspection Details',
+                Text('Solar Site Details',
                     textAlign: TextAlign.center,
                     style: GreenTvmTheme.pagedHeading),
                 SizedBox(
@@ -96,10 +149,13 @@ class _InspectionPageState extends State<InspectionPage> {
                   child: Column(children: [
                     FormFieldBox(
                       onSavedField: (value) {},
+                      onChanged: (value) {},
+                      onSubmitingField: (value) {},
                       labelText: 'Name of Building',
                       hintText: 'Name of Building',
                       keyboardType: KeyboardType.Text_,
                       controller: _buildignamecontroller,
+                      readonly: true,
                       requiredornot: true,
                       //focusNode: _buildignamenode,
                       didEndTextEdit: () {},
@@ -150,6 +206,8 @@ class _InspectionPageState extends State<InspectionPage> {
                     ),
                     FormFieldBox(
                       onSavedField: (value) {},
+                      onChanged: (value) {},
+                      onSubmitingField: (value) {},
                       labelText: 'Name of the Contact Person',
                       hintText: 'Enter Name',
                       requiredornot: true,
@@ -160,6 +218,8 @@ class _InspectionPageState extends State<InspectionPage> {
                     ),
                     FormFieldBox(
                       onSavedField: (value) {},
+                      onChanged: (value) {},
+                      onSubmitingField: (value) {},
                       labelText: 'Designation',
                       hintText: 'Enter Text Here',
                       requiredornot: true,
@@ -170,6 +230,8 @@ class _InspectionPageState extends State<InspectionPage> {
                     ),
                     FormFieldBox(
                       onSavedField: (value) {},
+                      onChanged: (value) {},
+                      onSubmitingField: (value) {},
                       labelText: 'Phone Number',
                       hintText: 'Enter Number Here',
                       requiredornot: true,
@@ -180,9 +242,11 @@ class _InspectionPageState extends State<InspectionPage> {
                     ),
                     FormFieldBox(
                       onSavedField: (value) {},
+                      onChanged: (value) {},
+                      onSubmitingField: (value) {},
                       labelText: 'Email Address',
                       hintText: 'Enter Email Here',
-                      requiredornot: true,
+                      requiredornot: false,
                       keyboardType: KeyboardType.Text_,
                       controller: _emailcontroller,
                       // focusNode: _notcpnode,
@@ -228,6 +292,8 @@ class _InspectionPageState extends State<InspectionPage> {
                         didEndTextEdit: () {},
                         requiredornot: true,
                         onSavedField: (value) {},
+                        onChanged: (value) {},
+                        onSubmitingField: (value) {},
                         yesorno: _rented == Yesorno.yes ? true : false),
                     YesOpenFormFieldBox(
                         hintText: 'Enter Phone number ',
@@ -235,8 +301,10 @@ class _InspectionPageState extends State<InspectionPage> {
                         keyboardType: KeyboardType1.Number_,
                         controller: _rentedphonecontroller,
                         didEndTextEdit: () {},
-                        requiredornot: true,
+                        requiredornot: false,
                         onSavedField: (value) {},
+                        onChanged: (value) {},
+                        onSubmitingField: (value) {},
                         yesorno: _rented == Yesorno.yes ? true : false),
                     YesOpenFormFieldBox(
                         hintText: 'Enter email',
@@ -244,8 +312,10 @@ class _InspectionPageState extends State<InspectionPage> {
                         keyboardType: KeyboardType1.Text_,
                         controller: _rentedemailcontroller,
                         didEndTextEdit: () {},
-                        requiredornot: true,
+                        requiredornot: false,
                         onSavedField: (value) {},
+                        onChanged: (value) {},
+                        onSubmitingField: (value) {},
                         yesorno: _rented == Yesorno.yes ? true : false),
                     RadioFieldBox(
                       labelText: 'Mounting',
@@ -279,19 +349,89 @@ class _InspectionPageState extends State<InspectionPage> {
                         ],
                       ),
                     ),
+                    //Wardname and number insert
                     FormFieldBox(
                       onSavedField: (value) {},
-                      labelText: 'Height',
-                      hintText: 'Enter Height Here',
+                      onChanged: (value) {},
+                      onSubmitingField: (value) {},
+                      labelText: 'Assembly Constituency',
+                      hintText: 'Name of Assembly Constituency',
+                      keyboardType: KeyboardType.Text_,
+                      controller: _assemblynamecontroller,
+                      //readonly: true,
                       requiredornot: true,
-                      keyboardType: KeyboardType.Number_,
-                      controller: _heightcontroller,
+                      //focusNode: _buildignamenode,
+                      didEndTextEdit: () {},
+                    ),
+                    FormFieldBox(
+                      onSavedField: (value) {},
+                      onChanged: (value) {},
+                      onSubmitingField: (value) {},
+                      labelText: 'Parliament Constituency',
+                      hintText: 'Name of parliament constituency',
+                      keyboardType: KeyboardType.Text_,
+                      controller: _parlaimentnamecontroller,
+                      // readonly: true,
+                      requiredornot: true,
+                      //focusNode: _buildignamenode,
+                      didEndTextEdit: () {},
+                    ),
+                    FormFieldBox(
+                      onSavedField: (value) {},
+                      onChanged: (value) {},
+                      onSubmitingField: (value) {},
+                      labelText: 'District',
+                      hintText: 'Name of District',
+                      keyboardType: KeyboardType.Text_,
+                      controller: _districtnamecontroller,
+                      // readonly: true,
+                      requiredornot: true,
+                      //focusNode: _buildignamenode,
+                      didEndTextEdit: () {},
+                    ),
+                    FormFieldBox(
+                      onSavedField: (value) {},
+                      onChanged: (value) {},
+                      onSubmitingField: (value) {},
+                      labelText: 'Local body',
+                      hintText: 'Name of Local body',
+                      keyboardType: KeyboardType.Text_,
+                      controller: _localbodynamecontroller,
+                      // readonly: true,
+                      requiredornot: true,
+                      //focusNode: _buildignamenode,
+                      didEndTextEdit: () {},
+                    ),
+                    FormFieldBox(
+                      onSavedField: (value) {},
+                      onChanged: (value) {},
+                      onSubmitingField: (value) {},
+                      labelText: 'Ward Number',
+                      hintText: 'Enter Number Here',
+                      requiredornot: true,
+                      keyboardType: KeyboardType.Text_,
+                      controller: _wardnumbercontroller,
                       // focusNode: _notcpnode,
                       didEndTextEdit: () {},
                     ),
                     FormFieldBox(
                       onSavedField: (value) {},
-                      labelText: 'Connecteed Load',
+                      onChanged: (value) {},
+                      onSubmitingField: (value) {},
+                      labelText: 'Ward Name',
+                      hintText: 'Enter Ward Name Here',
+                      requiredornot: true,
+                      keyboardType: KeyboardType.Text_,
+                      controller: _wardnamecontroller,
+                      // focusNode: _notcpnode,
+                      didEndTextEdit: () {},
+                    ),
+                    //end insert
+                    FormFieldBox(
+                      onSavedField: (value) {},
+                      onChanged: (value) {},
+                      onSubmitingField: (value) {},
+                      labelText: 'Connected Load',
                       hintText: 'Enter in Kwh',
                       requiredornot: true,
                       keyboardType: KeyboardType.Number_,
@@ -301,6 +441,8 @@ class _InspectionPageState extends State<InspectionPage> {
                     ),
                     FormFieldBox(
                       onSavedField: (value) {},
+                      onChanged: (value) {},
+                      onSubmitingField: (value) {},
                       labelText: 'Monthly Average Consumption',
                       hintText: 'Enter in KWh',
                       requiredornot: true,
@@ -311,6 +453,8 @@ class _InspectionPageState extends State<InspectionPage> {
                     ),
                     FormFieldBox(
                       onSavedField: (value) {},
+                      onChanged: (value) {},
+                      onSubmitingField: (value) {},
                       labelText: 'Name of electrical connection',
                       hintText: 'Enter Name',
                       requiredornot: true,
@@ -321,6 +465,8 @@ class _InspectionPageState extends State<InspectionPage> {
                     ),
                     FormFieldBox(
                       onSavedField: (value) {},
+                      onChanged: (value) {},
+                      onSubmitingField: (value) {},
                       labelText: 'Billing Period',
                       hintText: 'Enter duration',
                       requiredornot: true,
@@ -395,9 +541,42 @@ class _InspectionPageState extends State<InspectionPage> {
                     ),
                     FormFieldBox(
                       onSavedField: (value) {},
-                      labelText: 'Shade free area (in m2)',
-                      hintText: 'Enter in KWh',
+                      onChanged: (value) {
+                        length = double.parse(_lengthcontroller.text);
+                        apply();
+                      },
+                      onSubmitingField: (value) {},
+                      labelText: 'Length (in m)',
+                      hintText: 'Enter in meter',
                       requiredornot: true,
+                      keyboardType: KeyboardType.Number_,
+                      controller: _lengthcontroller,
+                      // focusNode: _notcpnode,
+                      didEndTextEdit: () {},
+                    ),
+                    FormFieldBox(
+                      onSavedField: (value) {},
+                      onChanged: (value) {
+                        breadth = double.parse(_breadthcontroller.text);
+                        apply();
+                      },
+                      onSubmitingField: (value) {},
+                      labelText: 'Breadth (in m)',
+                      hintText: 'Enter in meter',
+                      requiredornot: true,
+                      keyboardType: KeyboardType.Number_,
+                      controller: _breadthcontroller,
+                      // focusNode: _notcpnode,
+                      didEndTextEdit: () {},
+                    ),
+                    FormFieldBox(
+                      onSavedField: (value) {},
+                      onChanged: (value) {},
+                      onSubmitingField: (value) {},
+                      labelText: 'Shade free area (in m²)',
+                      hintText: 'Enter in M²',
+                      requiredornot: true,
+                      readonly: true,
                       keyboardType: KeyboardType.Number_,
                       controller: _shadecontroller,
                       // focusNode: _notcpnode,
@@ -447,6 +626,17 @@ class _InspectionPageState extends State<InspectionPage> {
                         ],
                       ),
                     ),
+                    YesOpenFormFieldBox(
+                        hintText: 'Enter here ',
+                        labelText: 'Enter the type of roofing material',
+                        keyboardType: KeyboardType1.Number_,
+                        controller: _othersspecifyshapecontroller,
+                        didEndTextEdit: () {},
+                        requiredornot: false,
+                        onSavedField: (value) {},
+                        onChanged: (value) {},
+                        onSubmitingField: (value) {},
+                        yesorno: _roofShape == RoofShape.others ? true : false),
                     RadioFieldBox(
                       labelText: 'Roof Covering Material',
                       requiredornot: true,
@@ -503,7 +693,7 @@ class _InspectionPageState extends State<InspectionPage> {
                         ],
                       ),
                     ),
-                     YesOpenFormFieldBox(
+                    YesOpenFormFieldBox(
                         hintText: 'Enter here ',
                         labelText: 'Enter the type of roofing material',
                         keyboardType: KeyboardType1.Number_,
@@ -511,6 +701,8 @@ class _InspectionPageState extends State<InspectionPage> {
                         didEndTextEdit: () {},
                         requiredornot: false,
                         onSavedField: (value) {},
+                        onChanged: (value) {},
+                        onSubmitingField: (value) {},
                         yesorno: _roofCover == RoofCover.others ? true : false),
                     RadioFieldBox(
                       labelText: 'Accessibilty of Roof',
@@ -568,8 +760,161 @@ class _InspectionPageState extends State<InspectionPage> {
                         ],
                       ),
                     ),
+                    RadioFieldBox(
+                      labelText:
+                          'Knowledge on subsidy available \non solar installation',
+                      requiredornot: false,
+                      radioChild: Column(
+                        children: <Widget>[
+                          ListTile(
+                            title: const Text('DO NOT KNOW'),
+                            leading: Radio<Subsidy>(
+                              value: Subsidy.do_not_know,
+                              groupValue: _subsidy,
+                              onChanged: (Subsidy? value) {
+                                setState(() {
+                                  _subsidy = value;
+                                });
+                              },
+                            ),
+                          ),
+                          ListTile(
+                            title: const Text('NOT INTERESTED'),
+                            leading: Radio<Subsidy>(
+                              value: Subsidy.not_interested,
+                              groupValue: _subsidy,
+                              onChanged: (Subsidy? value) {
+                                setState(() {
+                                  _subsidy = value;
+                                });
+                              },
+                            ),
+                          ),
+                          ListTile(
+                            title: const Text(
+                                'INFORMATION OBTAINED WAS NOT USEFUL'),
+                            leading: Radio<Subsidy>(
+                              value: Subsidy.info_obtained_not_useful,
+                              groupValue: _subsidy,
+                              onChanged: (Subsidy? value) {
+                                setState(() {
+                                  _subsidy = value;
+                                });
+                              },
+                            ),
+                          ),
+                          ListTile(
+                            title: const Text('INFORMATION  NOT OBTAINED'),
+                            leading: Radio<Subsidy>(
+                              value: Subsidy.info_not_obtained,
+                              groupValue: _subsidy,
+                              onChanged: (Subsidy? value) {
+                                setState(() {
+                                  _subsidy = value;
+                                });
+                              },
+                            ),
+                          ),
+                          ListTile(
+                            title: const Text('DO NOT KNOW WHOM TO APPROACH'),
+                            leading: Radio<Subsidy>(
+                              value: Subsidy.do_not_know_whom_to_approach,
+                              groupValue: _subsidy,
+                              onChanged: (Subsidy? value) {
+                                setState(() {
+                                  _subsidy = value;
+                                });
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    RadioFieldBox(
+                      labelText:
+                          'Reason for being disinterested\n in solar installation',
+                      requiredornot: false,
+                      radioChild: Column(
+                        children: <Widget>[
+                          ListTile(
+                            title: const Text('NO RETURN OF INVESTNMENT'),
+                            leading: Radio<Disinterest>(
+                              value: Disinterest.no_ROI,
+                              groupValue: _disinterest,
+                              onChanged: (Disinterest? value) {
+                                setState(() {
+                                  _disinterest = value;
+                                });
+                              },
+                            ),
+                          ),
+                          ListTile(
+                            title: const Text('LACK OF INFORMATION'),
+                            leading: Radio<Disinterest>(
+                              value: Disinterest.lack_of_info,
+                              groupValue: _disinterest,
+                              onChanged: (Disinterest? value) {
+                                setState(() {
+                                  _disinterest = value;
+                                });
+                              },
+                            ),
+                          ),
+                          ListTile(
+                            title: const Text('NEVER HEARD ABOUT SOLAR'),
+                            leading: Radio<Disinterest>(
+                              value: Disinterest.never_heard_of_solar,
+                              groupValue: _disinterest,
+                              onChanged: (Disinterest? value) {
+                                setState(() {
+                                  _disinterest = value;
+                                });
+                              },
+                            ),
+                          ),
+                          ListTile(
+                            title: const Text('NO APT SPACE'),
+                            leading: Radio<Disinterest>(
+                              value: Disinterest.no_apt_space,
+                              groupValue: _disinterest,
+                              onChanged: (Disinterest? value) {
+                                setState(() {
+                                  _disinterest = value;
+                                });
+                              },
+                            ),
+                          ),
+                          ListTile(
+                            title: const Text('BAD REVIEWS OR EXPERIENCE'),
+                            leading: Radio<Disinterest>(
+                              value: Disinterest.bad_reviews,
+                              groupValue: _disinterest,
+                              onChanged: (Disinterest? value) {
+                                setState(() {
+                                  _disinterest = value;
+                                });
+                              },
+                            ),
+                          ),
+                          ListTile(
+                            title: const Text('NOT INTERESTED'),
+                            leading: Radio<Disinterest>(
+                              value: Disinterest.not_interested,
+                              groupValue: _disinterest,
+                              onChanged: (Disinterest? value) {
+                                setState(() {
+                                  _disinterest = value;
+                                });
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                     FormFieldBox(
                       onSavedField: (value) {},
+                      onChanged: (value) {},
+                      onSubmitingField: (value) {},
                       labelText: 'Remarks',
                       hintText: 'Enter Remarks Here',
                       requiredornot: false,
@@ -578,6 +923,7 @@ class _InspectionPageState extends State<InspectionPage> {
                       // focusNode: _notcpnode,
                       didEndTextEdit: () {},
                     ),
+
                     Button(
                         //iugi
                         onpress: () {
@@ -586,6 +932,73 @@ class _InspectionPageState extends State<InspectionPage> {
                           } else {
                             Navigator.pushNamed(context, InterestedScreen.id);
                           }
+
+                          // entering data to the provider
+
+                          if (_rented == Yesorno.no) {
+                            detData.setTwo(
+                                user!.id,
+                                _buildignamecontroller.text,
+                                _category.toString().split('.').last,
+                                _notcpcontroller.text,
+                                _designationcontroller.text,
+                                _phonecontroller.text,
+                                _emailcontroller.text,
+                                _rented.toString().split('.').last,
+                                _mounting.toString().split('.').last,
+                                _heightcontroller.text,
+                                _loadcontroller.text,
+                                _avgconsumption.text,
+                                _econncontroller.text,
+                                _billingcontroller.text,
+                                _typeofCustomer.toString().split('.').last,
+                                _electricalConnection
+                                    .toString()
+                                    .split('.')
+                                    .last,
+                                _shadecontroller.text,
+                                _roofShape.toString().split('.').last,
+                                (_roofCover == RoofCover.others)
+                                    ? _othersspecifycontroller.text
+                                    : _roofCover.toString().split('.').last,
+                                _accessibility.toString().split('.').last,
+                                _remarkcontroller.text);
+                          } else {
+                            detData.setTwoRented(
+                                user!.id,
+                                _buildignamecontroller.text,
+                                _category.toString().split('.').last,
+                                _notcpcontroller.text,
+                                _designationcontroller.text,
+                                _phonecontroller.text,
+                                _emailcontroller.text,
+                                _rented.toString().split('.').last,
+                                _rentednamecontroller.text,
+                                _rentedphonecontroller.text,
+                                _rentedemailcontroller.text,
+                                _mounting.toString().split('.').last,
+                                _heightcontroller.text,
+                                _loadcontroller.text,
+                                _avgconsumption.text,
+                                _econncontroller.text,
+                                _billingcontroller.text,
+                                _typeofCustomer.toString().split('.').last,
+                                _electricalConnection
+                                    .toString()
+                                    .split('.')
+                                    .last,
+                                _shadecontroller.text,
+                                _roofShape.toString().split('.').last,
+                                (_roofCover == RoofCover.others)
+                                    ? _othersspecifycontroller.text
+                                    : _roofCover.toString().split('.').last,
+                                _accessibility.toString().split('.').last,
+                                _remarkcontroller.text);
+                          }
+
+                          print(detData.siteInspection.ownerName);
+
+                          //
                         },
                         text: 'NEXT')
                   ]),

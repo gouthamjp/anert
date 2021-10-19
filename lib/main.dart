@@ -45,7 +45,6 @@ class MyApp extends StatelessWidget {
             Splash.id: (context) => Splash(),
             LandingScreen.id: (context) => LandingScreen(),
             OptionSelection.id: (context) => OptionSelection(),
-            NameOfInstitution.id: (context) => NameOfInstitution(),
             InspectionPage.id: (context) => InspectionPage(),
             EvPage.id: (context) => EvPage(),
             InterestedScreen.id: (context) => InterestedScreen(),
