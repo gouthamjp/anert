@@ -7,7 +7,6 @@ class FormProvider with ChangeNotifier {
 
   var siteInspection = SiteInspectionForm();
   var evInspection = EvFrom();
-  String? wantSolarPanel;
   int formType = 0; // 0 : site inspection , 1 : EV site
 
   void setInspection(

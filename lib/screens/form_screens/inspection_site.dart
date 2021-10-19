@@ -90,19 +90,19 @@ class _InspectionPageState extends State<InspectionPage> {
   int area = 0;
   double length = 0;
   double breadth = 0;
-  int capacity=0;
-  double connectedload=0.0;
+  int capacity = 0;
+  double connectedload = 0.0;
 
   double convert(String value) {
     double number = 0;
     number = double.parse(value);
     return number;
   }
-  
-  void proposedcapacity(){
-    capacity=min(area/2, connectedload) ~/1;
+
+  void proposedcapacity() {
+    capacity = min(area / 2, connectedload) ~/ 1;
     setState(() {
-      _propossedcontroller.text='$capacity';
+      _propossedcontroller.text = '$capacity';
     });
   }
 
@@ -125,7 +125,7 @@ class _InspectionPageState extends State<InspectionPage> {
     _lengthcontroller.text = '$length';
     _breadthcontroller.text = '$breadth';
     _shadecontroller.text = '$area';
-    _propossedcontroller.text='$capacity';
+    _propossedcontroller.text = '$capacity';
   }
 
   @override
@@ -449,8 +449,8 @@ class _InspectionPageState extends State<InspectionPage> {
                     FormFieldBox(
                       onSavedField: (value) {},
                       onChanged: (value) {
-                        connectedload=convert(value!);
-                         proposedcapacity();
+                        connectedload = convert(value!);
+                        proposedcapacity();
                       },
                       onSubmitingField: (value) {},
                       labelText: 'Connected Load',
@@ -595,9 +595,7 @@ class _InspectionPageState extends State<InspectionPage> {
                     ),
                     FormFieldBox(
                       onSavedField: (value) {},
-                      onChanged: (value) {
-                       
-                      },
+                      onChanged: (value) {},
                       onSubmitingField: (value) {},
                       labelText: 'Shade free area (in m²)',
                       hintText: 'Enter in M²',
@@ -977,6 +975,12 @@ class _InspectionPageState extends State<InspectionPage> {
                           if (_rented == Yesorno.no) {
                             detData.setInspection(
                                 user!.id,
+                                'asda',
+                                'asda',
+                                'asda',
+                                'asda',
+                                'asda',
+                                'asda',
                                 _buildignamecontroller.text,
                                 _category.toString().split('.').last,
                                 _notcpcontroller.text,
@@ -1034,10 +1038,6 @@ class _InspectionPageState extends State<InspectionPage> {
                                 _accessibility.toString().split('.').last,
                                 _remarkcontroller.text);
                           }
-
-                          print(detData.siteInspection.ownerName);
-
-                          //
                         },
                         text: 'NEXT')
                   ]),

@@ -171,7 +171,7 @@ class _InterestedScreenState extends State<InterestedScreen> {
                         'Owner Phone': detData.siteInspection.ownerphn,
                         'Owner Email': detData.siteInspection.ownerEmail,
                         'Mounting': detData.siteInspection.mounting,
-                        'Height': detData.siteInspection.height, //
+                        //  'Height': detData.siteInspection.height,
                         'Load': detData.siteInspection.load,
                         'Avg Consumption':
                             detData.siteInspection.avgConsumption,
@@ -179,7 +179,7 @@ class _InterestedScreenState extends State<InterestedScreen> {
                             detData.siteInspection.eConnectionName,
                         'Billing Period': detData.siteInspection.billingPeriod,
                         'Customer Type': detData.siteInspection.connectionType,
-                        'Shade Area': detData.siteInspection.sfreeArea,
+                        // 'Shade Area': detData.siteInspection.sfreeArea,
                         'Roof Shape': detData.siteInspection.roofShape,
                         'Roof Cover': detData.siteInspection.roofCover,
                         'Roof Access': detData.siteInspection.roofAccess,

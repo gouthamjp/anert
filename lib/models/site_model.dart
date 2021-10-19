@@ -26,7 +26,7 @@ class SiteInspectionForm {
   String? connectionType = 'nil';
   String? length = 'nil';
   String? breadth = 'nil';
-  String area = 'nil';
+  String? area = 'nil';
   String? propCap = 'nil';
   String? roofShape = 'nil';
   String? roofCover = 'nil';
