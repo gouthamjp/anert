@@ -21,6 +21,7 @@ class FormProvider with ChangeNotifier {
       String parlimentConst,
       String district,
       String localBody,
+      String wardNum,
       String wardName,
       String load,
       String avgConsumption,
@@ -31,36 +32,45 @@ class FormProvider with ChangeNotifier {
       String length,
       String breadth,
       String area,
+      String propCap,
       String roofShape,
       String roofCover,
       String roofAccess,
       String subsidy,
       String disintrest,
       String remark) {
-    siteInspection.avgConsumption = avgConsumption;
-    siteInspection.billingPeriod = billingPeriod;
-
     siteInspection.category = category;
-    siteInspection.connectionType = connectionType;
     siteInspection.contactPerson = contactPerson;
-    siteInspection.customerType = customerType;
     siteInspection.designatoin = designatoin;
-    siteInspection.eConnectionName = eConnectionName;
-    siteInspection.email = email;
-    siteInspection.load = load;
-    siteInspection.mounting = mounting;
     siteInspection.phoneNum = phoneNum;
-    siteInspection.remark = remark;
-    siteInspection.roofAccess = roofAccess;
-    siteInspection.roofCover = roofCover;
-    siteInspection.roofShape = roofShape;
-
+    siteInspection.email = email;
     siteInspection.rented = rented;
+    siteInspection.mounting = mounting;
+    siteInspection.assemblyConst = assemblyConst;
+    siteInspection.parlimentConst = parlimentConst;
+    siteInspection.district = district;
+    siteInspection.localBody = localBody;
+    siteInspection.wardNo = wardNum;
+    siteInspection.wardName = wardName;
+    siteInspection.load = load;
+    siteInspection.avgConsumption = avgConsumption;
+    siteInspection.eConnectionName = eConnectionName;
+    siteInspection.billingPeriod = billingPeriod;
+    siteInspection.customerType = customerType;
+    siteInspection.connectionType = connectionType;
+    siteInspection.length = length;
+    siteInspection.breadth = breadth;
+    siteInspection.area = area;
+    siteInspection.propCap = propCap;
+    siteInspection.roofShape = roofShape;
+    siteInspection.roofCover = roofCover;
+    siteInspection.roofAccess = roofAccess;
+    siteInspection.subsidy = subsidy;
+    siteInspection.disintrest = disintrest;
+    siteInspection.remark = remark;
   }
 
   void setInspectionRented(
-      String userID,
-      String buildingName,
       String category,
       String contactPerson,
       String designatoin,
@@ -71,41 +81,60 @@ class FormProvider with ChangeNotifier {
       String ownerphn,
       String ownerEmail,
       String mounting,
-      String height,
+      String assemblyConst,
+      String parlimentConst,
+      String district,
+      String localBody,
+      String wardNum,
+      String wardName,
       String load,
       String avgConsumption,
       String eConnectionName,
       String billingPeriod,
       String customerType,
       String connectionType,
-      String sfreeArea,
+      String length,
+      String breadth,
+      String area,
+      String propCap,
       String roofShape,
       String roofCover,
       String roofAccess,
+      String subsidy,
+      String disintrest,
       String remark) {
-    siteInspection.userID = userID;
-    siteInspection.avgConsumption = avgConsumption;
-    siteInspection.billingPeriod = billingPeriod;
-    siteInspection.buildingName = buildingName;
     siteInspection.category = category;
-    siteInspection.connectionType = connectionType;
     siteInspection.contactPerson = contactPerson;
-    siteInspection.customerType = customerType;
     siteInspection.designatoin = designatoin;
-    siteInspection.eConnectionName = eConnectionName;
-    siteInspection.email = email;
-    siteInspection.load = load;
-    siteInspection.mounting = mounting;
     siteInspection.phoneNum = phoneNum;
-    siteInspection.remark = remark;
-    siteInspection.roofAccess = roofAccess;
-    siteInspection.roofCover = roofCover;
-    siteInspection.roofShape = roofShape;
-
+    siteInspection.email = email;
     siteInspection.rented = rented;
     siteInspection.ownerName = ownerName;
     siteInspection.ownerphn = ownerphn;
     siteInspection.ownerEmail = ownerEmail;
+    siteInspection.mounting = mounting;
+    siteInspection.assemblyConst = assemblyConst;
+    siteInspection.parlimentConst = parlimentConst;
+    siteInspection.district = district;
+    siteInspection.localBody = localBody;
+    siteInspection.wardNo = wardNum;
+    siteInspection.wardName = wardName;
+    siteInspection.load = load;
+    siteInspection.avgConsumption = avgConsumption;
+    siteInspection.eConnectionName = eConnectionName;
+    siteInspection.billingPeriod = billingPeriod;
+    siteInspection.customerType = customerType;
+    siteInspection.connectionType = connectionType;
+    siteInspection.length = length;
+    siteInspection.breadth = breadth;
+    siteInspection.area = area;
+    siteInspection.propCap = propCap;
+    siteInspection.roofShape = roofShape;
+    siteInspection.roofCover = roofCover;
+    siteInspection.roofAccess = roofAccess;
+    siteInspection.subsidy = subsidy;
+    siteInspection.disintrest = disintrest;
+    siteInspection.remark = remark;
   }
 
   void setEv(
