@@ -256,7 +256,6 @@ class _InterestedScreenState extends State<InterestedScreen> {
               Button(
                   onpress: () async {
                     _showMyDialog();
-                    if(submit)
                     if(submit){
                     submitfunc();
                     Navigator.pushNamedAndRemoveUntil(
