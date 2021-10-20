@@ -127,7 +127,6 @@ class _NameOfInstitutionState extends State<NameOfInstitution> {
                                   : InspectionPage()));
                     } else {
                       if (detData.formType == 0) {
-                        print(123);
                         institution.push().set({
                           'uid': detData.siteInspection.userID,
                           'building_name': detData.siteInspection.buildingName,
@@ -136,7 +135,7 @@ class _NameOfInstitutionState extends State<NameOfInstitution> {
                           'contact_name': detData.siteInspection.contactPerson,
                           'desig': detData.siteInspection.designatoin,
                           'phone': detData.siteInspection.phoneNum,
-                          'email': detData.siteInspection..email,
+                          'email': detData.siteInspection.email,
                           'rented': detData.siteInspection.rented,
                           'owner_name': detData.siteInspection.ownerName,
                           'owner_phone': detData.siteInspection.ownerphn,

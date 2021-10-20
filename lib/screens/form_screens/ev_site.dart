@@ -335,29 +335,23 @@ class _EvPageState extends State<EvPage> {
                     ),
                     Button(
                         onpress: () {
-                          if (!_formKey.currentState!.validate()) {
-                            return;
-                          } else {
-                            Navigator.pushNamed(context, InterestedScreen.id);
-                          }
                           if (_rented == Yesorno.no) {
                             detData.setEv(
-                                user!.uid,
-                                _buildignamecontroller.text,
                                 _category.toString().split('.').last,
+                                _wardnumbercontroller.text,
+                                _wardnamecontroller.text,
                                 _notcpcontroller.text,
                                 _designationcontroller.text,
                                 _phonecontroller.text,
                                 _emailcontroller.text,
                                 _rented.toString().split('.').last,
-                                _addresscontroller.text,
                                 _yesorno.toString().split('.').last,
                                 _remarkscontroller.text);
                           } else {
                             detData.setEvRented(
-                                user!.uid,
-                                _buildignamecontroller.text,
                                 _category.toString().split('.').last,
+                                _wardnumbercontroller.text,
+                                _wardnamecontroller.text,
                                 _notcpcontroller.text,
                                 _designationcontroller.text,
                                 _phonecontroller.text,
@@ -370,6 +364,11 @@ class _EvPageState extends State<EvPage> {
                                 _addresscontroller.text,
                                 _yesorno.toString().split('.').last,
                                 _remarkscontroller.text);
+                          }
+                          if (!_formKey.currentState!.validate()) {
+                            return;
+                          } else {
+                            Navigator.pushNamed(context, InterestedScreen.id);
                           }
                         },
                         text: 'NEXT')

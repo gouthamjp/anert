@@ -117,7 +117,6 @@ class FormProvider with ChangeNotifier {
     String phoneNum,
     String email,
     String rented,
-    String address,
     String twoCharging,
     String remakrs,
   ) {
@@ -129,7 +128,6 @@ class FormProvider with ChangeNotifier {
     evInspection.phoneNum = phoneNum;
     evInspection.email = email;
     evInspection.rented = rented;
-    evInspection.address = address;
     evInspection.twoCharging = twoCharging;
     evInspection.remakrs = remakrs;
   }
@@ -177,6 +175,16 @@ class FormProvider with ChangeNotifier {
       evInspection.userID = user;
       evInspection.buildingName = name;
       evInspection.deployment = deployment;
+    }
+  }
+
+  void setIntrest(
+    String intrest,
+  ) {
+    if (formType == 0) {
+      siteInspection.solarPV = intrest;
+    } else {
+      evInspection.solarPV = intrest;
     }
   }
 }

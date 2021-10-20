@@ -10,6 +10,7 @@ import 'name_of_institution_screen.dart';
 import 'package:anert/providers/form_provider.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:geolocator/geolocator.dart';
 import 'dart:io';
 
 enum Yesorno { yes, no }
@@ -32,12 +33,38 @@ class _InterestedScreenState extends State<InterestedScreen> {
   File? _image2;
   File? _image3;
   final String imageurl = 'assets/images/download.png';
+  //code to grab the location
+  Future<Position> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    return await Geolocator.getCurrentPosition();
+  }
+
+  //
   @override
   Widget build(BuildContext context) {
     final detData = Provider.of<FormProvider>(context);
     final mquery = MediaQuery.of(context).size;
     //backend handling variables
-    final institution = database.child('Institution/');
     final inspection = database.child('Inspection/');
     final evSite = database.child('EvSite/');
     //
@@ -157,6 +184,8 @@ class _InterestedScreenState extends State<InterestedScreen> {
               ),
               Button(
                   onpress: () async {
+                    Position pos = await _determinePosition();
+                    print(pos.latitude);
                     if (detData.formType == 0) {
                       inspection.push().set({
                         'UserID': detData.siteInspection.userID,
