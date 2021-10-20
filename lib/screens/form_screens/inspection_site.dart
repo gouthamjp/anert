@@ -974,14 +974,6 @@ class _InspectionPageState extends State<InspectionPage> {
 
                           if (_rented == Yesorno.no) {
                             detData.setInspection(
-                                user!.id,
-                                'asda',
-                                'asda',
-                                'asda',
-                                'asda',
-                                'asda',
-                                'asda',
-                                _buildignamecontroller.text,
                                 _category.toString().split('.').last,
                                 _notcpcontroller.text,
                                 _designationcontroller.text,
@@ -989,7 +981,12 @@ class _InspectionPageState extends State<InspectionPage> {
                                 _emailcontroller.text,
                                 _rented.toString().split('.').last,
                                 _mounting.toString().split('.').last,
-                                _heightcontroller.text,
+                                _assemblynamecontroller.text,
+                                _parlaimentnamecontroller.text,
+                                _districtnamecontroller.text,
+                                _localbodynamecontroller.text,
+                                _wardnumbercontroller.text,
+                                _wardnamecontroller.text,
                                 _loadcontroller.text,
                                 _avgconsumption.text,
                                 _econncontroller.text,
@@ -999,17 +996,20 @@ class _InspectionPageState extends State<InspectionPage> {
                                     .toString()
                                     .split('.')
                                     .last,
+                                _lengthcontroller.text,
+                                _breadthcontroller.text,
                                 _shadecontroller.text,
+                                _propossedcontroller.text,
                                 _roofShape.toString().split('.').last,
                                 (_roofCover == RoofCover.others)
                                     ? _othersspecifycontroller.text
                                     : _roofCover.toString().split('.').last,
                                 _accessibility.toString().split('.').last,
+                                _subsidy.toString().split('.').last,
+                                _disinterest.toString().split('.').last,
                                 _remarkcontroller.text);
                           } else {
                             detData.setInspectionRented(
-                                user!.id,
-                                _buildignamecontroller.text,
                                 _category.toString().split('.').last,
                                 _notcpcontroller.text,
                                 _designationcontroller.text,
@@ -1020,7 +1020,12 @@ class _InspectionPageState extends State<InspectionPage> {
                                 _rentedphonecontroller.text,
                                 _rentedemailcontroller.text,
                                 _mounting.toString().split('.').last,
-                                _heightcontroller.text,
+                                _assemblynamecontroller.text,
+                                _parlaimentnamecontroller.text,
+                                _districtnamecontroller.text,
+                                _localbodynamecontroller.text,
+                                _wardnumbercontroller.text,
+                                _wardnamecontroller.text,
                                 _loadcontroller.text,
                                 _avgconsumption.text,
                                 _econncontroller.text,
@@ -1030,12 +1035,17 @@ class _InspectionPageState extends State<InspectionPage> {
                                     .toString()
                                     .split('.')
                                     .last,
+                                _lengthcontroller.text,
+                                _breadthcontroller.text,
                                 _shadecontroller.text,
+                                _propossedcontroller.text,
                                 _roofShape.toString().split('.').last,
                                 (_roofCover == RoofCover.others)
                                     ? _othersspecifycontroller.text
                                     : _roofCover.toString().split('.').last,
                                 _accessibility.toString().split('.').last,
+                                _subsidy.toString().split('.').last,
+                                _disinterest.toString().split('.').last,
                                 _remarkcontroller.text);
                           }
                         },
