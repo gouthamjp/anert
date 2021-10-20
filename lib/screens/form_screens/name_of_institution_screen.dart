@@ -34,6 +34,20 @@ class _NameOfInstitutionState extends State<NameOfInstitution> {
   //backend handling variables
   final database = FirebaseDatabase.instance.reference();
   //
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  void showSnackBar(String value) {
+    scaffoldKey.currentState!.showSnackBar(SnackBar(
+      backgroundColor: Colors.grey,
+      content: Text(value,style: TextStyle(fontSize: 17)),
+      duration: Duration(seconds: 2),
+      action: SnackBarAction(
+        label: 'Close',
+        textColor: GreenTvmTheme.white,
+        onPressed: scaffoldKey.currentState!.hideCurrentSnackBar,
+      ),
+    ));
+  }
   void test() {
     if (!_formKey.currentState!.validate()) {
       return;
@@ -53,6 +67,7 @@ class _NameOfInstitutionState extends State<NameOfInstitution> {
     return ModalProgressHUD(
       inAsyncCall: _spinner,
       child: Scaffold(
+        key: scaffoldKey,
         resizeToAvoidBottomInset: false,
         appBar: GreenTvmTheme.themeAppbar(
             title: 'GREEN TVM', context: context, showBackButton: true),
@@ -116,6 +131,7 @@ class _NameOfInstitutionState extends State<NameOfInstitution> {
                     )),
                 Button(
                     onpress: () async {
+                      try{
                       g.Buildingname = _buildignamecontroller.text;
     
                       detData.setName(user?.id, _buildignamecontroller.text,
@@ -214,6 +230,10 @@ class _NameOfInstitutionState extends State<NameOfInstitution> {
                             _spinner=false;
                           });
                         }
+                        showSnackBar('Details entered successfully');
+                      }}
+                      catch(e){
+                        showSnackBar('Something went wrong');
                       }
     
                       _buildignamecontroller.clear();
