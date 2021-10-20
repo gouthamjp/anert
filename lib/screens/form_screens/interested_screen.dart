@@ -41,6 +41,8 @@ class _InterestedScreenState extends State<InterestedScreen> {
   String? _imageUrl2 = '';
   String? _imageUrl3 = '';
   final String imageurl = 'assets/images/download.png';
+ 
+  
   //code to grab the location
   Future<Position> _determinePosition() async {
     bool serviceEnabled;
@@ -77,125 +79,44 @@ class _InterestedScreenState extends State<InterestedScreen> {
     final evSite = database.child('EvSite/');
 
     //
-    return ModalProgressHUD(
-      inAsyncCall: _spinner,
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: GreenTvmTheme.themeAppbar(
-            title: 'GREEN TVM', context: context, showBackButton: true),
-        backgroundColor: Colors.white,
-        body: SizedBox(
-          height: mquery.height,
-          width: mquery.width,
-          child: Container(
-            margin: EdgeInsets.all(18),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                StepperCounter(
-                  maxCount: 3,
-                  currentElement: 3,
-                ),
-                SizedBox(
-                  height: 0.05 * mquery.height,
-                  width: 0.05 * mquery.width,
-                ),
-                RadioFieldBox(
-                    labelText:
-                        'Whether you are interested\n for installing Solar PV?',
-                    requiredornot: true,
-                    radioChild: Column(
-                      children: <Widget>[
-                        ListTile(
-                          title: const Text('YES'),
-                          leading: Radio<Yesorno>(
-                            value: Yesorno.yes,
-                            groupValue: _yesorno,
-                            onChanged: (Yesorno? value) {
-                              setState(() {
-                                _yesorno = value;
-                              });
-                            },
-                          ),
-                        ),
-                        ListTile(
-                          title: const Text('NO'),
-                          leading: Radio<Yesorno>(
-                            value: Yesorno.no,
-                            groupValue: _yesorno,
-                            onChanged: (Yesorno? value) {
-                              setState(() {
-                                _yesorno = value;
-                              });
-                            },
-                          ),
-                        ),
-                      ],
-                    )),
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () async {
-                          final image1 = await ImagePicker()
-                              .getImage(source: ImageSource.camera);
-    
-                          setState(() {
-                            _image1 = image1 == null ? null : File(image1.path);
-                          });
-                        },
-                        child: Container(
-                          margin: EdgeInsets.all(2),
-                          child: _image1 == null
-                              ? Image.asset('$imageurl')
-                              : Image.file(_image1!),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () async {
-                          print(_image2);
-                          final image2 = await ImagePicker()
-                              .getImage(source: ImageSource.camera);
-    
-                          setState(() {
-                            _image2 = image2 == null ? null : File(image2.path);
-    
-                            print(_image2);
-                          });
-                        },
-                        child: Container(
-                          margin: EdgeInsets.all(2),
-                          child: _image2 == null
-                              ? Image.asset('$imageurl')
-                              : Image.file(_image2!),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () async {
-                          final image3 = await ImagePicker()
-                              .getImage(source: ImageSource.camera);
-    
-                          setState(() {
-                            _image3 = image3 == null ? null : File(image3.path);
-                          });
-                        },
-                        child: Container(
-                          margin: EdgeInsets.all(2),
-                          child: _image3 == null
-                              ? Image.asset('$imageurl')
-                              : Image.file(_image3!),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Button(
-                    onpress: () async {
-                      //uploading images
+   bool submit =false;
+Future<void> _showMyDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Confirm Submition'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: const <Widget>[
+                Text('All the informations entered will be submitted'),
+                Text('Would you like to Submit'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Submit'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                submit=true;
+              },
+            ),
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                submit=false;
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+  void submitfunc() async{
+    //uploading images
                       if (_image1 != null) {
                         String base1 = basename(_image1!.path);
     
@@ -314,9 +235,132 @@ class _InterestedScreenState extends State<InterestedScreen> {
                         });
                         print('cehck');
                       }
+  }
     
+    return ModalProgressHUD(
+      inAsyncCall: _spinner,
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: GreenTvmTheme.themeAppbar(
+            title: 'GREEN TVM', context: context, showBackButton: true),
+        backgroundColor: Colors.white,
+        body: SizedBox(
+          height: mquery.height,
+          width: mquery.width,
+          child: Container(
+            margin: EdgeInsets.all(18),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                StepperCounter(
+                  maxCount: 3,
+                  currentElement: 3,
+                ),
+                SizedBox(
+                  height: 0.05 * mquery.height,
+                  width: 0.05 * mquery.width,
+                ),
+                RadioFieldBox(
+                    labelText:
+                        'Whether you are interested\n for installing Solar PV?',
+                    requiredornot: true,
+                    radioChild: Column(
+                      children: <Widget>[
+                        ListTile(
+                          title: const Text('YES'),
+                          leading: Radio<Yesorno>(
+                            value: Yesorno.yes,
+                            groupValue: _yesorno,
+                            onChanged: (Yesorno? value) {
+                              setState(() {
+                                _yesorno = value;
+                              });
+                            },
+                          ),
+                        ),
+                        ListTile(
+                          title: const Text('NO'),
+                          leading: Radio<Yesorno>(
+                            value: Yesorno.no,
+                            groupValue: _yesorno,
+                            onChanged: (Yesorno? value) {
+                              setState(() {
+                                _yesorno = value;
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    )),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () async {
+                          final image1 = await ImagePicker()
+                              .getImage(source: ImageSource.camera);
+    
+                          setState(() {
+                            _image1 = image1 == null ? null : File(image1.path);
+                          });
+                        },
+                        child: Container(
+                          margin: EdgeInsets.all(2),
+                          child: _image1 == null
+                              ? Image.asset('$imageurl')
+                              : Image.file(_image1!),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () async {
+                          print(_image2);
+                          final image2 = await ImagePicker()
+                              .getImage(source: ImageSource.camera);
+    
+                          setState(() {
+                            _image2 = image2 == null ? null : File(image2.path);
+    
+                            print(_image2);
+                          });
+                        },
+                        child: Container(
+                          margin: EdgeInsets.all(2),
+                          child: _image2 == null
+                              ? Image.asset('$imageurl')
+                              : Image.file(_image2!),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () async {
+                          final image3 = await ImagePicker()
+                              .getImage(source: ImageSource.camera);
+    
+                          setState(() {
+                            _image3 = image3 == null ? null : File(image3.path);
+                          });
+                        },
+                        child: Container(
+                          margin: EdgeInsets.all(2),
+                          child: _image3 == null
+                              ? Image.asset('$imageurl')
+                              : Image.file(_image3!),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Button(
+                    onpress: () async {
+                    _showMyDialog();
+                    if(submit){
+                      submitfunc();
                       Navigator.pushNamedAndRemoveUntil(
                           context, OptionSelection.id, (route) => false);
+                    }
                     },
                     text: 'SUBMIT')
               ],

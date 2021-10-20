@@ -21,11 +21,30 @@ class _LandingScreenState extends State<LandingScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _spinner=false;
+
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  void showSnackBar(String value) {
+    scaffoldKey.currentState!.showSnackBar(SnackBar(
+      backgroundColor: GreenTvmTheme.primaryBlue,
+      content: Text(value),
+      duration: Duration(seconds: 2),
+      action: SnackBarAction(
+        label: 'Close',
+        textColor: GreenTvmTheme.white,
+        onPressed: scaffoldKey.currentState!.hideCurrentSnackBar,
+      ),
+    ));
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     final mquery = MediaQuery.of(context).size;
     return ModalProgressHUD(inAsyncCall: _spinner,
       child: Scaffold(
+        key: scaffoldKey,
         resizeToAvoidBottomInset: false,
         backgroundColor: Colors.white,
         body: SizedBox(
@@ -89,8 +108,13 @@ class _LandingScreenState extends State<LandingScreen> {
                         setState(() {
                             _spinner=false;
                         });
+
+                        //add condition to show wrong password
+                         showSnackBar("Something Went Wrong");
+
                       }
                       catch(e){
+                        showSnackBar("Something Went Wrong");
                          setState(() {
                             _spinner=false;
                          });
