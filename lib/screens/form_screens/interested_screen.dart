@@ -32,6 +32,7 @@ class _InterestedScreenState extends State<InterestedScreen> {
   File? _image2;
   File? _image3;
   final String imageurl = 'assets/images/download.png';
+<<<<<<< Updated upstream
   bool submit =false;
   Future<void> _showMyDialog() async {
     return showDialog<void>(
@@ -176,6 +177,238 @@ class _InterestedScreenState extends State<InterestedScreen> {
                               _yesorno = value;
                             });
                           },
+=======
+
+  //code to grab the location
+  Future<Position> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    return await Geolocator.getCurrentPosition();
+  }
+
+  //
+  @override
+  Widget build(BuildContext context) {
+    final detData = Provider.of<FormProvider>(context);
+    final mquery = MediaQuery.of(context).size;
+    //backend handling variables
+    final inspection = database.child('Inspection/');
+    final evSite = database.child('EvSite/');
+
+    //
+    bool submit = false;
+    Future<void> _showMyDialog() async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Confirm Submition'),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: const <Widget>[
+                  Text('All the informations entered will be submitted'),
+                  Text('Would you like to Submit'),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('Submit'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  submit = true;
+                },
+              ),
+              TextButton(
+                child: const Text('Cancel'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  submit = false;
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
+    void submitfunc() async {
+      //uploading images
+      if (_image1 != null) {
+        String base1 = basename(_image1!.path);
+
+        var snap = await storage.child('Images/$base1').putFile(_image1!);
+
+        _imageUrl1 = await snap.ref.getDownloadURL();
+      }
+      if (_image2 != null) {
+        String base2 = basename(_image2!.path);
+        var snap = await storage.child('Images/$base2').putFile(_image2!);
+        _imageUrl2 = await snap.ref.getDownloadURL();
+      }
+
+      if (_image3 != null) {
+        String base3 = basename(_image3!.path);
+        var snap = await storage.child('Images/$base3').putFile(_image2!);
+        _imageUrl3 = await snap.ref.getDownloadURL();
+      }
+
+      // latitude and longitude
+      Position pos = await _determinePosition();
+      String lat = pos.latitude.toString();
+      String lng = pos.longitude.toString();
+      _gmap = (_gmap! + lat + "," + lng);
+      //
+
+      // updating provider
+      detData.setIntrest(_yesorno.toString().split('.').last, _gmap!,
+          _imageUrl1!, _imageUrl2!, _imageUrl3!);
+      //
+      if (detData.formType == 0) {
+        setState(() {
+          _spinner = true;
+        });
+        await inspection.push().set({
+          'uid': detData.siteInspection.userID,
+          'building_name': detData.siteInspection.buildingName,
+          'suitable': detData.siteInspection.deployment,
+          'category': detData.siteInspection.category,
+          'contact_name': detData.siteInspection.contactPerson,
+          'desig': detData.siteInspection.designatoin,
+          'phone': detData.siteInspection.phoneNum,
+          'email': detData.siteInspection.email,
+          'rented': detData.siteInspection.rented,
+          'owner_name': detData.siteInspection.ownerName,
+          'owner_phone': detData.siteInspection.ownerphn,
+          'owner_email': detData.siteInspection.ownerEmail,
+          'mounting': detData.siteInspection.mounting,
+          'ambly_const': detData.siteInspection.assemblyConst,
+          'parli_const': detData.siteInspection.parlimentConst,
+          'dist': detData.siteInspection.district,
+          'lb': detData.siteInspection.localBody,
+          'ward_num': detData.siteInspection.wardNo,
+          'ward_name': detData.siteInspection.wardName,
+          'load': detData.siteInspection.load,
+          'avg_cnsmptn': detData.siteInspection.avgConsumption,
+          'conn_name': detData.siteInspection.eConnectionName,
+          'period': detData.siteInspection.billingPeriod,
+          'customer_type': detData.siteInspection.customerType,
+          'conn_type': detData.siteInspection.connectionType,
+          'length': detData.siteInspection.length,
+          'breadth': detData.siteInspection.breadth,
+          'area': detData.siteInspection.area,
+          'prop_cap': detData.siteInspection.propCap,
+          'rf_shape': detData.siteInspection.roofShape,
+          'rf_mat': detData.siteInspection.roofCover,
+          'mat_acc': detData.siteInspection.roofAccess,
+          'sub_know': detData.siteInspection.subsidy,
+          'reason': detData.siteInspection.disintrest,
+          'remarks': detData.siteInspection.remark,
+          'intrst': detData.siteInspection.solarPV,
+          'gps': detData.siteInspection.gps,
+          'img1': detData.siteInspection.img1,
+          'img2': detData.siteInspection.img2,
+          'img3': detData.siteInspection.img3,
+        });
+        setState(() {
+          _spinner = false;
+        });
+      } else {
+        setState(() {
+          _spinner = true;
+        });
+        await evSite.push().set({
+          'uid': detData.evInspection.userID,
+          'building_name': detData.evInspection.buildingName,
+          'suitable': detData.evInspection.deployment,
+          'category': detData.evInspection.category,
+          'contact_name': detData.evInspection.contactPerson,
+          'desig': detData.evInspection.designatoin,
+          'phone': detData.evInspection.phoneNum,
+          'email': detData.evInspection.email,
+          'rented': detData.evInspection.rented,
+          'owner_name': detData.evInspection.ownerName,
+          'owner_phone': detData.evInspection.ownerPhn,
+          'owner_email': detData.evInspection.ownerEmail,
+          'owner_address': detData.evInspection.ownerAddress,
+          'ward_num': detData.evInspection.wardNo,
+          'ward_name': detData.evInspection.wardName,
+          'provision': detData.evInspection.twoCharging,
+          'remarks': detData.evInspection.remakrs,
+          'intrst': detData.evInspection.solarPV,
+          'gps': detData.evInspection.gps,
+          'img1': detData.evInspection.img1,
+          'img2': detData.evInspection.img2,
+          'img3': detData.evInspection.img3,
+        });
+        setState(() {
+          _spinner = false;
+        });
+        print('cehck');
+      }
+    }
+
+    return ModalProgressHUD(
+      inAsyncCall: _spinner,
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: GreenTvmTheme.themeAppbar(
+            title: 'GREEN TVM', context: context, showBackButton: true),
+        backgroundColor: Colors.white,
+        body: SizedBox(
+          height: mquery.height,
+          width: mquery.width,
+          child: Container(
+            margin: EdgeInsets.all(18),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                StepperCounter(
+                  maxCount: 3,
+                  currentElement: 3,
+                ),
+                SizedBox(
+                  height: 0.05 * mquery.height,
+                  width: 0.05 * mquery.width,
+                ),
+                RadioFieldBox(
+                    labelText:
+                        'Whether you are interested\n for installing Solar PV?',
+                    requiredornot: true,
+                    radioChild: Column(
+                      children: <Widget>[
+                        ListTile(
+                          title: const Text('YES'),
+                          leading: Radio<Yesorno>(
+                            value: Yesorno.yes,
+                            groupValue: _yesorno,
+                            onChanged: (Yesorno? value) {
+                              setState(() {
+                                _yesorno = value;
+                              });
+                            },
+                          ),
+>>>>>>> Stashed changes
                         ),
                       ),
                       ListTile(
@@ -189,6 +422,7 @@ class _InterestedScreenState extends State<InterestedScreen> {
                             });
                           },
                         ),
+<<<<<<< Updated upstream
                       ),
                     ],
                   )),
@@ -199,6 +433,17 @@ class _InterestedScreenState extends State<InterestedScreen> {
                       onTap: () async {
                         final image1 = await ImagePicker()
                             .getImage(source: ImageSource.camera);
+=======
+                      ],
+                    )),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () async {
+                          final image1 = await ImagePicker()
+                              .getImage(source: ImageSource.camera);
+>>>>>>> Stashed changes
 
                         setState(() {
                           _image1 = image1 == null ? null : File(image1.path);
@@ -211,6 +456,7 @@ class _InterestedScreenState extends State<InterestedScreen> {
                             : Image.file(_image1!),
                       ),
                     ),
+<<<<<<< Updated upstream
                   ),
                   Expanded(
                     child: GestureDetector(
@@ -221,6 +467,17 @@ class _InterestedScreenState extends State<InterestedScreen> {
 
                         setState(() {
                           _image2 = image2 == null ? null : File(image2.path);
+=======
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () async {
+                          print(_image2);
+                          final image2 = await ImagePicker()
+                              .getImage(source: ImageSource.camera);
+
+                          setState(() {
+                            _image2 = image2 == null ? null : File(image2.path);
+>>>>>>> Stashed changes
 
                           print(_image2);
                         });
@@ -232,12 +489,20 @@ class _InterestedScreenState extends State<InterestedScreen> {
                             : Image.file(_image2!),
                       ),
                     ),
+<<<<<<< Updated upstream
                   ),
                   Expanded(
                     child: GestureDetector(
                       onTap: () async {
                         final image3 = await ImagePicker()
                             .getImage(source: ImageSource.camera);
+=======
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () async {
+                          final image3 = await ImagePicker()
+                              .getImage(source: ImageSource.camera);
+>>>>>>> Stashed changes
 
                         setState(() {
                           _image3 = image3 == null ? null : File(image3.path);
@@ -250,6 +515,7 @@ class _InterestedScreenState extends State<InterestedScreen> {
                             : Image.file(_image3!),
                       ),
                     ),
+<<<<<<< Updated upstream
                   ),
                 ],
               ),
@@ -264,6 +530,22 @@ class _InterestedScreenState extends State<InterestedScreen> {
                   },
                   text: 'SUBMIT')
             ],
+=======
+                  ],
+                ),
+                Button(
+                    onpress: () async {
+                      _showMyDialog();
+                      if (submit) {
+                        submitfunc();
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, OptionSelection.id, (route) => false);
+                      }
+                    },
+                    text: 'SUBMIT')
+              ],
+            ),
+>>>>>>> Stashed changes
           ),
         ),
       ),
