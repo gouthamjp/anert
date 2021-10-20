@@ -1,4 +1,5 @@
 import 'package:anert/constants.dart';
+import 'package:anert/screens/option_selection.dart';
 import 'package:anert/utils/stepper_counter.dart';
 import 'package:flutter/material.dart';
 import 'package:anert/utils/button.dart';
@@ -229,7 +230,7 @@ class _InterestedScreenState extends State<InterestedScreen> {
                         _gmap!, _imageUrl1!, _imageUrl2!, _imageUrl3!);
                     //
                     if (detData.formType == 0) {
-                      inspection.push().set({
+                      await inspection.push().set({
                         'uid': detData.siteInspection.userID,
                         'building_name': detData.siteInspection.buildingName,
                         'suitable': detData.siteInspection.deployment,
@@ -272,7 +273,7 @@ class _InterestedScreenState extends State<InterestedScreen> {
                         'img3': detData.siteInspection.img3,
                       });
                     } else {
-                      evSite.push().set({
+                     await evSite.push().set({
                         'uid': detData.evInspection.userID,
                         'building_name': detData.evInspection.buildingName,
                         'suitable': detData.evInspection.deployment,
@@ -300,7 +301,7 @@ class _InterestedScreenState extends State<InterestedScreen> {
                     }
 
                     Navigator.pushNamedAndRemoveUntil(
-                        context, NameOfInstitution.id, (route) => false);
+                        context, OptionSelection.id, (route) => false);
                   },
                   text: 'SUBMIT')
             ],

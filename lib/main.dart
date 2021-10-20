@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.indigo,
           ),
-          home: Splash(),
+          initialRoute: Splash.id,
           routes: {
             Wrapper.id: (context) => Wrapper(),
             Splash.id: (context) => Splash(),
@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
             InspectionPage.id: (context) => InspectionPage(),
             EvPage.id: (context) => EvPage(),
             InterestedScreen.id: (context) => InterestedScreen(),
-          },
+            },
         ),
       ),
     );
