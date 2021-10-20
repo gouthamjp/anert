@@ -4,10 +4,7 @@ import 'package:anert/utils/stepper_counter.dart';
 import 'package:flutter/material.dart';
 import 'package:anert/utils/button.dart';
 import 'package:anert/utils/radiobox.dart';
-import 'package:anert/utils/button.dart';
 import 'package:provider/provider.dart';
-import 'package:anert/models/user_model.dart';
-import 'name_of_institution_screen.dart';
 import 'package:anert/providers/form_provider.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:image_picker/image_picker.dart';
@@ -70,10 +67,10 @@ class _InterestedScreenState extends State<InterestedScreen> {
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
-  void showSnackBar(String value) {
+   void showSnackBar(String value) {
     scaffoldKey.currentState!.showSnackBar(SnackBar(
-      backgroundColor: GreenTvmTheme.primaryBlue,
-      content: Text(value),
+      backgroundColor: Colors.grey,
+      content: Text(value,style: TextStyle(fontSize: 17)),
       duration: Duration(seconds: 2),
       action: SnackBarAction(
         label: 'Close',
@@ -230,8 +227,13 @@ class _InterestedScreenState extends State<InterestedScreen> {
                 child: const Text('Submit'),
                 onPressed: () async {
                   Navigator.of(context).pop();
-                  await submitfunc();
-                  showSnackBar("Submitted");
+                  try{
+                    await submitfunc();
+                  }
+                  catch(e){
+                    showSnackBar('Something went wrong');
+                  }
+                  showSnackBar("Details entered successfully'");
                   
                 },
               ),
@@ -367,8 +369,8 @@ class _InterestedScreenState extends State<InterestedScreen> {
                 ),
                 Button(
                     onpress: () async {
-                      await _showMyDialog();
-                      if (submit) {}
+                      _showMyDialog();
+                     
                     },
                     text: 'SUBMIT')
               ],
