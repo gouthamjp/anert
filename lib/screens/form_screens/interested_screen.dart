@@ -68,7 +68,7 @@ class _InterestedScreenState extends State<InterestedScreen> {
     return await Geolocator.getCurrentPosition();
   }
 
-    final scaffoldKey = GlobalKey<ScaffoldState>();
+  final scaffoldKey = GlobalKey<ScaffoldState>();
 
   void showSnackBar(String value) {
     scaffoldKey.currentState!.showSnackBar(SnackBar(
@@ -93,42 +93,7 @@ class _InterestedScreenState extends State<InterestedScreen> {
     final evSite = database.child('EvSite/');
 
     //
-    bool submit = false;
-    Future<void> _showMyDialog() async {
-      return showDialog<void>(
-        context: context,
-        barrierDismissible: false, // user must tap button!
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Confirm Submition'),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: const <Widget>[
-                  Text('All the informations entered will be submitted'),
-                  Text('Would you like to Submit'),
-                ],
-              ),
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('Submit'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  submit = true;
-                },
-              ),
-              TextButton(
-                child: const Text('Cancel'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  submit = false;
-                },
-              ),
-            ],
-          );
-        },
-      );
-    }
+    bool submit = true;
 
     void submitfunc() async {
       //uploading images
@@ -244,6 +209,46 @@ class _InterestedScreenState extends State<InterestedScreen> {
         });
         print('cehck');
       }
+
+      Navigator.pushNamedAndRemoveUntil(
+          context, OptionSelection.id, (route) => false);
+    }
+
+    Future<void> _showMyDialog() async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Confirm Submition'),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: const <Widget>[
+                  Text('All the informations entered will be submitted'),
+                  Text('Would you like to Submit'),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('Submit'),
+                onPressed: () async {
+                  Navigator.of(context).pop();
+                  submit = true;
+                  submitfunc();
+                },
+              ),
+              TextButton(
+                child: const Text('Cancel'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  submit = false;
+                },
+              ),
+            ],
+          );
+        },
+      );
     }
 
     return ModalProgressHUD(
@@ -364,13 +369,8 @@ class _InterestedScreenState extends State<InterestedScreen> {
                 ),
                 Button(
                     onpress: () async {
-                     await _showMyDialog();
-                      if (submit) {
-                        submitfunc();
-                        showSnackBar("Submitted");
-                        Navigator.pushNamedAndRemoveUntil(
-                            context, OptionSelection.id, (route) => false);
-                      }
+                      await _showMyDialog();
+                      showSnackBar("Submitted");
                     },
                     text: 'SUBMIT')
               ],
