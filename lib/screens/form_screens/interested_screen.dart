@@ -10,7 +10,10 @@ import 'name_of_institution_screen.dart';
 import 'package:anert/providers/form_provider.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:geolocator/geolocator.dart';
 import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:path/path.dart';
 
 enum Yesorno { yes, no }
 
@@ -25,21 +28,52 @@ class _InterestedScreenState extends State<InterestedScreen> {
   final _formKey = GlobalKey<FormState>();
 
   final database = FirebaseDatabase.instance.reference();
-
+  final storage = FirebaseStorage.instance.ref();
   final _buildignamecontroller = TextEditingController();
   Yesorno? _yesorno = Yesorno.yes;
   File? _image1;
   File? _image2;
   File? _image3;
+  String? _gmap = "https://maps.google.com/?q=";
+  String? _imageUrl1 = '';
+  String? _imageUrl2 = '';
+  String? _imageUrl3 = '';
   final String imageurl = 'assets/images/download.png';
+  //code to grab the location
+  Future<Position> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    return await Geolocator.getCurrentPosition();
+  }
+
+  //
   @override
   Widget build(BuildContext context) {
     final detData = Provider.of<FormProvider>(context);
     final mquery = MediaQuery.of(context).size;
     //backend handling variables
-    final institution = database.child('Institution/');
     final inspection = database.child('Inspection/');
     final evSite = database.child('EvSite/');
+
     //
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -157,51 +191,112 @@ class _InterestedScreenState extends State<InterestedScreen> {
               ),
               Button(
                   onpress: () async {
+                    //uploading images
+                    if (_image1 != null) {
+                      String base1 = basename(_image1!.path);
+
+                      var snap = await storage
+                          .child('Images/$base1')
+                          .putFile(_image1!);
+
+                      _imageUrl1 = await snap.ref.getDownloadURL();
+                    }
+                    if (_image2 != null) {
+                      String base2 = basename(_image2!.path);
+                      var snap = await storage
+                          .child('Images/$base2')
+                          .putFile(_image2!);
+                      _imageUrl2 = await snap.ref.getDownloadURL();
+                    }
+
+                    if (_image3 != null) {
+                      String base3 = basename(_image3!.path);
+                      var snap = await storage
+                          .child('Images/$base3')
+                          .putFile(_image2!);
+                      _imageUrl3 = await snap.ref.getDownloadURL();
+                    }
+
+                    // latitude and longitude
+                    Position pos = await _determinePosition();
+                    String lat = pos.latitude.toString();
+                    String lng = pos.longitude.toString();
+                    _gmap = (_gmap! + lat + "," + lng);
+                    //
+
+                    // updating provider
+                    detData.setIntrest(_yesorno.toString().split('.').last,
+                        _gmap!, _imageUrl1!, _imageUrl2!, _imageUrl3!);
+                    //
                     if (detData.formType == 0) {
                       inspection.push().set({
-                        'UserID': detData.siteInspection.userID,
-                        'Building Name': detData.siteInspection.buildingName,
-                        'Category': detData.siteInspection.category,
-                        'Contact Person': detData.siteInspection.contactPerson,
-                        'Designation': detData.siteInspection.designatoin,
-                        'Phone Number': detData.siteInspection.phoneNum,
-                        'Email': detData.siteInspection.email,
-                        'Rented': detData.siteInspection.rented,
-                        'Owner Name': detData.siteInspection.ownerName,
-                        'Owner Phone': detData.siteInspection.ownerphn,
-                        'Owner Email': detData.siteInspection.ownerEmail,
-                        'Mounting': detData.siteInspection.mounting,
-                        'Height': detData.siteInspection.height, //
-                        'Load': detData.siteInspection.load,
-                        'Avg Consumption':
-                            detData.siteInspection.avgConsumption,
-                        'Connection Name':
-                            detData.siteInspection.eConnectionName,
-                        'Billing Period': detData.siteInspection.billingPeriod,
-                        'Customer Type': detData.siteInspection.connectionType,
-                        'Shade Area': detData.siteInspection.sfreeArea,
-                        'Roof Shape': detData.siteInspection.roofShape,
-                        'Roof Cover': detData.siteInspection.roofCover,
-                        'Roof Access': detData.siteInspection.roofAccess,
-                        'Remark': detData.siteInspection.remark,
+                        'uid': detData.siteInspection.userID,
+                        'building_name': detData.siteInspection.buildingName,
+                        'suitable': detData.siteInspection.deployment,
+                        'category': detData.siteInspection.category,
+                        'contact_name': detData.siteInspection.contactPerson,
+                        'desig': detData.siteInspection.designatoin,
+                        'phone': detData.siteInspection.phoneNum,
+                        'email': detData.siteInspection.email,
+                        'rented': detData.siteInspection.rented,
+                        'owner_name': detData.siteInspection.ownerName,
+                        'owner_phone': detData.siteInspection.ownerphn,
+                        'owner_email': detData.siteInspection.ownerEmail,
+                        'mounting': detData.siteInspection.mounting,
+                        'ambly_const': detData.siteInspection.assemblyConst,
+                        'parli_const': detData.siteInspection.parlimentConst,
+                        'dist': detData.siteInspection.district,
+                        'lb': detData.siteInspection.localBody,
+                        'ward_num': detData.siteInspection.wardNo,
+                        'ward_name': detData.siteInspection.wardName,
+                        'load': detData.siteInspection.load,
+                        'avg_cnsmptn': detData.siteInspection.avgConsumption,
+                        'conn_name': detData.siteInspection.eConnectionName,
+                        'period': detData.siteInspection.billingPeriod,
+                        'customer_type': detData.siteInspection.customerType,
+                        'conn_type': detData.siteInspection.connectionType,
+                        'length': detData.siteInspection.length,
+                        'breadth': detData.siteInspection.breadth,
+                        'area': detData.siteInspection.area,
+                        'prop_cap': detData.siteInspection.propCap,
+                        'rf_shape': detData.siteInspection.roofShape,
+                        'rf_mat': detData.siteInspection.roofCover,
+                        'mat_acc': detData.siteInspection.roofAccess,
+                        'sub_know': detData.siteInspection.subsidy,
+                        'reason': detData.siteInspection.disintrest,
+                        'remarks': detData.siteInspection.remark,
+                        'intrst': detData.siteInspection.solarPV,
+                        'gps': detData.siteInspection.gps,
+                        'img1': detData.siteInspection.img1,
+                        'img2': detData.siteInspection.img2,
+                        'img3': detData.siteInspection.img3,
                       });
                     } else {
                       evSite.push().set({
-                        'UserID': detData.evInspection.userID,
-                        'Building Name': detData.evInspection.buildingName,
-                        'Category': detData.evInspection.category,
-                        'Contact Person': detData.evInspection.contactPerson,
-                        'Designation': detData.evInspection.designatoin,
-                        'Phone Number': detData.evInspection.phoneNum,
-                        'Email': detData.evInspection.email,
-                        'Rented': detData.evInspection.rented,
-                        'Owner Name': detData.evInspection.ownerName,
-                        'Owner Phone': detData.evInspection.ownerPhn,
-                        'Owner Email': detData.evInspection.ownerEmail,
-                        'Address': detData.evInspection.address,
-                        'Two Charging': detData.evInspection.twoCharging,
-                        'Remarks': detData.evInspection.remakrs
+                        'uid': detData.evInspection.userID,
+                        'building_name': detData.evInspection.buildingName,
+                        'suitable': detData.evInspection.deployment,
+                        'category': detData.evInspection.category,
+                        'contact_name': detData.evInspection.contactPerson,
+                        'desig': detData.evInspection.designatoin,
+                        'phone': detData.evInspection.phoneNum,
+                        'email': detData.evInspection.email,
+                        'rented': detData.evInspection.rented,
+                        'owner_name': detData.evInspection.ownerName,
+                        'owner_phone': detData.evInspection.ownerPhn,
+                        'owner_email': detData.evInspection.ownerEmail,
+                        'owner_address': detData.evInspection.ownerAddress,
+                        'ward_num': detData.evInspection.wardNo,
+                        'ward_name': detData.evInspection.wardName,
+                        'provision': detData.evInspection.twoCharging,
+                        'Remarks': detData.evInspection.remakrs,
+                        'intrst': detData.evInspection.solarPV,
+                        'gps': detData.evInspection.gps,
+                        'img1': detData.evInspection.img1,
+                        'img2': detData.evInspection.img2,
+                        'img3': detData.evInspection.img3,
                       });
+                      print('cehck');
                     }
 
                     Navigator.pushNamedAndRemoveUntil(
