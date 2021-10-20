@@ -68,6 +68,21 @@ class _InterestedScreenState extends State<InterestedScreen> {
     return await Geolocator.getCurrentPosition();
   }
 
+    final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  void showSnackBar(String value) {
+    scaffoldKey.currentState!.showSnackBar(SnackBar(
+      backgroundColor: GreenTvmTheme.primaryBlue,
+      content: Text(value),
+      duration: Duration(seconds: 2),
+      action: SnackBarAction(
+        label: 'Close',
+        textColor: GreenTvmTheme.white,
+        onPressed: scaffoldKey.currentState!.hideCurrentSnackBar,
+      ),
+    ));
+  }
+
   //
   @override
   Widget build(BuildContext context) {
@@ -349,9 +364,10 @@ class _InterestedScreenState extends State<InterestedScreen> {
                 ),
                 Button(
                     onpress: () async {
-                      _showMyDialog();
+                     await _showMyDialog();
                       if (submit) {
                         submitfunc();
+                        showSnackBar("Submitted");
                         Navigator.pushNamedAndRemoveUntil(
                             context, OptionSelection.id, (route) => false);
                       }
