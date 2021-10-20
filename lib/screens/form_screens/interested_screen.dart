@@ -41,7 +41,7 @@ class _InterestedScreenState extends State<InterestedScreen> {
   String? _imageUrl2 = '';
   String? _imageUrl3 = '';
   final String imageurl = 'assets/images/download.png';
-
+  bool submit = true;
   //code to grab the location
   Future<Position> _determinePosition() async {
     bool serviceEnabled;
@@ -93,9 +93,8 @@ class _InterestedScreenState extends State<InterestedScreen> {
     final evSite = database.child('EvSite/');
 
     //
-    bool submit = true;
 
-    void submitfunc() async {
+    Future<void> submitfunc() async {
       //uploading images
       if (_image1 != null) {
         String base1 = basename(_image1!.path);
@@ -234,8 +233,11 @@ class _InterestedScreenState extends State<InterestedScreen> {
                 child: const Text('Submit'),
                 onPressed: () async {
                   Navigator.of(context).pop();
+                  showSnackBar("Submitted");
+                  await submitfunc();
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, OptionSelection.id, (route) => false);
                   submit = true;
-                  submitfunc();
                 },
               ),
               TextButton(
@@ -254,6 +256,7 @@ class _InterestedScreenState extends State<InterestedScreen> {
     return ModalProgressHUD(
       inAsyncCall: _spinner,
       child: Scaffold(
+        key:scaffoldKey,
         resizeToAvoidBottomInset: false,
         appBar: GreenTvmTheme.themeAppbar(
             title: 'GREEN TVM', context: context, showBackButton: true),
@@ -370,7 +373,7 @@ class _InterestedScreenState extends State<InterestedScreen> {
                 Button(
                     onpress: () async {
                       await _showMyDialog();
-                      showSnackBar("Submitted");
+                      if (submit) {}
                     },
                     text: 'SUBMIT')
               ],
