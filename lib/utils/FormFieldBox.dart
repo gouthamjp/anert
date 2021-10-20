@@ -99,10 +99,16 @@ class _FormFieldBoxState extends State<FormFieldBox> {
               String emailValid =
                   r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
               RegExp emailregExp = new RegExp(emailValid);
+              //String num = r'(^[0-9]{*}/.[0-9]{*}$)';
+              //RegExp numregExp = new RegExp(num);
               if(widget.requiredornot){
               if (value == null || value.isEmpty) {
                 return 'This field is mandatory';
-              } else if (!phoneregExp.hasMatch(value) &&
+              }//else if (!numregExp.hasMatch(value) &&
+                 // (widget.keyboardType == KeyboardType.Number_)) {
+               // return 'Please enter a valid number';
+              //}
+              else if (!phoneregExp.hasMatch(value) &&
                   (widget.labelText == "Phone Number")) {
                 return 'Please enter a valid mobile number';
               } else if (!emailregExp.hasMatch(value) &&
