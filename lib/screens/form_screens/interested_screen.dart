@@ -290,7 +290,7 @@ class _InterestedScreenState extends State<InterestedScreen> {
                         'ward_num': detData.evInspection.wardNo,
                         'ward_name': detData.evInspection.wardName,
                         'provision': detData.evInspection.twoCharging,
-                        'Remarks': detData.evInspection.remakrs,
+                        'remarks': detData.evInspection.remakrs,
                         'intrst': detData.evInspection.solarPV,
                         'gps': detData.evInspection.gps,
                         'img1': detData.evInspection.img1,
