@@ -20,10 +20,27 @@ class _LandingScreenState extends State<LandingScreen> {
 
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  void showSnackBar(String value) {
+    scaffoldKey.currentState!.showSnackBar(SnackBar(
+      backgroundColor: GreenTvmTheme.primaryBlue,
+      content: Text(value),
+      duration: Duration(seconds: 2),
+      action: SnackBarAction(
+        label: 'Close',
+        textColor: GreenTvmTheme.white,
+        onPressed: scaffoldKey.currentState!.hideCurrentSnackBar,
+      ),
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
     final mquery = MediaQuery.of(context).size;
     return Scaffold(
+      key: scaffoldKey,
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       body: SizedBox(
@@ -78,8 +95,14 @@ class _LandingScreenState extends State<LandingScreen> {
                 height: mquery.height * 0.07,
                 child: ElevatedButton(
                   onPressed: () async {
-                    await _auth.signInEmailAndPass(
-                        _emailController.text, _passwordController.text);
+                    showSnackBar('Wrong Password/Username');
+                    try {
+                      await _auth.signInEmailAndPass(
+                          _emailController.text, _passwordController.text);
+                    } catch (e) {
+                      showSnackBar('Something went wrong');
+                      //print(e);
+                    }
                   },
                   child: const Text(
                     "Login",
