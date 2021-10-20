@@ -43,6 +43,7 @@ class _InterestedScreenState extends State<InterestedScreen> {
   final String imageurl = 'assets/images/download.png';
  
   
+
   //code to grab the location
   Future<Position> _determinePosition() async {
     bool serviceEnabled;
@@ -300,6 +301,7 @@ Future<void> _showMyDialog() async {
                           final image1 = await ImagePicker()
                               .getImage(source: ImageSource.camera);
     
+
                           setState(() {
                             _image1 = image1 == null ? null : File(image1.path);
                           });
@@ -319,9 +321,11 @@ Future<void> _showMyDialog() async {
                           final image2 = await ImagePicker()
                               .getImage(source: ImageSource.camera);
     
+
                           setState(() {
                             _image2 = image2 == null ? null : File(image2.path);
     
+
                             print(_image2);
                           });
                         },
@@ -339,6 +343,7 @@ Future<void> _showMyDialog() async {
                           final image3 = await ImagePicker()
                               .getImage(source: ImageSource.camera);
     
+
                           setState(() {
                             _image3 = image3 == null ? null : File(image3.path);
                           });
