@@ -69,6 +69,22 @@ class _InterestedScreenState extends State<InterestedScreen> {
     );
   }
 
+    final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  void showSnackBar(String value) {
+    scaffoldKey.currentState!.showSnackBar(SnackBar(
+      backgroundColor: GreenTvmTheme.primaryBlue,
+      content: Text(value),
+      duration: Duration(seconds: 2),
+      action: SnackBarAction(
+        label: 'Close',
+        textColor: GreenTvmTheme.white,
+        onPressed: scaffoldKey.currentState!.hideCurrentSnackBar,
+      ),
+    ));
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final detData = Provider.of<FormProvider>(context);
@@ -258,6 +274,7 @@ class _InterestedScreenState extends State<InterestedScreen> {
                     _showMyDialog();
                     if(submit){
                     submitfunc();
+                    showSnackBar("Subitted ");
                     Navigator.pushNamedAndRemoveUntil(
           context, NameOfInstitution.id, (route) => false);
                     }
