@@ -80,6 +80,7 @@ class _InterestedScreenState extends State<InterestedScreen> {
     //
 
     void submitfunc() async {
+      
       detData.setSolarPV(_yesorno.toString().split('.').last);
 
       institution.push().set({
@@ -256,9 +257,11 @@ class _InterestedScreenState extends State<InterestedScreen> {
                   onpress: () async {
                     _showMyDialog();
                     if(submit)
+                    if(submit){
                     submitfunc();
                     Navigator.pushNamedAndRemoveUntil(
           context, NameOfInstitution.id, (route) => false);
+                    }
                   },
                   text: 'SUBMIT')
             ],
