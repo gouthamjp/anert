@@ -42,7 +42,7 @@ class _NameOfInstitutionState extends State<NameOfInstitution> {
   @override
   Widget build(BuildContext context) {
     //backend handling variables
-    final institution = database.child('Institution/');
+    final inspection = database.child('Inspection/');
     final evSite = database.child('EvSite/');
     //
     final user = Provider.of<CustomUser?>(context);
@@ -111,7 +111,9 @@ class _NameOfInstitutionState extends State<NameOfInstitution> {
                     ],
                   )),
               Button(
-                  onpress: () async {
+                  onpress: () {
+                    g.Buildingname = _buildignamecontroller.text;
+
                     detData.setName(user?.id, _buildignamecontroller.text,
                         _yesorno.toString().split('.').last);
                     if (!_formKey.currentState!.validate()) {
@@ -127,7 +129,7 @@ class _NameOfInstitutionState extends State<NameOfInstitution> {
                                   : InspectionPage()));
                     } else {
                       if (detData.formType == 0) {
-                        institution.push().set({
+                        inspection.push().set({
                           'uid': detData.siteInspection.userID,
                           'building_name': detData.siteInspection.buildingName,
                           'suitable': detData.siteInspection.deployment,

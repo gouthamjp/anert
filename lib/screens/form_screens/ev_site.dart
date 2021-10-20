@@ -61,6 +61,7 @@ class _EvPageState extends State<EvPage> {
   @override
   void initState() {
     super.initState();
+
     intialfunc();
   }
 
@@ -360,7 +361,6 @@ class _EvPageState extends State<EvPage> {
                                 _rentednamecontroller.text,
                                 _rentedphonecontroller.text,
                                 _rentedemailcontroller.text,
-                                _notcp1controller.text,
                                 _addresscontroller.text,
                                 _yesorno.toString().split('.').last,
                                 _remarkscontroller.text);

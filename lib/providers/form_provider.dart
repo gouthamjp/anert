@@ -145,7 +145,6 @@ class FormProvider with ChangeNotifier {
     String ownerPhn,
     String ownerEmail,
     String ownerAddress,
-    String address,
     String twoCharging,
     String remakrs,
   ) {
@@ -161,7 +160,7 @@ class FormProvider with ChangeNotifier {
     evInspection.ownerPhn = ownerPhn;
     evInspection.ownerEmail = ownerEmail;
     evInspection.ownerAddress = ownerAddress;
-    evInspection.address = address;
+
     evInspection.twoCharging = twoCharging;
     evInspection.remakrs = remakrs;
   }
@@ -180,11 +179,23 @@ class FormProvider with ChangeNotifier {
 
   void setIntrest(
     String intrest,
+    String gps,
+    String img1,
+    String img2,
+    String img3,
   ) {
     if (formType == 0) {
       siteInspection.solarPV = intrest;
+      siteInspection.gps = gps;
+      siteInspection.img1 = img1;
+      siteInspection.img2 = img2;
+      siteInspection.img3 = img3;
     } else {
       evInspection.solarPV = intrest;
+      evInspection.gps = gps;
+      evInspection.img1 = img1;
+      evInspection.img2 = img2;
+      evInspection.img3 = img3;
     }
   }
 }
