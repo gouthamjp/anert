@@ -95,6 +95,9 @@ class _InterestedScreenState extends State<InterestedScreen> {
     //
 
     Future<void> submitfunc() async {
+        setState(() {
+          _spinner = true;
+        });
       //uploading images
       if (_image1 != null) {
         String base1 = basename(_image1!.path);
@@ -127,10 +130,7 @@ class _InterestedScreenState extends State<InterestedScreen> {
           _imageUrl1!, _imageUrl2!, _imageUrl3!);
       //
       if (detData.formType == 0) {
-        setState(() {
-          _spinner = true;
-        });
-        await inspection.push().set({
+           await inspection.push().set({
           'uid': detData.siteInspection.userID,
           'building_name': detData.siteInspection.buildingName,
           'suitable': detData.siteInspection.deployment,
@@ -176,9 +176,7 @@ class _InterestedScreenState extends State<InterestedScreen> {
           _spinner = false;
         });
       } else {
-        setState(() {
-          _spinner = true;
-        });
+        
         await evSite.push().set({
           'uid': detData.evInspection.userID,
           'building_name': detData.evInspection.buildingName,
@@ -208,9 +206,8 @@ class _InterestedScreenState extends State<InterestedScreen> {
         });
         print('cehck');
       }
-
       Navigator.pushNamedAndRemoveUntil(
-          context, OptionSelection.id, (route) => false);
+                      context, OptionSelection.id, (route) => false);
     }
 
     Future<void> _showMyDialog() async {
@@ -233,11 +230,9 @@ class _InterestedScreenState extends State<InterestedScreen> {
                 child: const Text('Submit'),
                 onPressed: () async {
                   Navigator.of(context).pop();
-                  showSnackBar("Submitted");
                   await submitfunc();
-                  Navigator.pushNamedAndRemoveUntil(
-                      context, OptionSelection.id, (route) => false);
-                  submit = true;
+                  showSnackBar("Submitted");
+                  
                 },
               ),
               TextButton(
