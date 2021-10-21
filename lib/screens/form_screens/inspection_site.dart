@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:anert/screens/form_screens/interested_screen.dart';
 import 'package:flutter/material.dart';
 import '/constants.dart';
@@ -1041,8 +1040,7 @@ class _InspectionPageState extends State<InspectionPage> {
                                 _propossedcontroller.text,
                                 _roofShape.toString().split('.').last,
                                 (_roofCover == RoofCover.others)
-                                    ? _othersspecifycontroller.text
-                                    : _roofCover.toString().split('.').last,
+                                    ? _othersspecifycontroller.text : _roofCover.toString().split('.').last,
                                 _accessibility.toString().split('.').last,
                                 _subsidy.toString().split('.').last,
                                 _disinterest.toString().split('.').last,

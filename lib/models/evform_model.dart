@@ -3,6 +3,10 @@ class EvFrom {
   String? buildingName = 'nil';
   String? deployment = 'nil';
   String? category = 'nil';
+  String? assemblyConst = 'nil';
+  String? parlimentConst = 'nil';
+  String? district = 'nil';
+  String? localBody = 'nil';
   String? wardNo = 'nil';
   String? wardName = 'nil';
   String? contactPerson = 'nil';
