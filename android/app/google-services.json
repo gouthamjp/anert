@@ -1,15 +1,16 @@
 {
   "project_info": {
     "project_number": "1091568124716",
+    "firebase_url": "https://anert-f0be6-default-rtdb.firebaseio.com",
     "project_id": "anert-f0be6",
     "storage_bucket": "anert-f0be6.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1091568124716:android:1c7516a9a5c2792c96a289",
+        "mobilesdk_app_id": "1:1091568124716:android:fc7342d65a27d8e896a289",
         "android_client_info": {
-          "package_name": "com.example.anert"
+          "package_name": "com.ssabhijith2000.randdgecb"
         }
       },
       "oauth_client": [
