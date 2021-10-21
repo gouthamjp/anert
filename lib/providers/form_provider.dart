@@ -139,6 +139,10 @@ class FormProvider with ChangeNotifier {
 
   void setEv(
     String category,
+    String assemblyConst,
+    String parlimentConst,
+    String district,
+    String localBody,
     String wardNo,
     String wardName,
     String contactPerson,
@@ -150,6 +154,10 @@ class FormProvider with ChangeNotifier {
     String remakrs,
   ) {
     evInspection.category = category;
+    siteInspection.assemblyConst = assemblyConst;
+    siteInspection.parlimentConst = parlimentConst;
+    siteInspection.district = district;
+    siteInspection.localBody = localBody;
     evInspection.wardName = wardName;
     evInspection.wardNo = wardNo;
     evInspection.contactPerson = contactPerson;
@@ -163,6 +171,10 @@ class FormProvider with ChangeNotifier {
 
   void setEvRented(
     String category,
+    String assemblyConst,
+    String parlimentConst,
+    String district,
+    String localBody,
     String wardNo,
     String wardName,
     String contactPerson,
@@ -178,6 +190,10 @@ class FormProvider with ChangeNotifier {
     String remakrs,
   ) {
     evInspection.category = category;
+    siteInspection.assemblyConst = assemblyConst;
+    siteInspection.parlimentConst = parlimentConst;
+    siteInspection.district = district;
+    siteInspection.localBody = localBody;
     evInspection.wardName = wardName;
     evInspection.wardNo = wardNo;
     evInspection.contactPerson = contactPerson;

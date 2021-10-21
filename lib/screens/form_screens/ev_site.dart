@@ -39,6 +39,10 @@ class _EvPageState extends State<EvPage> {
   final _rentedemailcontroller = TextEditingController();
   final _wardnumbercontroller = TextEditingController();
   final _wardnamecontroller = TextEditingController();
+  final _assemblynamecontroller = TextEditingController();
+  final _parlaimentnamecontroller = TextEditingController();
+  final _districtnamecontroller = TextEditingController();
+  final _localbodynamecontroller = TextEditingController();
 
   Category? _category = Category.residential;
   Yesorno? _yesorno = Yesorno.yes;
@@ -140,6 +144,58 @@ class _EvPageState extends State<EvPage> {
                           ),
                         ],
                       ),
+                    ),
+                    FormFieldBox(
+                      onSavedField: (value) {},
+                      onChanged: (value) {},
+                      onSubmitingField: (value) {},
+                      labelText: 'Assembly Constituency',
+                      hintText: 'Name of Assembly Constituency',
+                      keyboardType: KeyboardType.Text_,
+                      controller: _assemblynamecontroller,
+                      //readonly: true,
+                      requiredornot: true,
+                      //focusNode: _buildignamenode,
+                      didEndTextEdit: () {},
+                    ),
+                    FormFieldBox(
+                      onSavedField: (value) {},
+                      onChanged: (value) {},
+                      onSubmitingField: (value) {},
+                      labelText: 'Parliament Constituency',
+                      hintText: 'Name of parliament constituency',
+                      keyboardType: KeyboardType.Text_,
+                      controller: _parlaimentnamecontroller,
+                      // readonly: true,
+                      requiredornot: true,
+                      //focusNode: _buildignamenode,
+                      didEndTextEdit: () {},
+                    ),
+                    FormFieldBox(
+                      onSavedField: (value) {},
+                      onChanged: (value) {},
+                      onSubmitingField: (value) {},
+                      labelText: 'District',
+                      hintText: 'Name of District',
+                      keyboardType: KeyboardType.Text_,
+                      controller: _districtnamecontroller,
+                      // readonly: true,
+                      requiredornot: true,
+                      //focusNode: _buildignamenode,
+                      didEndTextEdit: () {},
+                    ),
+                    FormFieldBox(
+                      onSavedField: (value) {},
+                      onChanged: (value) {},
+                      onSubmitingField: (value) {},
+                      labelText: 'Local body',
+                      hintText: 'Name of Local body',
+                      keyboardType: KeyboardType.Text_,
+                      controller: _localbodynamecontroller,
+                      // readonly: true,
+                      requiredornot: true,
+                      //focusNode: _buildignamenode,
+                      didEndTextEdit: () {},
                     ),
                     FormFieldBox(
                       onSavedField: (value) {},
@@ -339,6 +395,10 @@ class _EvPageState extends State<EvPage> {
                           if (_rented == Yesorno.no) {
                             detData.setEv(
                                 _category.toString().split('.').last,
+                                 _assemblynamecontroller.text,
+                                _parlaimentnamecontroller.text,
+                                _districtnamecontroller.text,
+                                _localbodynamecontroller.text,
                                 _wardnumbercontroller.text,
                                 _wardnamecontroller.text,
                                 _notcpcontroller.text,
@@ -351,6 +411,10 @@ class _EvPageState extends State<EvPage> {
                           } else {
                             detData.setEvRented(
                                 _category.toString().split('.').last,
+                                _assemblynamecontroller.text,
+                                _parlaimentnamecontroller.text,
+                                _districtnamecontroller.text,
+                                _localbodynamecontroller.text,
                                 _wardnumbercontroller.text,
                                 _wardnamecontroller.text,
                                 _notcpcontroller.text,
