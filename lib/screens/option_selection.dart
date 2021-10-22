@@ -9,7 +9,7 @@ import 'package:anert/providers/form_provider.dart';
 class OptionSelection extends StatefulWidget {
   static String id = 'option_screen';
   final bool issubmitted;
-  OptionSelection({this.issubmitted=false});
+  OptionSelection({this.issubmitted = false});
   @override
   _OptionSelectionState createState() => _OptionSelectionState();
 }
@@ -17,10 +17,10 @@ class OptionSelection extends StatefulWidget {
 class _OptionSelectionState extends State<OptionSelection> {
   Option optionSelect = Option.solar;
   final scaffoldKey = GlobalKey<ScaffoldState>();
-   void showSnackBar(String value) {
+  void showSnackBar(String value) {
     scaffoldKey.currentState!.showSnackBar(SnackBar(
-      backgroundColor: Colors.grey,
-      content: Text(value,style: TextStyle(fontSize: 17)),
+      backgroundColor: Color(0xFF333333),
+      content: Text(value, style: TextStyle(fontSize: 14)),
       duration: Duration(seconds: 2),
       action: SnackBarAction(
         label: 'Close',
@@ -29,14 +29,17 @@ class _OptionSelectionState extends State<OptionSelection> {
       ),
     ));
   }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    if(widget.issubmitted==true){
-      WidgetsBinding.instance!.addPostFrameCallback((_) =>showSnackBar('Details Entered Successfully'));
+    if (widget.issubmitted == true) {
+      WidgetsBinding.instance!.addPostFrameCallback(
+          (_) => showSnackBar('Details Entered Successfully'));
     }
   }
+
   @override
   Widget build(BuildContext context) {
     final detData = Provider.of<FormProvider>(context);
