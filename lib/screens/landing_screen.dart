@@ -1,11 +1,6 @@
 import 'package:anert/constants.dart';
-import 'package:anert/screens/form_screens/interested_screen.dart';
-import 'package:anert/screens/form_screens/name_of_institution_screen.dart';
 import 'package:anert/services/auth.dart';
-import 'package:anert/screens/option_selection.dart';
 import 'package:flutter/material.dart';
-import 'package:anert/utils/authentication_textfield.dart';
-import 'package:anert/utils/button.dart';
 import 'package:anert/utils/authentication_textfield.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
@@ -45,21 +40,22 @@ class _LandingScreenState extends State<LandingScreen> {
     return ModalProgressHUD(inAsyncCall: _spinner,
       child: Scaffold(
         key: scaffoldKey,
-        resizeToAvoidBottomInset: true,
+        
         backgroundColor: Colors.white,
-        body: SingleChildScrollView(
-          child: SizedBox(
+        body:  SizedBox(
             height: mquery.height,
             width: mquery.width,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                    height: mquery.height * 0.25,
-                    child: Image.asset('assets/images/ANERT.png')),
+                Flexible(
+                  child: Container(
+                      height: mquery.height * 0.25,
+                      child: Image.asset('assets/images/ANERT.png')),
+                ),
                 Container(
                   height: mquery.height * 0.07,
-                  margin: const EdgeInsets.all(6),
+                  margin: const EdgeInsets.all(2),
                   child: const Text('GREEN TVM', style: GreenTvmTheme.frontTitle),
                 ),
                 Container(
@@ -139,7 +135,6 @@ class _LandingScreenState extends State<LandingScreen> {
               ],
             ),
           ),
-        ),
       ),
     );
   }

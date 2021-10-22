@@ -20,8 +20,10 @@ class EvFrom {
   String? ownerAddress = 'nil';
   String? address = 'nil';
   String? twoCharging = 'nil';
+  String? length = 'nil';
+  String? breadth = 'nil';
+  String? area = 'nil';
   String? remakrs = 'nil';
-  String? solarPV = 'nil';
   String? gps = 'nil';
   String? img1 = 'nil';
   String? img2 = 'nil';

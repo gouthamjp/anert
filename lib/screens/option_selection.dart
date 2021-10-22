@@ -1,6 +1,4 @@
 import 'package:anert/constants.dart';
-import 'package:anert/screens/form_screens/ev_site.dart';
-import 'package:anert/screens/form_screens/inspection_site.dart';
 import 'package:anert/screens/form_screens/name_of_institution_screen.dart';
 import 'package:anert/utils/stepper_counter.dart';
 import 'package:flutter/material.dart';
@@ -10,18 +8,44 @@ import 'package:anert/providers/form_provider.dart';
 
 class OptionSelection extends StatefulWidget {
   static String id = 'option_screen';
-
+  final bool issubmitted;
+  OptionSelection({this.issubmitted = false});
   @override
   _OptionSelectionState createState() => _OptionSelectionState();
 }
 
 class _OptionSelectionState extends State<OptionSelection> {
   Option optionSelect = Option.solar;
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+  void showSnackBar(String value) {
+    scaffoldKey.currentState!.showSnackBar(SnackBar(
+      backgroundColor: Color(0xFF333333),
+      content: Text(value, style: TextStyle(fontSize: 14)),
+      duration: Duration(seconds: 2),
+      action: SnackBarAction(
+        label: 'Close',
+        textColor: GreenTvmTheme.white,
+        onPressed: scaffoldKey.currentState!.hideCurrentSnackBar,
+      ),
+    ));
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if (widget.issubmitted == true) {
+      WidgetsBinding.instance!.addPostFrameCallback(
+          (_) => showSnackBar('Details Entered Successfully'));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final detData = Provider.of<FormProvider>(context);
     final mquery = MediaQuery.of(context).size;
     return Scaffold(
+      key: scaffoldKey,
       appBar: GreenTvmTheme.themeAppbar(
           title: 'GREEN TVM', context: context, showBackButton: false),
       backgroundColor: Colors.white,
@@ -50,7 +74,7 @@ class _OptionSelectionState extends State<OptionSelection> {
                           ? GreenTvmTheme.secondaryGray
                           : Colors.white,
                       cardChild: Text(
-                        'SITE FOR \nINSPECTION',
+                        'SITE FOR \nSOLAR',
                         textAlign: TextAlign.center,
                         style: GreenTvmTheme.optionStyle,
                       ),
