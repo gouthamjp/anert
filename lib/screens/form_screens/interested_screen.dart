@@ -3,7 +3,6 @@ import 'package:anert/screens/option_selection.dart';
 import 'package:anert/utils/stepper_counter.dart';
 import 'package:flutter/material.dart';
 import 'package:anert/utils/button.dart';
-import 'package:anert/utils/radiobox.dart';
 import 'package:provider/provider.dart';
 import 'package:anert/providers/form_provider.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -24,12 +23,9 @@ class InterestedScreen extends StatefulWidget {
 }
 
 class _InterestedScreenState extends State<InterestedScreen> {
-  final _formKey = GlobalKey<FormState>();
   bool _spinner = false;
   final database = FirebaseDatabase.instance.reference();
   final storage = FirebaseStorage.instance.ref();
-  final _buildignamecontroller = TextEditingController();
-  Yesorno? _yesorno = Yesorno.yes;
   File? _image1;
   File? _image2;
   File? _image3;
@@ -123,7 +119,7 @@ class _InterestedScreenState extends State<InterestedScreen> {
       //
 
       // updating provider
-      detData.setIntrest(_yesorno.toString().split('.').last, _gmap!,
+      detData.setIntrest( _gmap!,
           _imageUrl1!, _imageUrl2!, _imageUrl3!);
       //
       if (detData.formType == 0) {
@@ -162,6 +158,7 @@ class _InterestedScreenState extends State<InterestedScreen> {
           'mat_acc': detData.siteInspection.roofAccess,
           'sub_know': detData.siteInspection.subsidy,
           'reason': detData.siteInspection.disintrest,
+          'promocode': detData.siteInspection.promocode,
           'remarks': detData.siteInspection.remark,
           'intrst': detData.siteInspection.solarPV,
           'gps': detData.siteInspection.gps,
@@ -188,15 +185,17 @@ class _InterestedScreenState extends State<InterestedScreen> {
           'owner_phone': detData.evInspection.ownerPhn,
           'owner_email': detData.evInspection.ownerEmail,
           'owner_address': detData.evInspection.ownerAddress,
-          'ambly_const': detData.siteInspection.assemblyConst,
-          'parli_const': detData.siteInspection.parlimentConst,
-          'dist': detData.siteInspection.district,
-          'lb': detData.siteInspection.localBody,
+          'ambly_const': detData.evInspection.assemblyConst,
+          'parli_const': detData.evInspection.parlimentConst,
+          'dist': detData.evInspection.district,
+          'lb': detData.evInspection.localBody,
           'ward_num': detData.evInspection.wardNo,
           'ward_name': detData.evInspection.wardName,
           'provision': detData.evInspection.twoCharging,
+          'length': detData.evInspection.length,
+          'breadth': detData.evInspection.breadth,
+          'area': detData.evInspection.area,
           'remarks': detData.evInspection.remakrs,
-          'intrst': detData.evInspection.solarPV,
           'gps': detData.evInspection.gps,
           'img1': detData.evInspection.img1,
           'img2': detData.evInspection.img2,
@@ -207,8 +206,7 @@ class _InterestedScreenState extends State<InterestedScreen> {
         });
         print('cehck');
       }
-      Navigator.pushNamedAndRemoveUntil(
-                      context, OptionSelection.id, (route) => false);
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => OptionSelection(issubmitted: true,),),(route) => false,);
     }
 
     Future<void> _showMyDialog() async {
@@ -233,11 +231,13 @@ class _InterestedScreenState extends State<InterestedScreen> {
                   Navigator.of(context).pop();
                   try{
                     await submitfunc();
+                    showSnackBar("Details entered successfully'");
                   }
                   catch(e){
                     showSnackBar('Something went wrong');
+                    _spinner=false;
                   }
-                  showSnackBar("Details entered successfully'");
+                  
                   
                 },
               ),
@@ -268,115 +268,95 @@ class _InterestedScreenState extends State<InterestedScreen> {
           child: Container(
             margin: EdgeInsets.all(18),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                StepperCounter(
-                  maxCount: 3,
-                  currentElement: 3,
-                ),
-                SizedBox(
-                  height: 0.05 * mquery.height,
-                  width: 0.05 * mquery.width,
-                ),
-                RadioFieldBox(
-                    labelText:
-                        'Whether you are interested\n for installing Solar PV?',
-                    requiredornot: true,
-                    radioChild: Column(
-                      children: <Widget>[
-                        ListTile(
-                          title: const Text('YES'),
-                          leading: Radio<Yesorno>(
-                            value: Yesorno.yes,
-                            groupValue: _yesorno,
-                            onChanged: (Yesorno? value) {
-                              setState(() {
-                                _yesorno = value;
-                              });
-                            },
+                Flexible(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      StepperCounter(
+                        maxCount: 3,
+                        currentElement: 3,
+                      ),
+                      SizedBox(
+                        height: 0.05 * mquery.height,
+                        width: 0.05 * mquery.width,
+                      ),
+                      Text('Upload Images',
+                          textAlign: TextAlign.center,
+                          style: GreenTvmTheme.pagedHeading),
+                      SizedBox(
+                        height: 0.02 * mquery.height,
+                      ),
+                      Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () async {
+                                final image1 = await ImagePicker()
+                                    .getImage(source: ImageSource.camera);
+                
+                                setState(() {
+                                  _image1 = image1 == null ? null : File(image1.path);
+                                });
+                              },
+                              child: Container(
+                                margin: EdgeInsets.all(2),
+                                child: _image1 == null
+                                    ? Image.asset('$imageurl')
+                                    : Image.file(_image1!),
+                              ),
+                            ),
                           ),
-                        ),
-                        ListTile(
-                          title: const Text('NO'),
-                          leading: Radio<Yesorno>(
-                            value: Yesorno.no,
-                            groupValue: _yesorno,
-                            onChanged: (Yesorno? value) {
-                              setState(() {
-                                _yesorno = value;
-                              });
-                            },
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () async {
+                                print(_image2);
+                                final image2 = await ImagePicker()
+                                    .getImage(source: ImageSource.camera);
+                
+                                setState(() {
+                                  _image2 = image2 == null ? null : File(image2.path);
+                
+                                  print(_image2);
+                                });
+                              },
+                              child: Container(
+                                margin: EdgeInsets.all(2),
+                                child: _image2 == null
+                                    ? Image.asset('$imageurl')
+                                    : Image.file(_image2!),
+                              ),
+                            ),
                           ),
-                        ),
-                      ],
-                    )),
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () async {
-                          final image1 = await ImagePicker()
-                              .getImage(source: ImageSource.camera);
-
-                          setState(() {
-                            _image1 = image1 == null ? null : File(image1.path);
-                          });
-                        },
-                        child: Container(
-                          margin: EdgeInsets.all(2),
-                          child: _image1 == null
-                              ? Image.asset('$imageurl')
-                              : Image.file(_image1!),
-                        ),
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () async {
+                                final image3 = await ImagePicker()
+                                    .getImage(source: ImageSource.camera);
+                
+                                setState(() {
+                                  _image3 = image3 == null ? null : File(image3.path);
+                                });
+                              },
+                              child: Container(
+                                margin: EdgeInsets.all(2),
+                                child: _image3 == null
+                                    ? Image.asset('$imageurl')
+                                    : Image.file(_image3!),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () async {
-                          print(_image2);
-                          final image2 = await ImagePicker()
-                              .getImage(source: ImageSource.camera);
-
-                          setState(() {
-                            _image2 = image2 == null ? null : File(image2.path);
-
-                            print(_image2);
-                          });
-                        },
-                        child: Container(
-                          margin: EdgeInsets.all(2),
-                          child: _image2 == null
-                              ? Image.asset('$imageurl')
-                              : Image.file(_image2!),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () async {
-                          final image3 = await ImagePicker()
-                              .getImage(source: ImageSource.camera);
-
-                          setState(() {
-                            _image3 = image3 == null ? null : File(image3.path);
-                          });
-                        },
-                        child: Container(
-                          margin: EdgeInsets.all(2),
-                          child: _image3 == null
-                              ? Image.asset('$imageurl')
-                              : Image.file(_image3!),
-                        ),
-                      ),
-                    ),
-                  ],
+                      Button(
+                          onpress: () async {
+                            _showMyDialog();
+                           
+                          },
+                          text: 'SUBMIT')
+                    ],
+                  ),
                 ),
-                Button(
-                    onpress: () async {
-                      _showMyDialog();
-                     
-                    },
-                    text: 'SUBMIT')
               ],
             ),
           ),

@@ -22,6 +22,7 @@ enum RoofShape { flat, tilted, others }
 enum RoofCover { concrete, tiles, asbetos, others }
 enum Accessibility { crane, scaffolding, stairs, notaccessible }
 enum Subsidy {
+  nil,
   do_not_know,
   not_interested,
   info_obtained_not_useful,
@@ -29,6 +30,7 @@ enum Subsidy {
   do_not_know_whom_to_approach
 }
 enum Disinterest {
+  nil,
   no_ROI,
   lack_of_info,
   never_heard_of_solar,
@@ -71,7 +73,7 @@ class _InspectionPageState extends State<InspectionPage> {
   final _districtnamecontroller = TextEditingController();
   final _localbodynamecontroller = TextEditingController();
   final _propossedcontroller = TextEditingController();
-
+ final _promocodecontroller = TextEditingController();
   Category? _category = Category.residential;
   Mounting? _mounting = Mounting.roof;
   Yesorno? _rented = Yesorno.no;
@@ -80,8 +82,8 @@ class _InspectionPageState extends State<InspectionPage> {
   RoofShape? _roofShape = RoofShape.flat;
   RoofCover? _roofCover = RoofCover.concrete;
   Accessibility? _accessibility = Accessibility.crane;
-  Subsidy? _subsidy = Subsidy.do_not_know;
-  Disinterest? _disinterest = Disinterest.no_ROI;
+  Subsidy? _subsidy = Subsidy.nil;
+  Disinterest? _disinterest = Disinterest.nil;
   //final _buildignamenode = FocusNode();
   // final _notcpnode = FocusNode();
   String data0 = '';
@@ -91,13 +93,27 @@ class _InspectionPageState extends State<InspectionPage> {
   double breadth = 0;
   int capacity = 0;
   double connectedload = 0.0;
+  Yesorno? _yesorno = Yesorno.no;
 
   double convert(String value) {
     double number = 0;
     number = double.parse(value);
     return number;
   }
+   final scaffoldKey = GlobalKey<ScaffoldState>();
 
+   void showSnackBar(String value) {
+    scaffoldKey.currentState!.showSnackBar(SnackBar(
+      backgroundColor: Color(0xFF333333),
+      content: Text(value,style: TextStyle(fontSize: 14)),
+      duration: Duration(seconds: 2),
+      action: SnackBarAction(
+        label: 'Close',
+        textColor: GreenTvmTheme.white,
+        onPressed: scaffoldKey.currentState!.hideCurrentSnackBar,
+      ),
+    ));
+  }
   void proposedcapacity() {
     capacity = min(area / 2, connectedload) ~/ 1;
     setState(() {
@@ -140,6 +156,7 @@ class _InspectionPageState extends State<InspectionPage> {
     final mquery = MediaQuery.of(context).size;
 
     return Scaffold(
+      key: scaffoldKey,
         appBar: GreenTvmTheme.themeAppbar(
             title: 'GREEN TVM', context: context, showBackButton: true),
         backgroundColor: Colors.white,
@@ -797,155 +814,206 @@ class _InspectionPageState extends State<InspectionPage> {
                       ),
                     ),
                     RadioFieldBox(
-                      labelText:
-                          'Knowledge on subsidy available \non solar installation',
+                        labelText:
+                            'Whether you are interested\n for installing Solar PV?',
+                        requiredornot: true,
+                        radioChild: Column(
+                          children: <Widget>[
+                            ListTile(
+                              title: const Text('YES'),
+                              leading: Radio<Yesorno>(
+                                value: Yesorno.yes,
+                                groupValue: _yesorno,
+                                onChanged: (Yesorno? value) {
+                                  setState(() {
+                                    _yesorno = value;
+                                  });
+                                },
+                              ),
+                            ),
+                            ListTile(
+                              title: const Text('NO'),
+                              leading: Radio<Yesorno>(
+                                value: Yesorno.no,
+                                groupValue: _yesorno,
+                                onChanged: (Yesorno? value) {
+                                  setState(() {
+                                    _yesorno = value;
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
+                        )),
+                    _yesorno == Yesorno.no
+                        ? Container()
+                        : RadioFieldBox(
+                            labelText:
+                                'Knowledge on subsidy available \non solar installation',
+                            requiredornot: false,
+                            radioChild: Column(
+                              children: <Widget>[
+                                ListTile(
+                                  title: const Text('DO NOT KNOW'),
+                                  leading: Radio<Subsidy>(
+                                    value: Subsidy.do_not_know,
+                                    groupValue: _subsidy,
+                                    onChanged: (Subsidy? value) {
+                                      setState(() {
+                                        _subsidy = value;
+                                      });
+                                    },
+                                  ),
+                                ),
+                                ListTile(
+                                  title: const Text('NOT INTERESTED'),
+                                  leading: Radio<Subsidy>(
+                                    value: Subsidy.not_interested,
+                                    groupValue: _subsidy,
+                                    onChanged: (Subsidy? value) {
+                                      setState(() {
+                                        _subsidy = value;
+                                      });
+                                    },
+                                  ),
+                                ),
+                                ListTile(
+                                  title: const Text(
+                                      'INFORMATION OBTAINED WAS NOT USEFUL'),
+                                  leading: Radio<Subsidy>(
+                                    value: Subsidy.info_obtained_not_useful,
+                                    groupValue: _subsidy,
+                                    onChanged: (Subsidy? value) {
+                                      setState(() {
+                                        _subsidy = value;
+                                      });
+                                    },
+                                  ),
+                                ),
+                                ListTile(
+                                  title:
+                                      const Text('INFORMATION  NOT OBTAINED'),
+                                  leading: Radio<Subsidy>(
+                                    value: Subsidy.info_not_obtained,
+                                    groupValue: _subsidy,
+                                    onChanged: (Subsidy? value) {
+                                      setState(() {
+                                        _subsidy = value;
+                                      });
+                                    },
+                                  ),
+                                ),
+                                ListTile(
+                                  title: const Text(
+                                      'DO NOT KNOW WHOM TO APPROACH'),
+                                  leading: Radio<Subsidy>(
+                                    value: Subsidy.do_not_know_whom_to_approach,
+                                    groupValue: _subsidy,
+                                    onChanged: (Subsidy? value) {
+                                      setState(() {
+                                        _subsidy = value;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                    _yesorno == Yesorno.no
+                        ? Container()
+                        : RadioFieldBox(
+                            labelText:
+                                'Reason for being disinterested\n in solar installation',
+                            requiredornot: false,
+                            radioChild: Column(
+                              children: <Widget>[
+                                ListTile(
+                                  title: const Text('NO RETURN OF INVESTNMENT'),
+                                  leading: Radio<Disinterest>(
+                                    value: Disinterest.no_ROI,
+                                    groupValue: _disinterest,
+                                    onChanged: (Disinterest? value) {
+                                      setState(() {
+                                        _disinterest = value;
+                                      });
+                                    },
+                                  ),
+                                ),
+                                ListTile(
+                                  title: const Text('LACK OF INFORMATION'),
+                                  leading: Radio<Disinterest>(
+                                    value: Disinterest.lack_of_info,
+                                    groupValue: _disinterest,
+                                    onChanged: (Disinterest? value) {
+                                      setState(() {
+                                        _disinterest = value;
+                                      });
+                                    },
+                                  ),
+                                ),
+                                ListTile(
+                                  title: const Text('NEVER HEARD ABOUT SOLAR'),
+                                  leading: Radio<Disinterest>(
+                                    value: Disinterest.never_heard_of_solar,
+                                    groupValue: _disinterest,
+                                    onChanged: (Disinterest? value) {
+                                      setState(() {
+                                        _disinterest = value;
+                                      });
+                                    },
+                                  ),
+                                ),
+                                ListTile(
+                                  title: const Text('NO APT SPACE'),
+                                  leading: Radio<Disinterest>(
+                                    value: Disinterest.no_apt_space,
+                                    groupValue: _disinterest,
+                                    onChanged: (Disinterest? value) {
+                                      setState(() {
+                                        _disinterest = value;
+                                      });
+                                    },
+                                  ),
+                                ),
+                                ListTile(
+                                  title:
+                                      const Text('BAD REVIEWS OR EXPERIENCE'),
+                                  leading: Radio<Disinterest>(
+                                    value: Disinterest.bad_reviews,
+                                    groupValue: _disinterest,
+                                    onChanged: (Disinterest? value) {
+                                      setState(() {
+                                        _disinterest = value;
+                                      });
+                                    },
+                                  ),
+                                ),
+                                ListTile(
+                                  title: const Text('NOT INTERESTED'),
+                                  leading: Radio<Disinterest>(
+                                    value: Disinterest.not_interested,
+                                    groupValue: _disinterest,
+                                    onChanged: (Disinterest? value) {
+                                      setState(() {
+                                        _disinterest = value;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                    FormFieldBox(
+                      onSavedField: (value) {},
+                      onChanged: (value) {},
+                      onSubmitingField: (value) {},
+                      labelText: 'Promo Code',
+                      hintText: 'Enter Promo Here',
                       requiredornot: false,
-                      radioChild: Column(
-                        children: <Widget>[
-                          ListTile(
-                            title: const Text('DO NOT KNOW'),
-                            leading: Radio<Subsidy>(
-                              value: Subsidy.do_not_know,
-                              groupValue: _subsidy,
-                              onChanged: (Subsidy? value) {
-                                setState(() {
-                                  _subsidy = value;
-                                });
-                              },
-                            ),
-                          ),
-                          ListTile(
-                            title: const Text('NOT INTERESTED'),
-                            leading: Radio<Subsidy>(
-                              value: Subsidy.not_interested,
-                              groupValue: _subsidy,
-                              onChanged: (Subsidy? value) {
-                                setState(() {
-                                  _subsidy = value;
-                                });
-                              },
-                            ),
-                          ),
-                          ListTile(
-                            title: const Text(
-                                'INFORMATION OBTAINED WAS NOT USEFUL'),
-                            leading: Radio<Subsidy>(
-                              value: Subsidy.info_obtained_not_useful,
-                              groupValue: _subsidy,
-                              onChanged: (Subsidy? value) {
-                                setState(() {
-                                  _subsidy = value;
-                                });
-                              },
-                            ),
-                          ),
-                          ListTile(
-                            title: const Text('INFORMATION  NOT OBTAINED'),
-                            leading: Radio<Subsidy>(
-                              value: Subsidy.info_not_obtained,
-                              groupValue: _subsidy,
-                              onChanged: (Subsidy? value) {
-                                setState(() {
-                                  _subsidy = value;
-                                });
-                              },
-                            ),
-                          ),
-                          ListTile(
-                            title: const Text('DO NOT KNOW WHOM TO APPROACH'),
-                            leading: Radio<Subsidy>(
-                              value: Subsidy.do_not_know_whom_to_approach,
-                              groupValue: _subsidy,
-                              onChanged: (Subsidy? value) {
-                                setState(() {
-                                  _subsidy = value;
-                                });
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    RadioFieldBox(
-                      labelText:
-                          'Reason for being disinterested\n in solar installation',
-                      requiredornot: false,
-                      radioChild: Column(
-                        children: <Widget>[
-                          ListTile(
-                            title: const Text('NO RETURN OF INVESTNMENT'),
-                            leading: Radio<Disinterest>(
-                              value: Disinterest.no_ROI,
-                              groupValue: _disinterest,
-                              onChanged: (Disinterest? value) {
-                                setState(() {
-                                  _disinterest = value;
-                                });
-                              },
-                            ),
-                          ),
-                          ListTile(
-                            title: const Text('LACK OF INFORMATION'),
-                            leading: Radio<Disinterest>(
-                              value: Disinterest.lack_of_info,
-                              groupValue: _disinterest,
-                              onChanged: (Disinterest? value) {
-                                setState(() {
-                                  _disinterest = value;
-                                });
-                              },
-                            ),
-                          ),
-                          ListTile(
-                            title: const Text('NEVER HEARD ABOUT SOLAR'),
-                            leading: Radio<Disinterest>(
-                              value: Disinterest.never_heard_of_solar,
-                              groupValue: _disinterest,
-                              onChanged: (Disinterest? value) {
-                                setState(() {
-                                  _disinterest = value;
-                                });
-                              },
-                            ),
-                          ),
-                          ListTile(
-                            title: const Text('NO APT SPACE'),
-                            leading: Radio<Disinterest>(
-                              value: Disinterest.no_apt_space,
-                              groupValue: _disinterest,
-                              onChanged: (Disinterest? value) {
-                                setState(() {
-                                  _disinterest = value;
-                                });
-                              },
-                            ),
-                          ),
-                          ListTile(
-                            title: const Text('BAD REVIEWS OR EXPERIENCE'),
-                            leading: Radio<Disinterest>(
-                              value: Disinterest.bad_reviews,
-                              groupValue: _disinterest,
-                              onChanged: (Disinterest? value) {
-                                setState(() {
-                                  _disinterest = value;
-                                });
-                              },
-                            ),
-                          ),
-                          ListTile(
-                            title: const Text('NOT INTERESTED'),
-                            leading: Radio<Disinterest>(
-                              value: Disinterest.not_interested,
-                              groupValue: _disinterest,
-                              onChanged: (Disinterest? value) {
-                                setState(() {
-                                  _disinterest = value;
-                                });
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
+                      keyboardType: KeyboardType.Text_,
+                      controller: _promocodecontroller,
+                      // focusNode: _notcpnode,
+                      didEndTextEdit: () {},
                     ),
                     FormFieldBox(
                       onSavedField: (value) {},
@@ -964,6 +1032,7 @@ class _InspectionPageState extends State<InspectionPage> {
                         //iugi
                         onpress: () {
                           if (!_formKey.currentState!.validate()) {
+                            showSnackBar('Some mandatory fields are missing');
                             return;
                           } else {
                             Navigator.pushNamed(context, InterestedScreen.id);
@@ -1004,8 +1073,10 @@ class _InspectionPageState extends State<InspectionPage> {
                                     ? _othersspecifycontroller.text
                                     : _roofCover.toString().split('.').last,
                                 _accessibility.toString().split('.').last,
+                                _yesorno.toString().split('.').last,
                                 _subsidy.toString().split('.').last,
                                 _disinterest.toString().split('.').last,
+                                _promocodecontroller.text,
                                 _remarkcontroller.text);
                           } else {
                             detData.setInspectionRented(
@@ -1040,10 +1111,13 @@ class _InspectionPageState extends State<InspectionPage> {
                                 _propossedcontroller.text,
                                 _roofShape.toString().split('.').last,
                                 (_roofCover == RoofCover.others)
-                                    ? _othersspecifycontroller.text : _roofCover.toString().split('.').last,
+                                    ? _othersspecifycontroller.text
+                                    : _roofCover.toString().split('.').last,
                                 _accessibility.toString().split('.').last,
+                                _yesorno.toString().split('.').last,
                                 _subsidy.toString().split('.').last,
                                 _disinterest.toString().split('.').last,
+                                _promocodecontroller.text,
                                 _remarkcontroller.text);
                           }
                         },

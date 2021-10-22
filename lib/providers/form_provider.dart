@@ -36,8 +36,10 @@ class FormProvider with ChangeNotifier {
       String roofShape,
       String roofCover,
       String roofAccess,
+      String intrest,
       String subsidy,
       String disintrest,
+      String promocode,
       String remark) {
     siteInspection.category = category;
     siteInspection.contactPerson = contactPerson;
@@ -65,8 +67,10 @@ class FormProvider with ChangeNotifier {
     siteInspection.roofShape = roofShape;
     siteInspection.roofCover = roofCover;
     siteInspection.roofAccess = roofAccess;
+    siteInspection.solarPV = intrest;
     siteInspection.subsidy = subsidy;
     siteInspection.disintrest = disintrest;
+    siteInspection.promocode = promocode;
     siteInspection.remark = remark;
   }
 
@@ -100,8 +104,10 @@ class FormProvider with ChangeNotifier {
       String roofShape,
       String roofCover,
       String roofAccess,
+      String intrest,
       String subsidy,
       String disintrest,
+      String promocode,
       String remark) {
     siteInspection.category = category;
     siteInspection.contactPerson = contactPerson;
@@ -132,9 +138,12 @@ class FormProvider with ChangeNotifier {
     siteInspection.roofShape = roofShape;
     siteInspection.roofCover = roofCover;
     siteInspection.roofAccess = roofAccess;
+    siteInspection.solarPV = intrest;
     siteInspection.subsidy = subsidy;
     siteInspection.disintrest = disintrest;
+    siteInspection.promocode = promocode;
     siteInspection.remark = remark;
+
   }
 
   void setEv(
@@ -151,6 +160,9 @@ class FormProvider with ChangeNotifier {
     String email,
     String rented,
     String twoCharging,
+    String length,
+    String breadth,
+    String area,
     String remakrs,
   ) {
     evInspection.category = category;
@@ -166,6 +178,9 @@ class FormProvider with ChangeNotifier {
     evInspection.email = email;
     evInspection.rented = rented;
     evInspection.twoCharging = twoCharging;
+    siteInspection.length = length;
+    siteInspection.breadth = breadth;
+    siteInspection.area = area;
     evInspection.remakrs = remakrs;
   }
 
@@ -187,6 +202,9 @@ class FormProvider with ChangeNotifier {
     String ownerEmail,
     String ownerAddress,
     String twoCharging,
+    String length,
+    String breadth,
+    String area,
     String remakrs,
   ) {
     evInspection.category = category;
@@ -205,8 +223,10 @@ class FormProvider with ChangeNotifier {
     evInspection.ownerPhn = ownerPhn;
     evInspection.ownerEmail = ownerEmail;
     evInspection.ownerAddress = ownerAddress;
-
     evInspection.twoCharging = twoCharging;
+    siteInspection.length = length;
+    siteInspection.breadth = breadth;
+    siteInspection.area = area;
     evInspection.remakrs = remakrs;
   }
 
@@ -223,20 +243,17 @@ class FormProvider with ChangeNotifier {
   }
 
   void setIntrest(
-    String intrest,
     String gps,
     String img1,
     String img2,
     String img3,
   ) {
     if (formType == 0) {
-      siteInspection.solarPV = intrest;
       siteInspection.gps = gps;
       siteInspection.img1 = img1;
       siteInspection.img2 = img2;
       siteInspection.img3 = img3;
     } else {
-      evInspection.solarPV = intrest;
       evInspection.gps = gps;
       evInspection.img1 = img1;
       evInspection.img2 = img2;

@@ -33,6 +33,7 @@ class SiteInspectionForm {
   String? roofAccess = 'nil';
   String? subsidy = 'nil';
   String? disintrest = 'nil';
+  String? promocode = 'nil';
   String? remark = 'nil';
   String? solarPV = 'nil';
   String? gps = 'nil';

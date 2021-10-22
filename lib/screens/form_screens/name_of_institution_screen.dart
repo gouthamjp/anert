@@ -3,12 +3,10 @@ import 'package:anert/providers/form_provider.dart';
 import 'package:anert/screens/form_screens/ev_site.dart';
 import 'package:anert/screens/form_screens/inspection_site.dart';
 import 'package:anert/screens/option_selection.dart';
-import 'package:anert/utils/stepper_counter.dart';
 import 'package:flutter/material.dart';
 import 'package:anert/utils/button.dart';
 import 'package:anert/utils/FormFieldBox.dart';
 import 'package:anert/utils/radiobox.dart';
-import 'package:anert/utils/button.dart';
 import 'package:provider/provider.dart';
 import 'package:anert/models/user_model.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -68,7 +66,7 @@ class _NameOfInstitutionState extends State<NameOfInstitution> {
       inAsyncCall: _spinner,
       child: Scaffold(
         key: scaffoldKey,
-        resizeToAvoidBottomInset: false,
+       
         appBar: GreenTvmTheme.themeAppbar(
             title: 'GREEN TVM', context: context, showBackButton: true),
         backgroundColor: Colors.white,
@@ -78,171 +76,184 @@ class _NameOfInstitutionState extends State<NameOfInstitution> {
           child: Container(
             margin: EdgeInsets.all(18),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  //height: mquery.height * 0.15,
-                  child: Form(
-                    key: _formKey,
-                    child: FormFieldBox(
-                      onSavedField: (value) {},
-                      onChanged: (value) {},
-                      onSubmitingField: (value) {},
-                      labelText: 'Name of Building',
-                      hintText: 'Enter name of building',
-                      keyboardType: KeyboardType.Text_,
-                      controller: _buildignamecontroller,
-                      requiredornot: true,
-                      //focusNode: _buildignamenode,
-                      didEndTextEdit: () {},
-                    ),
+                Flexible(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        //height: mquery.height * 0.15,
+                        child: Form(
+                          key: _formKey,
+                          child: FormFieldBox(
+                            onSavedField: (value) {},
+                            onChanged: (value) {},
+                            onSubmitingField: (value) {},
+                            labelText: 'Name of Building',
+                            hintText: 'Enter name of building',
+                            keyboardType: KeyboardType.Text_,
+                            controller: _buildignamecontroller,
+                            requiredornot: true,
+                            //focusNode: _buildignamenode,
+                            didEndTextEdit: () {},
+                          ),
+                        ),
+                      ),
+                      RadioFieldBox(
+                          labelText: 'Is it suitable for deployement?',
+                          requiredornot: true,
+                          radioChild: Column(
+                            children: <Widget>[
+                              ListTile(
+                                title: const Text('YES'),
+                                leading: Radio<Yesorno>(
+                                  value: Yesorno.yes,
+                                  groupValue: _yesorno,
+                                  onChanged: (Yesorno? value) {
+                                    setState(() {
+                                      _yesorno = value;
+                                    });
+                                  },
+                                ),
+                              ),
+                              ListTile(
+                                title: const Text('NO'),
+                                leading: Radio<Yesorno>(
+                                  value: Yesorno.no,
+                                  groupValue: _yesorno,
+                                  onChanged: (Yesorno? value) {
+                                    setState(() {
+                                      _yesorno = value;
+                                    });
+                                  },
+                                ),
+                              ),
+                            ],
+                          )),
+                      Button(
+                          onpress: () async {
+                            try{
+                            g.Buildingname = _buildignamecontroller.text;
+                    
+                            detData.setName(user?.id, _buildignamecontroller.text,
+                                _yesorno.toString().split('.').last);
+                            if (!_formKey.currentState!.validate()) {
+                              return;
+                            }
+                    
+                            if (_yesorno == Yesorno.yes) {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => widget.option == Option.ev
+                                          ? EvPage()
+                                          : InspectionPage()));
+                            } else {
+                              
+                              if (detData.formType == 0) {
+                                setState(() {
+                                  _spinner=true;
+                                });
+                                await inspection.push().set({
+                                  'uid': detData.siteInspection.userID,
+                                  'building_name': detData.siteInspection.buildingName,
+                                  'suitable': detData.siteInspection.deployment,
+                                  'category': detData.siteInspection.category,
+                                  'contact_name': detData.siteInspection.contactPerson,
+                                  'desig': detData.siteInspection.designatoin,
+                                  'phone': detData.siteInspection.phoneNum,
+                                  'email': detData.siteInspection.email,
+                                  'rented': detData.siteInspection.rented,
+                                  'owner_name': detData.siteInspection.ownerName,
+                                  'owner_phone': detData.siteInspection.ownerphn,
+                                  'owner_email': detData.siteInspection.ownerEmail,
+                                  'mounting': detData.siteInspection.mounting,
+                                  'ambly_const': detData.siteInspection.assemblyConst,
+                                  'parli_const': detData.siteInspection.parlimentConst,
+                                  'dist': detData.siteInspection.district,
+                                  'lb': detData.siteInspection.localBody,
+                                  'ward_num': detData.siteInspection.wardNo,
+                                  'ward_name': detData.siteInspection.wardName,
+                                  'load': detData.siteInspection.load,
+                                  'avg_cnsmptn': detData.siteInspection.avgConsumption,
+                                  'conn_name': detData.siteInspection.eConnectionName,
+                                  'period': detData.siteInspection.billingPeriod,
+                                  'customer_type': detData.siteInspection.customerType,
+                                  'conn_type': detData.siteInspection.connectionType,
+                                  'length': detData.siteInspection.length,
+                                  'breadth': detData.siteInspection.breadth,
+                                  'area': detData.siteInspection.area,
+                                  'prop_cap': detData.siteInspection.propCap,
+                                  'rf_shape': detData.siteInspection.roofShape,
+                                  'rf_mat': detData.siteInspection.roofCover,
+                                  'mat_acc': detData.siteInspection.roofAccess,
+                                  'sub_know': detData.siteInspection.subsidy,
+                                  'reason': detData.siteInspection.disintrest,
+                                  'promocode': detData.siteInspection.promocode,
+                                  'remarks': detData.siteInspection.remark,
+                                  'intrst': detData.siteInspection.solarPV,
+                                  'gps': detData.siteInspection.gps,
+                                  'img1': detData.siteInspection.img1,
+                                  'img2': detData.siteInspection.img2,
+                                  'img3': detData.siteInspection.img3,
+                                });
+                                setState(() {
+                                  _spinner=false;
+                                });
+                              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => OptionSelection(issubmitted: true,),),(route) => false,);
+                              showSnackBar('Details entered successfully');
+                              } else {
+                                setState(() {
+                                  _spinner=true;
+                                });
+                                await evSite.push().set({
+                                  'uid': detData.evInspection.userID,
+                                  'building_name': detData.evInspection.buildingName,
+                                  'suitable': detData.evInspection.deployment,
+                                  'category': detData.evInspection.category,
+                                  'contact_name': detData.evInspection.contactPerson,
+                                  'desig': detData.evInspection.designatoin,
+                                  'phone': detData.evInspection.phoneNum,
+                                  'email': detData.evInspection.email,
+                                  'rented': detData.evInspection.rented,
+                                  'owner_name': detData.evInspection.ownerName,
+                                  'owner_phone': detData.evInspection.ownerPhn,
+                                  'owner_email': detData.evInspection.ownerEmail,
+                                  'owner_address': detData.evInspection.ownerAddress,
+                                  'ambly_const': detData.evInspection.assemblyConst,
+                                  'parli_const': detData.evInspection.parlimentConst,
+                                  'dist': detData.evInspection.district,
+                                  'lb': detData.evInspection.localBody,
+                                  'ward_num': detData.evInspection.wardNo,
+                                  'ward_name': detData.evInspection.wardName,
+                                  'provision': detData.evInspection.twoCharging,
+                                  'length': detData.evInspection.length,
+                                  'breadth': detData.evInspection.breadth,
+                                  'area': detData.evInspection.area,
+                                  'remarks': detData.evInspection.remakrs,
+                                  'gps': detData.evInspection.gps,
+                                  'img1': detData.evInspection.img1,
+                                  'img2': detData.evInspection.img2,
+                                  'img3': detData.evInspection.img3,
+                                });
+                                setState(() {
+                                  _spinner=false;
+                                });
+                              }
+                              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => OptionSelection(issubmitted: true,),),(route) => false,);
+                              showSnackBar('Details entered successfully');
+                            }}
+                            catch(e){
+                              showSnackBar('Something went wrong');
+                              _spinner=false;
+                            }
+                    
+                            _buildignamecontroller.clear();
+                          },
+                          text: _yesorno==Yesorno.yes?'NEXT':'SUBMIT')
+                    ],
                   ),
                 ),
-                RadioFieldBox(
-                    labelText: 'Is it suitable for deployement?',
-                    requiredornot: true,
-                    radioChild: Column(
-                      children: <Widget>[
-                        ListTile(
-                          title: const Text('YES'),
-                          leading: Radio<Yesorno>(
-                            value: Yesorno.yes,
-                            groupValue: _yesorno,
-                            onChanged: (Yesorno? value) {
-                              setState(() {
-                                _yesorno = value;
-                              });
-                            },
-                          ),
-                        ),
-                        ListTile(
-                          title: const Text('NO'),
-                          leading: Radio<Yesorno>(
-                            value: Yesorno.no,
-                            groupValue: _yesorno,
-                            onChanged: (Yesorno? value) {
-                              setState(() {
-                                _yesorno = value;
-                              });
-                            },
-                          ),
-                        ),
-                      ],
-                    )),
-                Button(
-                    onpress: () async {
-                      try{
-                      g.Buildingname = _buildignamecontroller.text;
-    
-                      detData.setName(user?.id, _buildignamecontroller.text,
-                          _yesorno.toString().split('.').last);
-                      if (!_formKey.currentState!.validate()) {
-                        return;
-                      }
-    
-                      if (_yesorno == Yesorno.yes) {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => widget.option == Option.ev
-                                    ? EvPage()
-                                    : InspectionPage()));
-                      } else {
-                        
-                        if (detData.formType == 0) {
-                          setState(() {
-                            _spinner=true;
-                          });
-                          await inspection.push().set({
-                            'uid': detData.siteInspection.userID,
-                            'building_name': detData.siteInspection.buildingName,
-                            'suitable': detData.siteInspection.deployment,
-                            'category': detData.siteInspection.category,
-                            'contact_name': detData.siteInspection.contactPerson,
-                            'desig': detData.siteInspection.designatoin,
-                            'phone': detData.siteInspection.phoneNum,
-                            'email': detData.siteInspection.email,
-                            'rented': detData.siteInspection.rented,
-                            'owner_name': detData.siteInspection.ownerName,
-                            'owner_phone': detData.siteInspection.ownerphn,
-                            'owner_email': detData.siteInspection.ownerEmail,
-                            'mounting': detData.siteInspection.mounting,
-                            'ambly_const': detData.siteInspection.assemblyConst,
-                            'parli_const': detData.siteInspection.parlimentConst,
-                            'dist': detData.siteInspection.district,
-                            'lb': detData.siteInspection.localBody,
-                            'ward_num': detData.siteInspection.wardNo,
-                            'ward_name': detData.siteInspection.wardName,
-                            'load': detData.siteInspection.load,
-                            'avg_cnsmptn': detData.siteInspection.avgConsumption,
-                            'conn_name': detData.siteInspection.eConnectionName,
-                            'period': detData.siteInspection.billingPeriod,
-                            'customer_type': detData.siteInspection.customerType,
-                            'conn_type': detData.siteInspection.connectionType,
-                            'length': detData.siteInspection.length,
-                            'breadth': detData.siteInspection.breadth,
-                            'area': detData.siteInspection.area,
-                            'prop_cap': detData.siteInspection.propCap,
-                            'rf_shape': detData.siteInspection.roofShape,
-                            'rf_mat': detData.siteInspection.roofCover,
-                            'mat_acc': detData.siteInspection.roofAccess,
-                            'sub_know': detData.siteInspection.subsidy,
-                            'reason': detData.siteInspection.disintrest,
-                            'remarks': detData.siteInspection.remark,
-                            'intrst': detData.siteInspection.solarPV,
-                            'gps': detData.siteInspection.gps,
-                            'img1': detData.siteInspection.img1,
-                            'img2': detData.siteInspection.img2,
-                            'img3': detData.siteInspection.img3,
-                          });
-                          setState(() {
-                            _spinner=false;
-                          });
-                        } else {
-                          setState(() {
-                            _spinner=true;
-                          });
-                          await evSite.push().set({
-                            'uid': detData.evInspection.userID,
-                            'building_name': detData.evInspection.buildingName,
-                            'suitable': detData.evInspection.deployment,
-                            'category': detData.evInspection.category,
-                            'contact_name': detData.evInspection.contactPerson,
-                            'desig': detData.evInspection.designatoin,
-                            'phone': detData.evInspection.phoneNum,
-                            'email': detData.evInspection.email,
-                            'rented': detData.evInspection.rented,
-                            'owner_name': detData.evInspection.ownerName,
-                            'owner_phone': detData.evInspection.ownerPhn,
-                            'owner_email': detData.evInspection.ownerEmail,
-                            'owner_address': detData.evInspection.ownerAddress,
-                            'ambly_const': detData.siteInspection.assemblyConst,
-                            'parli_const': detData.siteInspection.parlimentConst,
-                            'dist': detData.siteInspection.district,
-                            'lb': detData.siteInspection.localBody,
-                            'ward_num': detData.evInspection.wardNo,
-                            'ward_name': detData.evInspection.wardName,
-                            'provision': detData.evInspection.twoCharging,
-                            'remarks': detData.evInspection.remakrs,
-                            'intrst': detData.evInspection.solarPV,
-                            'gps': detData.evInspection.gps,
-                            'img1': detData.evInspection.img1,
-                            'img2': detData.evInspection.img2,
-                            'img3': detData.evInspection.img3,
-                          });
-                          setState(() {
-                            _spinner=false;
-                          });
-                        }
-                        showSnackBar('Details entered successfully');
-                      }}
-                      catch(e){
-                        showSnackBar('Something went wrong');
-                      }
-    
-                      _buildignamecontroller.clear();
-                    },
-                    text: 'NEXT')
               ],
             ),
           ),

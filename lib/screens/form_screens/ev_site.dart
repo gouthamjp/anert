@@ -12,7 +12,7 @@ import 'package:anert/models/user_model.dart';
 import 'package:anert/providers/form_provider.dart';
 import 'package:anert/globals.dart' as g;
 
-enum Category { residential, commercial, government }
+enum Category { commercial, government }
 enum Yesorno { yes, no }
 
 class EvPage extends StatefulWidget {
@@ -43,23 +43,60 @@ class _EvPageState extends State<EvPage> {
   final _parlaimentnamecontroller = TextEditingController();
   final _districtnamecontroller = TextEditingController();
   final _localbodynamecontroller = TextEditingController();
+   final _lengthcontroller = TextEditingController();
+  final _breadthcontroller = TextEditingController();
+  final _areacontroller = TextEditingController();
 
-  Category? _category = Category.residential;
+  Category? _category = Category.commercial;
   Yesorno? _yesorno = Yesorno.yes;
   Yesorno? _rented = Yesorno.no;
   //final _buildignamenode = FocusNode();
   // final _notcpnode = FocusNode();
   String data0 = '';
   String data1 = '';
+  int area = 0;
+  double length = 0;
+  double breadth = 0;
   final String imageurl = 'assets/images/download.png';
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+
+   void showSnackBar(String value) {
+    scaffoldKey.currentState!.showSnackBar(SnackBar(
+      backgroundColor: Color(0xFF333333),
+      content: Text(value,style: TextStyle(fontSize: 14)),
+      duration: Duration(seconds: 2),
+      action: SnackBarAction(
+        label: 'Close',
+        textColor: GreenTvmTheme.white,
+        onPressed: scaffoldKey.currentState!.hideCurrentSnackBar,
+      ),
+    ));
+  }
+  void applyarea() {
+    setState(() {
+      area = length * breadth ~/ 1;
+      _areacontroller.text = '$area';
+    });
+  }
+
   void test() {
     _formKey.currentState!.save();
     data0 = _buildignamecontroller.text;
     data1 = _notcpcontroller.text;
   }
 
+  double convert(String value) {
+    double number = 0;
+    number = double.parse(value);
+    return number;
+  }
+
   void intialfunc() {
     _buildignamecontroller.text = g.Buildingname;
+    area = length * breadth ~/ 1;
+    _lengthcontroller.text = '$length';
+    _breadthcontroller.text = '$breadth';
+    _areacontroller.text = '$area';
   }
 
   @override
@@ -75,6 +112,7 @@ class _EvPageState extends State<EvPage> {
     final user = Provider.of<CustomUser?>(context);
     final mquery = MediaQuery.of(context).size;
     return Scaffold(
+      key: scaffoldKey,
         appBar: GreenTvmTheme.themeAppbar(
             title: 'GREEN TVM', context: context, showBackButton: true),
         backgroundColor: Colors.white,
@@ -380,6 +418,49 @@ class _EvPageState extends State<EvPage> {
                     ),
                     FormFieldBox(
                       onSavedField: (value) {},
+                      onChanged: (value) {
+                        length = convert(value!);
+                        applyarea();
+                      },
+                      onSubmitingField: (value) {},
+                      labelText: 'Length (in m)',
+                      hintText: 'Enter in meter',
+                      requiredornot: true,
+                      keyboardType: KeyboardType.Number_,
+                      controller: _lengthcontroller,
+                      // focusNode: _notcpnode,
+                      didEndTextEdit: () {},
+                    ),
+                    FormFieldBox(
+                      onSavedField: (value) {},
+                      onChanged: (value) {
+                        breadth = convert(value!);
+                        applyarea();
+                      },
+                      onSubmitingField: (value) {},
+                      labelText: 'Breadth (in m)',
+                      hintText: 'Enter in meter',
+                      requiredornot: true,
+                      keyboardType: KeyboardType.Number_,
+                      controller: _breadthcontroller,
+                      // focusNode: _notcpnode,
+                      didEndTextEdit: () {},
+                    ),
+                    FormFieldBox(
+                      onSavedField: (value) {},
+                      onChanged: (value) {},
+                      onSubmitingField: (value) {},
+                      labelText: 'Area (in m²)',
+                      hintText: 'Enter in M²',
+                      requiredornot: true,
+                      readonly: true,
+                      keyboardType: KeyboardType.Number_,
+                      controller: _areacontroller,
+                      // focusNode: _notcpnode,
+                      didEndTextEdit: () {},
+                    ),
+                    FormFieldBox(
+                      onSavedField: (value) {},
                       onChanged: (value) {},
                       onSubmitingField: (value) {},
                       labelText: 'Remarks',
@@ -395,7 +476,7 @@ class _EvPageState extends State<EvPage> {
                           if (_rented == Yesorno.no) {
                             detData.setEv(
                                 _category.toString().split('.').last,
-                                 _assemblynamecontroller.text,
+                                _assemblynamecontroller.text,
                                 _parlaimentnamecontroller.text,
                                 _districtnamecontroller.text,
                                 _localbodynamecontroller.text,
@@ -407,6 +488,9 @@ class _EvPageState extends State<EvPage> {
                                 _emailcontroller.text,
                                 _rented.toString().split('.').last,
                                 _yesorno.toString().split('.').last,
+                                _lengthcontroller.text,
+                                _breadthcontroller.text,
+                                _areacontroller.text,
                                 _remarkscontroller.text);
                           } else {
                             detData.setEvRented(
@@ -427,9 +511,13 @@ class _EvPageState extends State<EvPage> {
                                 _rentedemailcontroller.text,
                                 _addresscontroller.text,
                                 _yesorno.toString().split('.').last,
+                                _lengthcontroller.text,
+                                _breadthcontroller.text,
+                                _areacontroller.text,
                                 _remarkscontroller.text);
                           }
                           if (!_formKey.currentState!.validate()) {
+                            showSnackBar('Some mandatory fields are missing');
                             return;
                           } else {
                             Navigator.pushNamed(context, InterestedScreen.id);

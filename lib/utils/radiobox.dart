@@ -37,10 +37,7 @@ class _RadioFieldBoxState extends State<RadioFieldBox> {
             height: 0.005 * mquery.height,
           ),
           widget.radioChild,
-          SizedBox(
-            height: 0.03 * mquery.height,
-          ),
-        ],
+       ],
       ),
       
     );
