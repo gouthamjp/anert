@@ -19,10 +19,10 @@ class _LandingScreenState extends State<LandingScreen> {
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
-  void showSnackBar(String value) {
+void showSnackBar(String value) {
     scaffoldKey.currentState!.showSnackBar(SnackBar(
-      backgroundColor: GreenTvmTheme.primaryBlue,
-      content: Text(value),
+      backgroundColor: Color(0xFF333333),
+      content: Text(value,style: TextStyle(fontSize: 14)),
       duration: Duration(seconds: 2),
       action: SnackBarAction(
         label: 'Close',

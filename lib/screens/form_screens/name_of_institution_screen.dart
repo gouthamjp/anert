@@ -12,6 +12,8 @@ import 'package:anert/models/user_model.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:anert/globals.dart' as g;
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 enum Yesorno { yes, no }
 enum Option { solar, ev }
@@ -25,6 +27,13 @@ class NameOfInstitution extends StatefulWidget {
 }
 
 class _NameOfInstitutionState extends State<NameOfInstitution> {
+  File? _image1;
+  File? _image2;
+  File? _image3;
+  String? _imageUrl1 = '';
+  String? _imageUrl2 = '';
+  String? _imageUrl3 = '';
+    final String imageurl = 'assets/images/download.png';
   final _formKey = GlobalKey<FormState>();
   final _buildignamecontroller = TextEditingController();
   bool _spinner = false;
@@ -36,8 +45,8 @@ class _NameOfInstitutionState extends State<NameOfInstitution> {
 
   void showSnackBar(String value) {
     scaffoldKey.currentState!.showSnackBar(SnackBar(
-      backgroundColor: Colors.grey,
-      content: Text(value,style: TextStyle(fontSize: 17)),
+      backgroundColor: Color(0xFF333333),
+      content: Text(value, style: TextStyle(fontSize: 14)),
       duration: Duration(seconds: 2),
       action: SnackBarAction(
         label: 'Close',
@@ -46,6 +55,7 @@ class _NameOfInstitutionState extends State<NameOfInstitution> {
       ),
     ));
   }
+
   void test() {
     if (!_formKey.currentState!.validate()) {
       return;
@@ -65,8 +75,8 @@ class _NameOfInstitutionState extends State<NameOfInstitution> {
     return ModalProgressHUD(
       inAsyncCall: _spinner,
       child: Scaffold(
+        resizeToAvoidBottomInset: _yesorno==Yesorno.yes?true: false,
         key: scaffoldKey,
-       
         appBar: GreenTvmTheme.themeAppbar(
             title: 'GREEN TVM', context: context, showBackButton: true),
         backgroundColor: Colors.white,
@@ -128,129 +138,248 @@ class _NameOfInstitutionState extends State<NameOfInstitution> {
                                   },
                                 ),
                               ),
+                              _yesorno == Yesorno.no
+                                  ? Row(
+                                      children: <Widget>[
+                                        Expanded(
+                                          child: GestureDetector(
+                                            onTap: () async {
+                                              final image1 = await ImagePicker()
+                                                  .getImage(
+                                                      source:
+                                                          ImageSource.camera);
+
+                                              setState(() {
+                                                _image1 = image1 == null
+                                                    ? null
+                                                    : File(image1.path);
+                                              });
+                                            },
+                                            child: Container(
+                                              margin: EdgeInsets.all(2),
+                                              child: _image1 == null
+                                                  ? Image.asset('$imageurl')
+                                                  : Image.file(_image1!),
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: GestureDetector(
+                                            onTap: () async {
+                                              print(_image2);
+                                              final image2 = await ImagePicker()
+                                                  .getImage(
+                                                      source:
+                                                          ImageSource.camera);
+
+                                              setState(() {
+                                                _image2 = image2 == null
+                                                    ? null
+                                                    : File(image2.path);
+
+                                                print(_image2);
+                                              });
+                                            },
+                                            child: Container(
+                                              margin: EdgeInsets.all(2),
+                                              child: _image2 == null
+                                                  ? Image.asset('$imageurl')
+                                                  : Image.file(_image2!),
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: GestureDetector(
+                                            onTap: () async {
+                                              final image3 = await ImagePicker()
+                                                  .getImage(
+                                                      source:
+                                                          ImageSource.camera);
+
+                                              setState(() {
+                                                _image3 = image3 == null
+                                                    ? null
+                                                    : File(image3.path);
+                                              });
+                                            },
+                                            child: Container(
+                                              margin: EdgeInsets.all(2),
+                                              child: _image3 == null
+                                                  ? Image.asset('$imageurl')
+                                                  : Image.file(_image3!),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  : Container(),
                             ],
                           )),
                       Button(
                           onpress: () async {
-                            try{
-                            g.Buildingname = _buildignamecontroller.text;
-                    
-                            detData.setName(user?.id, _buildignamecontroller.text,
-                                _yesorno.toString().split('.').last);
-                            if (!_formKey.currentState!.validate()) {
-                              return;
-                            }
-                    
-                            if (_yesorno == Yesorno.yes) {
-                              Navigator.push(
+                            try {
+                              g.Buildingname = _buildignamecontroller.text;
+
+                              detData.setName(
+                                  user?.id,
+                                  _buildignamecontroller.text,
+                                  _yesorno.toString().split('.').last);
+                              if (!_formKey.currentState!.validate()) {
+                                return;
+                              }
+
+                              if (_yesorno == Yesorno.yes) {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            widget.option == Option.ev
+                                                ? EvPage()
+                                                : InspectionPage()));
+                              } else {
+                                if (detData.formType == 0) {
+                                  setState(() {
+                                    _spinner = true;
+                                  });
+                                  await inspection.push().set({
+                                    'uid': detData.siteInspection.userID,
+                                    'building_name':
+                                        detData.siteInspection.buildingName,
+                                    'suitable':
+                                        detData.siteInspection.deployment,
+                                    'category': detData.siteInspection.category,
+                                    'contact_name':
+                                        detData.siteInspection.contactPerson,
+                                    'desig': detData.siteInspection.designatoin,
+                                    'phone': detData.siteInspection.phoneNum,
+                                    'email': detData.siteInspection.email,
+                                    'rented': detData.siteInspection.rented,
+                                    'owner_name':
+                                        detData.siteInspection.ownerName,
+                                    'owner_phone':
+                                        detData.siteInspection.ownerphn,
+                                    'owner_email':
+                                        detData.siteInspection.ownerEmail,
+                                    'mounting': detData.siteInspection.mounting,
+                                    'ambly_const':
+                                        detData.siteInspection.assemblyConst,
+                                    'parli_const':
+                                        detData.siteInspection.parlimentConst,
+                                    'dist': detData.siteInspection.district,
+                                    'lb': detData.siteInspection.localBody,
+                                    'ward_num': detData.siteInspection.wardNo,
+                                    'ward_name':
+                                        detData.siteInspection.wardName,
+                                    'load': detData.siteInspection.load,
+                                    'avg_cnsmptn':
+                                        detData.siteInspection.avgConsumption,
+                                    'conn_name':
+                                        detData.siteInspection.eConnectionName,
+                                    'period':
+                                        detData.siteInspection.billingPeriod,
+                                    'customer_type':
+                                        detData.siteInspection.customerType,
+                                    'conn_type':
+                                        detData.siteInspection.connectionType,
+                                    'length': detData.siteInspection.length,
+                                    'breadth': detData.siteInspection.breadth,
+                                    'area': detData.siteInspection.area,
+                                    'prop_cap': detData.siteInspection.propCap,
+                                    'rf_shape':
+                                        detData.siteInspection.roofShape,
+                                    'rf_mat': detData.siteInspection.roofCover,
+                                    'mat_acc':
+                                        detData.siteInspection.roofAccess,
+                                    'sub_know': detData.siteInspection.subsidy,
+                                    'reason': detData.siteInspection.disintrest,
+                                    'promocode':
+                                        detData.siteInspection.promocode,
+                                    'remarks': detData.siteInspection.remark,
+                                    'intrst': detData.siteInspection.solarPV,
+                                    'gps': detData.siteInspection.gps,
+                                    'img1': detData.siteInspection.img1,
+                                    'img2': detData.siteInspection.img2,
+                                    'img3': detData.siteInspection.img3,
+                                  });
+                                  setState(() {
+                                    _spinner = false;
+                                  });
+                                  Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => OptionSelection(
+                                        issubmitted: true,
+                                      ),
+                                    ),
+                                    (route) => false,
+                                  );
+                                  showSnackBar('Details entered successfully');
+                                } else {
+                                  setState(() {
+                                    _spinner = true;
+                                  });
+                                  await evSite.push().set({
+                                    'uid': detData.evInspection.userID,
+                                    'building_name':
+                                        detData.evInspection.buildingName,
+                                    'suitable': detData.evInspection.deployment,
+                                    'category': detData.evInspection.category,
+                                    'contact_name':
+                                        detData.evInspection.contactPerson,
+                                    'desig': detData.evInspection.designatoin,
+                                    'phone': detData.evInspection.phoneNum,
+                                    'email': detData.evInspection.email,
+                                    'rented': detData.evInspection.rented,
+                                    'owner_name':
+                                        detData.evInspection.ownerName,
+                                    'owner_phone':
+                                        detData.evInspection.ownerPhn,
+                                    'owner_email':
+                                        detData.evInspection.ownerEmail,
+                                    'owner_address':
+                                        detData.evInspection.ownerAddress,
+                                    'ambly_const':
+                                        detData.evInspection.assemblyConst,
+                                    'parli_const':
+                                        detData.evInspection.parlimentConst,
+                                    'dist': detData.evInspection.district,
+                                    'lb': detData.evInspection.localBody,
+                                    'ward_num': detData.evInspection.wardNo,
+                                    'ward_name': detData.evInspection.wardName,
+                                    'provision':
+                                        detData.evInspection.twoCharging,
+                                    'length': detData.evInspection.length,
+                                    'breadth': detData.evInspection.breadth,
+                                    'area': detData.evInspection.area,
+                                    'remarks': detData.evInspection.remakrs,
+                                    'gps': detData.evInspection.gps,
+                                    'img1': detData.evInspection.img1,
+                                    'img2': detData.evInspection.img2,
+                                    'img3': detData.evInspection.img3,
+                                  });
+                                  setState(() {
+                                    _spinner = false;
+                                  });
+                                }
+                                Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => widget.option == Option.ev
-                                          ? EvPage()
-                                          : InspectionPage()));
-                            } else {
-                              
-                              if (detData.formType == 0) {
-                                setState(() {
-                                  _spinner=true;
-                                });
-                                await inspection.push().set({
-                                  'uid': detData.siteInspection.userID,
-                                  'building_name': detData.siteInspection.buildingName,
-                                  'suitable': detData.siteInspection.deployment,
-                                  'category': detData.siteInspection.category,
-                                  'contact_name': detData.siteInspection.contactPerson,
-                                  'desig': detData.siteInspection.designatoin,
-                                  'phone': detData.siteInspection.phoneNum,
-                                  'email': detData.siteInspection.email,
-                                  'rented': detData.siteInspection.rented,
-                                  'owner_name': detData.siteInspection.ownerName,
-                                  'owner_phone': detData.siteInspection.ownerphn,
-                                  'owner_email': detData.siteInspection.ownerEmail,
-                                  'mounting': detData.siteInspection.mounting,
-                                  'ambly_const': detData.siteInspection.assemblyConst,
-                                  'parli_const': detData.siteInspection.parlimentConst,
-                                  'dist': detData.siteInspection.district,
-                                  'lb': detData.siteInspection.localBody,
-                                  'ward_num': detData.siteInspection.wardNo,
-                                  'ward_name': detData.siteInspection.wardName,
-                                  'load': detData.siteInspection.load,
-                                  'avg_cnsmptn': detData.siteInspection.avgConsumption,
-                                  'conn_name': detData.siteInspection.eConnectionName,
-                                  'period': detData.siteInspection.billingPeriod,
-                                  'customer_type': detData.siteInspection.customerType,
-                                  'conn_type': detData.siteInspection.connectionType,
-                                  'length': detData.siteInspection.length,
-                                  'breadth': detData.siteInspection.breadth,
-                                  'area': detData.siteInspection.area,
-                                  'prop_cap': detData.siteInspection.propCap,
-                                  'rf_shape': detData.siteInspection.roofShape,
-                                  'rf_mat': detData.siteInspection.roofCover,
-                                  'mat_acc': detData.siteInspection.roofAccess,
-                                  'sub_know': detData.siteInspection.subsidy,
-                                  'reason': detData.siteInspection.disintrest,
-                                  'promocode': detData.siteInspection.promocode,
-                                  'remarks': detData.siteInspection.remark,
-                                  'intrst': detData.siteInspection.solarPV,
-                                  'gps': detData.siteInspection.gps,
-                                  'img1': detData.siteInspection.img1,
-                                  'img2': detData.siteInspection.img2,
-                                  'img3': detData.siteInspection.img3,
-                                });
-                                setState(() {
-                                  _spinner=false;
-                                });
-                              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => OptionSelection(issubmitted: true,),),(route) => false,);
-                              showSnackBar('Details entered successfully');
-                              } else {
-                                setState(() {
-                                  _spinner=true;
-                                });
-                                await evSite.push().set({
-                                  'uid': detData.evInspection.userID,
-                                  'building_name': detData.evInspection.buildingName,
-                                  'suitable': detData.evInspection.deployment,
-                                  'category': detData.evInspection.category,
-                                  'contact_name': detData.evInspection.contactPerson,
-                                  'desig': detData.evInspection.designatoin,
-                                  'phone': detData.evInspection.phoneNum,
-                                  'email': detData.evInspection.email,
-                                  'rented': detData.evInspection.rented,
-                                  'owner_name': detData.evInspection.ownerName,
-                                  'owner_phone': detData.evInspection.ownerPhn,
-                                  'owner_email': detData.evInspection.ownerEmail,
-                                  'owner_address': detData.evInspection.ownerAddress,
-                                  'ambly_const': detData.evInspection.assemblyConst,
-                                  'parli_const': detData.evInspection.parlimentConst,
-                                  'dist': detData.evInspection.district,
-                                  'lb': detData.evInspection.localBody,
-                                  'ward_num': detData.evInspection.wardNo,
-                                  'ward_name': detData.evInspection.wardName,
-                                  'provision': detData.evInspection.twoCharging,
-                                  'length': detData.evInspection.length,
-                                  'breadth': detData.evInspection.breadth,
-                                  'area': detData.evInspection.area,
-                                  'remarks': detData.evInspection.remakrs,
-                                  'gps': detData.evInspection.gps,
-                                  'img1': detData.evInspection.img1,
-                                  'img2': detData.evInspection.img2,
-                                  'img3': detData.evInspection.img3,
-                                });
-                                setState(() {
-                                  _spinner=false;
-                                });
+                                    builder: (context) => OptionSelection(
+                                      issubmitted: true,
+                                    ),
+                                  ),
+                                  (route) => false,
+                                );
+                                showSnackBar('Details entered successfully');
                               }
-                              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => OptionSelection(issubmitted: true,),),(route) => false,);
-                              showSnackBar('Details entered successfully');
-                            }}
-                            catch(e){
+                            } catch (e) {
                               showSnackBar('Something went wrong');
-                              _spinner=false;
+                              _spinner = false;
                             }
-                    
+
                             _buildignamecontroller.clear();
                           },
-                          text: _yesorno==Yesorno.yes?'NEXT':'SUBMIT')
+                          text: _yesorno == Yesorno.yes ? 'NEXT' : 'SUBMIT')
                     ],
                   ),
                 ),
