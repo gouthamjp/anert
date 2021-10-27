@@ -65,8 +65,8 @@ class _InterestedScreenState extends State<InterestedScreen> {
 
    void showSnackBar(String value) {
     scaffoldKey.currentState!.showSnackBar(SnackBar(
-      backgroundColor: Colors.grey,
-      content: Text(value,style: TextStyle(fontSize: 17)),
+      backgroundColor: Color(0xFF333333),
+      content: Text(value,style: TextStyle(fontSize: 14)),
       duration: Duration(seconds: 2),
       action: SnackBarAction(
         label: 'Close',
