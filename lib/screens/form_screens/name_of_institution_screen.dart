@@ -14,6 +14,9 @@ import 'package:anert/globals.dart' as g;
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:geolocator/geolocator.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:path/path.dart';
 
 enum Yesorno { yes, no }
 enum Option { solar, ev }
@@ -33,13 +36,43 @@ class _NameOfInstitutionState extends State<NameOfInstitution> {
   String? _imageUrl1 = '';
   String? _imageUrl2 = '';
   String? _imageUrl3 = '';
-    final String imageurl = 'assets/images/download.png';
+  String? _gmap = "https://maps.google.com/?q=";
+  final storage = FirebaseStorage.instance.ref();
+  final String imageurl = 'assets/images/download.png';
   final _formKey = GlobalKey<FormState>();
   final _buildignamecontroller = TextEditingController();
   bool _spinner = false;
   Yesorno? _yesorno = Yesorno.yes;
   //backend handling variables
   final database = FirebaseDatabase.instance.reference();
+  //
+
+  //
+  Future<Position> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    return await Geolocator.getCurrentPosition();
+  }
+
   //
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -75,7 +108,7 @@ class _NameOfInstitutionState extends State<NameOfInstitution> {
     return ModalProgressHUD(
       inAsyncCall: _spinner,
       child: Scaffold(
-        resizeToAvoidBottomInset: _yesorno==Yesorno.yes?true: false,
+        resizeToAvoidBottomInset: _yesorno == Yesorno.yes ? true : false,
         key: scaffoldKey,
         appBar: GreenTvmTheme.themeAppbar(
             title: 'GREEN TVM', context: context, showBackButton: true),
@@ -224,6 +257,41 @@ class _NameOfInstitutionState extends State<NameOfInstitution> {
                                   user?.id,
                                   _buildignamecontroller.text,
                                   _yesorno.toString().split('.').last);
+                              if (_image1 != null) {
+                                String base1 = basename(_image1!.path);
+
+                                var snap = await storage
+                                    .child('Images/$base1')
+                                    .putFile(_image1!);
+
+                                _imageUrl1 = await snap.ref.getDownloadURL();
+                              }
+                              if (_image2 != null) {
+                                String base2 = basename(_image2!.path);
+                                var snap = await storage
+                                    .child('Images/$base2')
+                                    .putFile(_image2!);
+                                _imageUrl2 = await snap.ref.getDownloadURL();
+                              }
+
+                              if (_image3 != null) {
+                                String base3 = basename(_image3!.path);
+                                var snap = await storage
+                                    .child('Images/$base3')
+                                    .putFile(_image2!);
+                                _imageUrl3 = await snap.ref.getDownloadURL();
+                              }
+
+                              // latitude and longitude
+                              Position pos = await _determinePosition();
+                              String lat = pos.latitude.toString();
+                              String lng = pos.longitude.toString();
+                              _gmap = (_gmap! + lat + "," + lng);
+                              //
+
+                              // updating provider
+                              detData.setIntrest(_gmap!, _imageUrl1!,
+                                  _imageUrl2!, _imageUrl3!);
                               if (!_formKey.currentState!.validate()) {
                                 return;
                               }
