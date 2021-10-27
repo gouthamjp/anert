@@ -293,7 +293,7 @@ class _InterestedScreenState extends State<InterestedScreen> {
                             child: GestureDetector(
                               onTap: () async {
                                 final image1 = await ImagePicker()
-                                    .getImage(source: ImageSource.camera);
+                                    .getImage(source: ImageSource.camera,imageQuality: 70);
                 
                                 setState(() {
                                   _image1 = image1 == null ? null : File(image1.path);
@@ -312,7 +312,7 @@ class _InterestedScreenState extends State<InterestedScreen> {
                               onTap: () async {
                                 print(_image2);
                                 final image2 = await ImagePicker()
-                                    .getImage(source: ImageSource.camera);
+                                    .getImage(source: ImageSource.camera,imageQuality: 70);
                 
                                 setState(() {
                                   _image2 = image2 == null ? null : File(image2.path);
@@ -332,7 +332,7 @@ class _InterestedScreenState extends State<InterestedScreen> {
                             child: GestureDetector(
                               onTap: () async {
                                 final image3 = await ImagePicker()
-                                    .getImage(source: ImageSource.camera);
+                                    .getImage(source: ImageSource.camera,imageQuality: 70);
                 
                                 setState(() {
                                   _image3 = image3 == null ? null : File(image3.path);

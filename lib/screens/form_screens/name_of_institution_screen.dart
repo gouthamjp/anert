@@ -180,7 +180,7 @@ class _NameOfInstitutionState extends State<NameOfInstitution> {
                                               final image1 = await ImagePicker()
                                                   .getImage(
                                                       source:
-                                                          ImageSource.camera);
+                                                          ImageSource.camera,imageQuality: 60);
 
                                               setState(() {
                                                 _image1 = image1 == null
@@ -203,7 +203,7 @@ class _NameOfInstitutionState extends State<NameOfInstitution> {
                                               final image2 = await ImagePicker()
                                                   .getImage(
                                                       source:
-                                                          ImageSource.camera);
+                                                          ImageSource.camera,imageQuality: 70);
 
                                               setState(() {
                                                 _image2 = image2 == null
@@ -250,9 +250,11 @@ class _NameOfInstitutionState extends State<NameOfInstitution> {
                           )),
                       Button(
                           onpress: () async {
+                            setState(() {
+                                    _spinner = true;
+                                  });
                             try {
                               g.Buildingname = _buildignamecontroller.text;
-
                               detData.setName(
                                   user?.id,
                                   _buildignamecontroller.text,
@@ -306,9 +308,7 @@ class _NameOfInstitutionState extends State<NameOfInstitution> {
                                                 : InspectionPage()));
                               } else {
                                 if (detData.formType == 0) {
-                                  setState(() {
-                                    _spinner = true;
-                                  });
+                                 
                                   await inspection.push().set({
                                     'uid': detData.siteInspection.userID,
                                     'building_name':
@@ -383,9 +383,7 @@ class _NameOfInstitutionState extends State<NameOfInstitution> {
                                   );
                                   showSnackBar('Details entered successfully');
                                 } else {
-                                  setState(() {
-                                    _spinner = true;
-                                  });
+                                  
                                   await evSite.push().set({
                                     'uid': detData.evInspection.userID,
                                     'building_name':
