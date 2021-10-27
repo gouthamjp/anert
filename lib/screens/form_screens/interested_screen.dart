@@ -288,8 +288,9 @@ class _InterestedScreenState extends State<InterestedScreen> {
                         height: 0.02 * mquery.height,
                       ),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Expanded(
+                          Flexible(
                             child: GestureDetector(
                               onTap: () async {
                                 final image1 = await ImagePicker()
@@ -300,6 +301,7 @@ class _InterestedScreenState extends State<InterestedScreen> {
                                 });
                               },
                               child: Container(
+                                height: mquery.height*0.15,
                                 margin: EdgeInsets.all(2),
                                 child: _image1 == null
                                     ? Image.asset('$imageurl')
@@ -307,7 +309,7 @@ class _InterestedScreenState extends State<InterestedScreen> {
                               ),
                             ),
                           ),
-                          Expanded(
+                          Flexible(
                             child: GestureDetector(
                               onTap: () async {
                                 print(_image2);
@@ -321,6 +323,7 @@ class _InterestedScreenState extends State<InterestedScreen> {
                                 });
                               },
                               child: Container(
+                                 height: mquery.height*0.15,
                                 margin: EdgeInsets.all(2),
                                 child: _image2 == null
                                     ? Image.asset('$imageurl')
@@ -328,7 +331,7 @@ class _InterestedScreenState extends State<InterestedScreen> {
                               ),
                             ),
                           ),
-                          Expanded(
+                          Flexible(
                             child: GestureDetector(
                               onTap: () async {
                                 final image3 = await ImagePicker()
@@ -339,6 +342,7 @@ class _InterestedScreenState extends State<InterestedScreen> {
                                 });
                               },
                               child: Container(
+                                 height: mquery.height*0.15,
                                 margin: EdgeInsets.all(2),
                                 child: _image3 == null
                                     ? Image.asset('$imageurl')

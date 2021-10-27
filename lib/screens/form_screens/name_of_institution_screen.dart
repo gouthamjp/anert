@@ -95,7 +95,11 @@ class _NameOfInstitutionState extends State<NameOfInstitution> {
     }
     _formKey.currentState!.save();
   }
-
+@override
+void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     //backend handling variables
@@ -108,41 +112,42 @@ class _NameOfInstitutionState extends State<NameOfInstitution> {
     return ModalProgressHUD(
       inAsyncCall: _spinner,
       child: Scaffold(
-        resizeToAvoidBottomInset: _yesorno == Yesorno.yes ? true : false,
         key: scaffoldKey,
         appBar: GreenTvmTheme.themeAppbar(
             title: 'GREEN TVM', context: context, showBackButton: true),
         backgroundColor: Colors.white,
-        body: SizedBox(
-          height: mquery.height,
-          width: mquery.width,
-          child: Container(
-            margin: EdgeInsets.all(18),
-            child: Column(
-              children: [
-                Flexible(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        //height: mquery.height * 0.15,
-                        child: Form(
-                          key: _formKey,
-                          child: FormFieldBox(
-                            onSavedField: (value) {},
-                            onChanged: (value) {},
-                            onSubmitingField: (value) {},
-                            labelText: 'Name of Building',
-                            hintText: 'Enter name of building',
-                            keyboardType: KeyboardType.Text_,
-                            controller: _buildignamecontroller,
-                            requiredornot: true,
-                            //focusNode: _buildignamenode,
-                            didEndTextEdit: () {},
+        body: SingleChildScrollView(
+          child: SizedBox(
+            height: mquery.height,
+            width: mquery.width,
+            child: Container(
+              margin: EdgeInsets.all(18),
+              child: Column(
+                children: [
+                  Flexible(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          //height: mquery.height * 0.15,
+                          child: Form(
+                            key: _formKey,
+                            child: FormFieldBox(
+                              height: mquery.height * 0.15,
+                              onSavedField: (value) {},
+                              onChanged: (value) {},
+                              onSubmitingField: (value) {},
+                              labelText: 'Name of Building',
+                              hintText: 'Enter name of building',
+                              keyboardType: KeyboardType.Text_,
+                              controller: _buildignamecontroller,
+                              requiredornot: true,
+                              //focusNode: _buildignamenode,
+                              didEndTextEdit: () {},
+                            ),
                           ),
                         ),
-                      ),
-                      RadioFieldBox(
+                        RadioFieldBox(
                           labelText: 'Is it suitable for deployement?',
                           requiredornot: true,
                           radioChild: Column(
@@ -171,285 +176,312 @@ class _NameOfInstitutionState extends State<NameOfInstitution> {
                                   },
                                 ),
                               ),
-                              _yesorno == Yesorno.no
-                                  ? Row(
-                                      children: <Widget>[
-                                        Expanded(
-                                          child: GestureDetector(
-                                            onTap: () async {
-                                              final image1 = await ImagePicker()
-                                                  .getImage(
-                                                      source:
-                                                          ImageSource.camera,imageQuality: 60);
-
-                                              setState(() {
-                                                _image1 = image1 == null
-                                                    ? null
-                                                    : File(image1.path);
-                                              });
-                                            },
-                                            child: Container(
-                                              margin: EdgeInsets.all(2),
-                                              child: _image1 == null
-                                                  ? Image.asset('$imageurl')
-                                                  : Image.file(_image1!),
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: GestureDetector(
-                                            onTap: () async {
-                                              print(_image2);
-                                              final image2 = await ImagePicker()
-                                                  .getImage(
-                                                      source:
-                                                          ImageSource.camera,imageQuality: 70);
-
-                                              setState(() {
-                                                _image2 = image2 == null
-                                                    ? null
-                                                    : File(image2.path);
-
-                                                print(_image2);
-                                              });
-                                            },
-                                            child: Container(
-                                              margin: EdgeInsets.all(2),
-                                              child: _image2 == null
-                                                  ? Image.asset('$imageurl')
-                                                  : Image.file(_image2!),
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: GestureDetector(
-                                            onTap: () async {
-                                              final image3 = await ImagePicker()
-                                                  .getImage(
-                                                      source:
-                                                          ImageSource.camera);
-
-                                              setState(() {
-                                                _image3 = image3 == null
-                                                    ? null
-                                                    : File(image3.path);
-                                              });
-                                            },
-                                            child: Container(
-                                              margin: EdgeInsets.all(2),
-                                              child: _image3 == null
-                                                  ? Image.asset('$imageurl')
-                                                  : Image.file(_image3!),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                  : Container(),
                             ],
-                          )),
-                      Button(
-                          onpress: () async {
-                            setState(() {
-                                    _spinner = true;
-                                  });
-                            try {
-                              g.Buildingname = _buildignamecontroller.text;
-                              detData.setName(
-                                  user?.id,
-                                  _buildignamecontroller.text,
-                                  _yesorno.toString().split('.').last);
-                              if (_image1 != null) {
-                                String base1 = basename(_image1!.path);
+                          ),
+                        ),
+                        _yesorno == Yesorno.no
+                            ? Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Flexible(
+                                    child: GestureDetector(
+                                      onTap: () async {
+                                        final image1 = await ImagePicker()
+                                            .getImage(
+                                                source: ImageSource.camera,
+                                                imageQuality: 60);
 
-                                var snap = await storage
-                                    .child('Images/$base1')
-                                    .putFile(_image1!);
-
-                                _imageUrl1 = await snap.ref.getDownloadURL();
-                              }
-                              if (_image2 != null) {
-                                String base2 = basename(_image2!.path);
-                                var snap = await storage
-                                    .child('Images/$base2')
-                                    .putFile(_image2!);
-                                _imageUrl2 = await snap.ref.getDownloadURL();
-                              }
-
-                              if (_image3 != null) {
-                                String base3 = basename(_image3!.path);
-                                var snap = await storage
-                                    .child('Images/$base3')
-                                    .putFile(_image2!);
-                                _imageUrl3 = await snap.ref.getDownloadURL();
-                              }
-
-                              // latitude and longitude
-                              Position pos = await _determinePosition();
-                              String lat = pos.latitude.toString();
-                              String lng = pos.longitude.toString();
-                              _gmap = (_gmap! + lat + "," + lng);
-                              //
-
-                              // updating provider
-                              detData.setIntrest(_gmap!, _imageUrl1!,
-                                  _imageUrl2!, _imageUrl3!);
-                              if (!_formKey.currentState!.validate()) {
-                                return;
-                              }
-
-                              if (_yesorno == Yesorno.yes) {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            widget.option == Option.ev
-                                                ? EvPage()
-                                                : InspectionPage()));
-                              } else {
-                                if (detData.formType == 0) {
-                                 
-                                  await inspection.push().set({
-                                    'uid': detData.siteInspection.userID,
-                                    'building_name':
-                                        detData.siteInspection.buildingName,
-                                    'suitable':
-                                        detData.siteInspection.deployment,
-                                    'category': detData.siteInspection.category,
-                                    'contact_name':
-                                        detData.siteInspection.contactPerson,
-                                    'desig': detData.siteInspection.designatoin,
-                                    'phone': detData.siteInspection.phoneNum,
-                                    'email': detData.siteInspection.email,
-                                    'rented': detData.siteInspection.rented,
-                                    'owner_name':
-                                        detData.siteInspection.ownerName,
-                                    'owner_phone':
-                                        detData.siteInspection.ownerphn,
-                                    'owner_email':
-                                        detData.siteInspection.ownerEmail,
-                                    'mounting': detData.siteInspection.mounting,
-                                    'ambly_const':
-                                        detData.siteInspection.assemblyConst,
-                                    'parli_const':
-                                        detData.siteInspection.parlimentConst,
-                                    'dist': detData.siteInspection.district,
-                                    'lb': detData.siteInspection.localBody,
-                                    'ward_num': detData.siteInspection.wardNo,
-                                    'ward_name':
-                                        detData.siteInspection.wardName,
-                                    'load': detData.siteInspection.load,
-                                    'avg_cnsmptn':
-                                        detData.siteInspection.avgConsumption,
-                                    'conn_name':
-                                        detData.siteInspection.eConnectionName,
-                                    'period':
-                                        detData.siteInspection.billingPeriod,
-                                    'customer_type':
-                                        detData.siteInspection.customerType,
-                                    'conn_type':
-                                        detData.siteInspection.connectionType,
-                                    'length': detData.siteInspection.length,
-                                    'breadth': detData.siteInspection.breadth,
-                                    'area': detData.siteInspection.area,
-                                    'prop_cap': detData.siteInspection.propCap,
-                                    'rf_shape':
-                                        detData.siteInspection.roofShape,
-                                    'rf_mat': detData.siteInspection.roofCover,
-                                    'mat_acc':
-                                        detData.siteInspection.roofAccess,
-                                    'sub_know': detData.siteInspection.subsidy,
-                                    'reason': detData.siteInspection.disintrest,
-                                    'promocode':
-                                        detData.siteInspection.promocode,
-                                    'remarks': detData.siteInspection.remark,
-                                    'intrst': detData.siteInspection.solarPV,
-                                    'gps': detData.siteInspection.gps,
-                                    'img1': detData.siteInspection.img1,
-                                    'img2': detData.siteInspection.img2,
-                                    'img3': detData.siteInspection.img3,
-                                  });
-                                  setState(() {
-                                    _spinner = false;
-                                  });
-                                  Navigator.pushAndRemoveUntil(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => OptionSelection(
-                                        issubmitted: true,
+                                        setState(() {
+                                          _image1 = image1 == null
+                                              ? null
+                                              : File(image1.path);
+                                        });
+                                      },
+                                      child: Container(
+                                        height: mquery.height * 0.15,
+                                        margin: EdgeInsets.all(2),
+                                        child: _image1 == null
+                                            ? Image.asset('$imageurl')
+                                            : Image.file(_image1!),
                                       ),
                                     ),
-                                    (route) => false,
-                                  );
-                                  showSnackBar('Details entered successfully');
-                                } else {
-                                  
-                                  await evSite.push().set({
-                                    'uid': detData.evInspection.userID,
-                                    'building_name':
-                                        detData.evInspection.buildingName,
-                                    'suitable': detData.evInspection.deployment,
-                                    'category': detData.evInspection.category,
-                                    'contact_name':
-                                        detData.evInspection.contactPerson,
-                                    'desig': detData.evInspection.designatoin,
-                                    'phone': detData.evInspection.phoneNum,
-                                    'email': detData.evInspection.email,
-                                    'rented': detData.evInspection.rented,
-                                    'owner_name':
-                                        detData.evInspection.ownerName,
-                                    'owner_phone':
-                                        detData.evInspection.ownerPhn,
-                                    'owner_email':
-                                        detData.evInspection.ownerEmail,
-                                    'owner_address':
-                                        detData.evInspection.ownerAddress,
-                                    'ambly_const':
-                                        detData.evInspection.assemblyConst,
-                                    'parli_const':
-                                        detData.evInspection.parlimentConst,
-                                    'dist': detData.evInspection.district,
-                                    'lb': detData.evInspection.localBody,
-                                    'ward_num': detData.evInspection.wardNo,
-                                    'ward_name': detData.evInspection.wardName,
-                                    'provision':
-                                        detData.evInspection.twoCharging,
-                                    'length': detData.evInspection.length,
-                                    'breadth': detData.evInspection.breadth,
-                                    'area': detData.evInspection.area,
-                                    'remarks': detData.evInspection.remakrs,
-                                    'gps': detData.evInspection.gps,
-                                    'img1': detData.evInspection.img1,
-                                    'img2': detData.evInspection.img2,
-                                    'img3': detData.evInspection.img3,
-                                  });
-                                  setState(() {
-                                    _spinner = false;
-                                  });
-                                }
-                                Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => OptionSelection(
-                                      issubmitted: true,
+                                  ),
+                                  Flexible(
+                                    child: GestureDetector(
+                                      onTap: () async {
+                                        print(_image2);
+                                        final image2 = await ImagePicker()
+                                            .getImage(
+                                                source: ImageSource.camera,
+                                                imageQuality: 70);
+
+                                        setState(() {
+                                          _image2 = image2 == null
+                                              ? null
+                                              : File(image2.path);
+
+                                          print(_image2);
+                                        });
+                                      },
+                                      child: Container(
+                                        height: mquery.height * 0.15,
+                                        margin: EdgeInsets.all(2),
+                                        child: _image2 == null
+                                            ? Image.asset('$imageurl')
+                                            : Image.file(_image2!),
+                                      ),
                                     ),
                                   ),
-                                  (route) => false,
-                                );
-                                showSnackBar('Details entered successfully');
-                              }
-                            } catch (e) {
-                              showSnackBar('Something went wrong');
-                              _spinner = false;
-                            }
+                                  Flexible(
+                                    child: GestureDetector(
+                                      onTap: () async {
+                                        final image3 = await ImagePicker()
+                                            .getImage(
+                                                source: ImageSource.camera,
+                                                imageQuality: 80);
 
-                            _buildignamecontroller.clear();
-                          },
-                          text: _yesorno == Yesorno.yes ? 'NEXT' : 'SUBMIT')
-                    ],
+                                        setState(() {
+                                          _image3 = image3 == null
+                                              ? null
+                                              : File(image3.path);
+                                        });
+                                      },
+                                      child: Container(
+                                        height: mquery.height * 0.15,
+                                        margin: EdgeInsets.all(2),
+                                        child: _image3 == null
+                                            ? Image.asset('$imageurl')
+                                            : Image.file(_image3!),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : Container(),
+                        Button(
+                            onpress: () async {
+                              if (!_formKey.currentState!.validate()) {
+                                return;
+                               } 
+                                 if (_yesorno == Yesorno.yes) {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                widget.option == Option.ev
+                                                    ? EvPage()
+                                                    : InspectionPage()));
+                                  } else {
+                                    setState(() {
+                                  _spinner = true;
+                                });
+                                try {
+                                  g.Buildingname = _buildignamecontroller.text;
+                                  detData.setName(
+                                      user?.id,
+                                      _buildignamecontroller.text,
+                                      _yesorno.toString().split('.').last);
+                                  if (_image1 != null) {
+                                    String base1 = basename(_image1!.path);
+
+                                    var snap = await storage
+                                        .child('Images/$base1')
+                                        .putFile(_image1!);
+
+                                    _imageUrl1 =
+                                        await snap.ref.getDownloadURL();
+                                  }
+                                  if (_image2 != null) {
+                                    String base2 = basename(_image2!.path);
+                                    var snap = await storage
+                                        .child('Images/$base2')
+                                        .putFile(_image2!);
+                                    _imageUrl2 =
+                                        await snap.ref.getDownloadURL();
+                                  }
+
+                                  if (_image3 != null) {
+                                    String base3 = basename(_image3!.path);
+                                    var snap = await storage
+                                        .child('Images/$base3')
+                                        .putFile(_image2!);
+                                    _imageUrl3 =
+                                        await snap.ref.getDownloadURL();
+                                  }
+
+                                  // latitude and longitude
+                                  Position pos = await _determinePosition();
+                                  String lat = pos.latitude.toString();
+                                  String lng = pos.longitude.toString();
+                                  _gmap = (_gmap! + lat + "," + lng);
+                                  //
+
+                                  // updating provider
+                                  detData.setIntrest(_gmap!, _imageUrl1!,
+                                      _imageUrl2!, _imageUrl3!);
+
+                                    if (detData.formType == 0) {
+                                      await inspection.push().set({
+                                        'uid': detData.siteInspection.userID,
+                                        'building_name':
+                                            detData.siteInspection.buildingName,
+                                        'suitable':
+                                            detData.siteInspection.deployment,
+                                        'category':
+                                            detData.siteInspection.category,
+                                        'contact_name': detData
+                                            .siteInspection.contactPerson,
+                                        'desig':
+                                            detData.siteInspection.designatoin,
+                                        'phone':
+                                            detData.siteInspection.phoneNum,
+                                        'email': detData.siteInspection.email,
+                                        'rented': detData.siteInspection.rented,
+                                        'owner_name':
+                                            detData.siteInspection.ownerName,
+                                        'owner_phone':
+                                            detData.siteInspection.ownerphn,
+                                        'owner_email':
+                                            detData.siteInspection.ownerEmail,
+                                        'mounting':
+                                            detData.siteInspection.mounting,
+                                        'ambly_const': detData
+                                            .siteInspection.assemblyConst,
+                                        'parli_const': detData
+                                            .siteInspection.parlimentConst,
+                                        'dist': detData.siteInspection.district,
+                                        'lb': detData.siteInspection.localBody,
+                                        'ward_num':
+                                            detData.siteInspection.wardNo,
+                                        'ward_name':
+                                            detData.siteInspection.wardName,
+                                        'load': detData.siteInspection.load,
+                                        'avg_cnsmptn': detData
+                                            .siteInspection.avgConsumption,
+                                        'conn_name': detData
+                                            .siteInspection.eConnectionName,
+                                        'period': detData
+                                            .siteInspection.billingPeriod,
+                                        'customer_type':
+                                            detData.siteInspection.customerType,
+                                        'conn_type': detData
+                                            .siteInspection.connectionType,
+                                        'length': detData.siteInspection.length,
+                                        'breadth':
+                                            detData.siteInspection.breadth,
+                                        'area': detData.siteInspection.area,
+                                        'prop_cap':
+                                            detData.siteInspection.propCap,
+                                        'rf_shape':
+                                            detData.siteInspection.roofShape,
+                                        'rf_mat':
+                                            detData.siteInspection.roofCover,
+                                        'mat_acc':
+                                            detData.siteInspection.roofAccess,
+                                        'sub_know':
+                                            detData.siteInspection.subsidy,
+                                        'reason':
+                                            detData.siteInspection.disintrest,
+                                        'promocode':
+                                            detData.siteInspection.promocode,
+                                        'remarks':
+                                            detData.siteInspection.remark,
+                                        'intrst':
+                                            detData.siteInspection.solarPV,
+                                        'gps': detData.siteInspection.gps,
+                                        'img1': detData.siteInspection.img1,
+                                        'img2': detData.siteInspection.img2,
+                                        'img3': detData.siteInspection.img3,
+                                      });
+                                      setState(() {
+                                        _spinner = false;
+                                      });
+                                      Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => OptionSelection(
+                                            issubmitted: true,
+                                          ),
+                                        ),
+                                        (route) => false,
+                                      );
+                                      showSnackBar(
+                                          'Details entered successfully');
+                                    } else {
+                                      await evSite.push().set({
+                                        'uid': detData.evInspection.userID,
+                                        'building_name':
+                                            detData.evInspection.buildingName,
+                                        'suitable':
+                                            detData.evInspection.deployment,
+                                        'category':
+                                            detData.evInspection.category,
+                                        'contact_name':
+                                            detData.evInspection.contactPerson,
+                                        'desig':
+                                            detData.evInspection.designatoin,
+                                        'phone': detData.evInspection.phoneNum,
+                                        'email': detData.evInspection.email,
+                                        'rented': detData.evInspection.rented,
+                                        'owner_name':
+                                            detData.evInspection.ownerName,
+                                        'owner_phone':
+                                            detData.evInspection.ownerPhn,
+                                        'owner_email':
+                                            detData.evInspection.ownerEmail,
+                                        'owner_address':
+                                            detData.evInspection.ownerAddress,
+                                        'ambly_const':
+                                            detData.evInspection.assemblyConst,
+                                        'parli_const':
+                                            detData.evInspection.parlimentConst,
+                                        'dist': detData.evInspection.district,
+                                        'lb': detData.evInspection.localBody,
+                                        'ward_num': detData.evInspection.wardNo,
+                                        'ward_name':
+                                            detData.evInspection.wardName,
+                                        'provision':
+                                            detData.evInspection.twoCharging,
+                                        'length': detData.evInspection.length,
+                                        'breadth': detData.evInspection.breadth,
+                                        'area': detData.evInspection.area,
+                                        'remarks': detData.evInspection.remakrs,
+                                        'gps': detData.evInspection.gps,
+                                        'img1': detData.evInspection.img1,
+                                        'img2': detData.evInspection.img2,
+                                        'img3': detData.evInspection.img3,
+                                      });
+                                      setState(() {
+                                        _spinner = false;
+                                      });
+                                    }
+                                    Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => OptionSelection(
+                                          issubmitted: true,
+                                        ),
+                                      ),
+                                      (route) => false,
+                                    );
+                                    showSnackBar(
+                                        'Details entered successfully');
+                                  }
+                                 catch (e) {
+                                  showSnackBar('Something went wrong');
+                                  _spinner = false;
+                                }
+                                }
+
+                                _buildignamecontroller.clear();
+                              },
+                            
+                            text: _yesorno == Yesorno.yes ? 'NEXT' : 'SUBMIT')
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
