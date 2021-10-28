@@ -265,6 +265,11 @@ class _NameOfInstitutionState extends State<NameOfInstitution> {
                               if (!_formKey.currentState!.validate()) {
                                 return;
                               }
+                              g.Buildingname = _buildignamecontroller.text;
+                                  detData.setName(
+                                      user?.id,
+                                      _buildignamecontroller.text,
+                                      _yesorno.toString().split('.').last);
                               if (_yesorno == Yesorno.yes) {
                                 Navigator.push(
                                     context,
@@ -278,11 +283,7 @@ class _NameOfInstitutionState extends State<NameOfInstitution> {
                                   _spinner = true;
                                 });
                                 try {
-                                  g.Buildingname = _buildignamecontroller.text;
-                                  detData.setName(
-                                      user?.id,
-                                      _buildignamecontroller.text,
-                                      _yesorno.toString().split('.').last);
+                                  
                                   if (_image1 != null) {
                                     String base1 = basename(_image1!.path);
 
