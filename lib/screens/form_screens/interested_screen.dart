@@ -65,8 +65,8 @@ class _InterestedScreenState extends State<InterestedScreen> {
 
    void showSnackBar(String value) {
     scaffoldKey.currentState!.showSnackBar(SnackBar(
-      backgroundColor: Colors.grey,
-      content: Text(value,style: TextStyle(fontSize: 17)),
+      backgroundColor: Color(0xFF333333),
+      content: Text(value,style: TextStyle(fontSize: 14)),
       duration: Duration(seconds: 2),
       action: SnackBarAction(
         label: 'Close',
@@ -288,18 +288,20 @@ class _InterestedScreenState extends State<InterestedScreen> {
                         height: 0.02 * mquery.height,
                       ),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Expanded(
+                          Flexible(
                             child: GestureDetector(
                               onTap: () async {
                                 final image1 = await ImagePicker()
-                                    .getImage(source: ImageSource.camera);
+                                    .getImage(source: ImageSource.camera,imageQuality: 70);
                 
                                 setState(() {
                                   _image1 = image1 == null ? null : File(image1.path);
                                 });
                               },
                               child: Container(
+                                height: mquery.height*0.15,
                                 margin: EdgeInsets.all(2),
                                 child: _image1 == null
                                     ? Image.asset('$imageurl')
@@ -307,12 +309,12 @@ class _InterestedScreenState extends State<InterestedScreen> {
                               ),
                             ),
                           ),
-                          Expanded(
+                          Flexible(
                             child: GestureDetector(
                               onTap: () async {
                                 print(_image2);
                                 final image2 = await ImagePicker()
-                                    .getImage(source: ImageSource.camera);
+                                    .getImage(source: ImageSource.camera,imageQuality: 70);
                 
                                 setState(() {
                                   _image2 = image2 == null ? null : File(image2.path);
@@ -321,6 +323,7 @@ class _InterestedScreenState extends State<InterestedScreen> {
                                 });
                               },
                               child: Container(
+                                 height: mquery.height*0.15,
                                 margin: EdgeInsets.all(2),
                                 child: _image2 == null
                                     ? Image.asset('$imageurl')
@@ -328,17 +331,18 @@ class _InterestedScreenState extends State<InterestedScreen> {
                               ),
                             ),
                           ),
-                          Expanded(
+                          Flexible(
                             child: GestureDetector(
                               onTap: () async {
                                 final image3 = await ImagePicker()
-                                    .getImage(source: ImageSource.camera);
+                                    .getImage(source: ImageSource.camera,imageQuality: 70);
                 
                                 setState(() {
                                   _image3 = image3 == null ? null : File(image3.path);
                                 });
                               },
                               child: Container(
+                                 height: mquery.height*0.15,
                                 margin: EdgeInsets.all(2),
                                 child: _image3 == null
                                     ? Image.asset('$imageurl')
